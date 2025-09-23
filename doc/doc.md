@@ -5,7 +5,7 @@
 - [Propósito](#propósito)
 - [Objetivos](#objetivos)
 - [Alcance](#alcance)
-- [TODO: A partir de este punto eres libre de organizar la documentación como estimes pero debes abordar estos puntos](#todo-a-partir-de-este-punto-eres-libre-de-organizar-la-documentación-como-estimes-pero-debes-abordar-estos-puntos)
+- [TODO: A partir de este punto eres libre de organizar la documentación como estimes pero debes desarrollar el cuerpo de tu proyecto con apartados y subapartados que completen tu documentación](#todo-a-partir-de-este-punto-eres-libre-de-organizar-la-documentación-como-estimes-pero-debes-desarrollar-el-cuerpo-de-tu-proyecto-con-apartados-y-subapartados-que-completen-tu-documentación)
 - [Conclusiones](#conclusiones)
 - [Referencias, Fuentes consultadas y Recursos externos: Webgrafía](#referencias-fuentes-consultadas-y-recursos-externos-webgrafía)
 
@@ -54,9 +54,10 @@ O desenvolvemento da aplicación abre unha oportunidade de negocio? É posible c
 >
 > Relacionar el alcance con el tiempo y recursos disponibles. Justificar por qué se fijan esos límites (ej.: “debido al tiempo de desarrollo limitado, se implementará solo la versión de escritorio”).
 
-## TODO: A partir de este punto eres libre de organizar la documentación como estimes pero debes abordar estos puntos
+## TODO: A partir de este punto eres libre de organizar la documentación como estimes pero debes desarrollar el cuerpo de tu proyecto con apartados y subapartados que completen tu documentación
 
 > Hemos elaborado un [checklist](checklist.md) de puntos necesarios para tu PFC, para que revises estas recomendaciones/especificaciones.
+> Apóyate en tu tutor/a si tienes duda de cómo organizar tu proyecto y estos apartados/subapartado. Cada proyecto y su contexto determinará la mejor forma de estructurarlo. Piensa bien cómo lo vas a hacer.
 
 ## Conclusiones
 
