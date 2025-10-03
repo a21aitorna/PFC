@@ -25,4 +25,4 @@ ENV FLASK_ENV=development
 EXPOSE 5000
 
 # Ejecuto la app
-CMD ["flask", "run"]
+CMD ["python", "-m", "flask", "run"]
