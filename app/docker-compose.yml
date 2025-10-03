@@ -44,8 +44,6 @@ services:
     container_name: backend-testing
     depends_on:
       - backend
-    volumes:
-      - ./backend-testing/reports:/app/reports
     networks:
       - pfc-network
     command: sh -c "for c in collections/coleccion-*.json; do name=$(basename \$c .json); newman run \$c -e environments/local.env.json -r cli,junit,html --reporter-junit-export reports/\$name.xml --reporter-html-export reports/\$name.html; done"
@@ -70,7 +68,7 @@ services:
   # Selenium Grid
   # -------------------
   selenium-hub:
-    image: selenium/hub:4.14.0-20231022
+    image: selenium/hub:latest
     container_name: selenium-hub
     ports:
       - "4444:4444"
@@ -78,7 +76,7 @@ services:
       - pfc-network
 
   chrome:
-    image: selenium/node-chrome:4.14.0-20231022-ubi
+    image: selenium/node-chrome:latest
     depends_on:
       - selenium-hub
     environment:
@@ -89,7 +87,7 @@ services:
       - pfc-network
 
   firefox:
-    image: selenium/node-firefox:4.14.0-20231022-ubi
+    image: selenium/node-firefox:latest
     depends_on:
       - selenium-hub
     environment:
