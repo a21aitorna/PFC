@@ -1,5 +1,5 @@
 # Imagen Newman basada en Debian Slim para más compatibilidad
-FROM postman/newman:slim
+FROM postman/newman:latest
 
 # Carpeta de trabajo dentro del contenedor
 WORKDIR /app
