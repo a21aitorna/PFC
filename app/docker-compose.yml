@@ -27,8 +27,6 @@ services:
     container_name: pfc-frontend
     ports:
       - "3000:3000"
-    volumes:
-      - ./app/frontend:/app
     depends_on:
       - backend
     networks:
