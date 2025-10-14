@@ -8,11 +8,10 @@ WORKDIR /app
 COPY collections ./collections
 COPY environments ./environments
 
-# Crear carpeta para reportes
-RUN mkdir -p /app/reports
+# Crear carpeta para reportes en la ruta que quieres
+RUN mkdir -p /app/tests/backend-testing/reports
 
 # Comando por defecto: ejecutar la colección principal y generar HTML
-CMD ["run", "collections/api-tests.json", "-e", "environments/local.env.json", "-r", "html", "--reporter-html-export", "reports/results.html"]
-
+CMD ["run", "collections/api-tests.json", "-e", "environments/local.env.json", "-r", "html", "--reporter-html-export", "tests/backend-testing/reports/results.html"]
 # Para lanzarlo manualmente ->  newman run collections/api-tests.json -e environments/local.env.json -r cli
 # Para generar reportes html -> newman run collections/api-tests.json -e environments/local.env.json -r html --reporter-html-export reports/results.html

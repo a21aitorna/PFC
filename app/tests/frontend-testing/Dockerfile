@@ -5,14 +5,21 @@ FROM maven:3.9.2-eclipse-temurin-17
 WORKDIR /app
 
 # Copiar pom.xml y descargar dependencias (cacheable)
-COPY pom.xml .
+COPY pom.xml ./
 RUN mvn dependency:resolve
 
 # Copiar el código de tests
 COPY . .
 
-# Exponer puerto si necesitas reportes
+# Exponer puerto para reportes
 EXPOSE 8080
 
-# Comando por defecto: ejecutar tests
-CMD ["mvn", "test"]
+# Ejecutar tests y servir reportes HTML
+CMD mvn clean integration-test && \
+    if [ -d target/cucumber-html-reports ]; then \
+        echo "Abriendo servidor para reporte HTML..."; \
+        cd target/cucumber-html-reports && python3 -m http.server 8080; \
+    else \
+        echo "No se encontraron reportes HTML"; \
+        exit 1; \
+    fi

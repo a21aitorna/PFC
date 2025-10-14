@@ -45,6 +45,3 @@
     }
   ]
 }
-
-// Para lanzarlo manualmente ->  newman run collections/api-tests.json -e environments/local.env.json -r cli
-// Para generar reportes html -> newman run collections/api-tests.json -e environments/local.env.json -r html --reporter-html-export reports/results.html
