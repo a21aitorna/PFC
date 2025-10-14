@@ -1,0 +1,50 @@
+{
+  "info": {
+    "name": "API Test Collection",
+    "_postman_id": "12345678-abcd-efgh-ijkl-1234567890ab",
+    "description": "Colección mínima para probar Newman con Docker.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Prueba básica GET a Postman Echo",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://postman-echo.com/get?foo={{foo}}",
+          "protocol": "https",
+          "host": ["postman-echo", "com"],
+          "path": ["get"],
+          "query": [
+            { "key": "foo", "value": "{{foo}}" }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Prueba POST con body",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"mensaje\": \"Hola desde Newman!\" }"
+        },
+        "url": {
+          "raw": "https://postman-echo.com/post",
+          "protocol": "https",
+          "host": ["postman-echo", "com"],
+          "path": ["post"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
+
+// Para lanzarlo manualmente ->  newman run collections/api-tests.json -e environments/local.env.json -r cli
+// Para generar reportes html -> newman run collections/api-tests.json -e environments/local.env.json -r html --reporter-html-export reports/results.html
