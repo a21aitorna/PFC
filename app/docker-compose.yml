@@ -32,35 +32,35 @@ services:
     networks:
       - pfc-network
 
-  # -------------------
-  # Backend Testing (Newman / Postman)
-  # -------------------
-  backend-testing:
-    build:
-      context: ./tests/backend-testing
-      dockerfile: Dockerfile
-    container_name: backend-testing
-    depends_on:
-      - backend
-    networks:
-      - pfc-network
-    command: sh -c "for c in collections/coleccion-*.json; do name=$(basename \$c .json); newman run \$c -e environments/local.env.json -r cli,junit,html --reporter-junit-export reports/\$name.xml --reporter-html-export reports/\$name.html; done"
+  # Esto va para cuando haga el workflow
+  # # -------------------
+  # # Backend Testing (Newman / Postman)
+  # # -------------------
+  # backend-testing:
+  #   build:
+  #     context: ./tests/backend-testing
+  #     dockerfile: Dockerfile
+  #   container_name: backend-testing
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - pfc-network
 
-  # -------------------
-  # Frontend Testing (Selenium + Cucumber Java)
-  # -------------------
-  frontend-testing:
-    build:
-      context: ./tests/frontend-testing
-      dockerfile: Dockerfile
-    container_name: frontend-testing
-    depends_on:
-      - backend
-    # volumes:
-      # - ./frontend-testing/reports:/app/reports
-    networks:
-      - pfc-network
-    command: ["mvn", "test", "-Dcucumber.filter.tags=@*"]
+  # # -------------------
+  # # Frontend Testing (Selenium + Cucumber Java)
+  # # -------------------
+  # frontend-testing:
+  #   build:
+  #     context: ./tests/frontend-testing
+  #     dockerfile: Dockerfile
+  #   container_name: frontend-testing
+  #   depends_on:
+  #     - backend
+  #   # volumes:
+  #     # - ./frontend-testing/reports:/app/reports
+  #   networks:
+  #     - pfc-network
+  #   command: ["mvn", "test", "-Dcucumber.filter.tags=@*"]
 
   # -------------------
   # Selenium Grid
