@@ -1,0 +1,43 @@
+from database.db import db
+
+class Persona(db.Model):
+    __tablename__ = 'person'
+
+    id = db.Column(db.Integer, primary_key=True)
+    id_rol = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
+    name = db.Column(db.String(50), nullable=False)
+    surname = db.Column(db.String(100), nullable=False)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    born_date = db.Column(db.Date, nullable=False)
+    library_name = db.Column(db.String(100), nullable=False)
+    is_blocked = db.Column(db.Boolean, default=False)
+    is_erased = db.Column(db.Boolean, default=False)
+    block_date = db.Column(db.Date)
+    delete_date = db.Column(db.Date)
+    security_question = db.Column(db.String(200), nullable=False)
+    answer = db.Column(db.String(100), nullable=False)
+
+    # Relación con Role (uno a muchos)
+    role = db.relationship('Rol', backref='personas', lazy=True)
+
+    def __init__(self, id_rol, name, surname, username, password, born_date, 
+                 library_name, security_question, answer, 
+                 is_blocked=False, is_erased=False, 
+                 block_date=None, delete_date=None):
+        self.id_rol = id_rol
+        self.name = name
+        self.surname = surname
+        self.username = username
+        self.password = password
+        self.born_date = born_date
+        self.library_name = library_name
+        self.is_blocked = is_blocked
+        self.is_erased = is_erased
+        self.block_date = block_date
+        self.delete_date = delete_date
+        self.security_question = security_question
+        self.answer = answer
+
+    def __repr__(self):
+        return f"<Persona {self.username}>"
