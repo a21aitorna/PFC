@@ -1,6 +1,12 @@
 # Proyecto Atenea
 
 - [Introducción](#introducción)
+  - [Frontend](#frontend)
+  - [Backend](#backend)
+  - [Persistencia de datos](#persistencia-de-datos)
+  - [Testing](#testing)
+    - [Frontend Testing](#frontend-testing)
+    - [Backend Testing](#backend-testing)
 - [Estado de arte o análisis del contexto](#estado-de-arte-o-análisis-del-contexto)
   - [Público objetivo](#público-objetivo)
   - [Necesidades que cubre](#necesidades-que-cubre)
@@ -22,7 +28,97 @@
 
 ## Introducción
 
-> Profundiza en la descripción de tu proyecto más allá de lo que has puesto en el README
+Proyecto Atenea es una aplicación web orientada a la gestión de bibliotecas personales digitales. Permite a los usuarios almacenar, visualizar, reseñar y compartir libros en distintos formatos (PDF, EPUB). 
+Esta se caracteriza por haber sido diseñada y construida mediante el principio de separación por capas, pudieéndose diferenciar cuatro componentes:
+- Frontend: interfaz gráfica y lógica de presentación (React)
+- Backend: lógica de negocio, controladores y API REST (Flask).
+- Persistencia: gestión de datos mediante MySQL y SQLAlchemy.
+- Testing: empleo BDD (Cucumber) y Selenium en Java para pruebas automáticas hacia el front y Newman hacia el back.
+
+Todo esto, viene dockerizado, de manera que sea más sencillo si despligue, mantenimiento y escalabilidad. A mayores, se ha habilitado un entorno de Integración Continua y Entrega Continua (CI/CD) basado en Github Actions de manera que se ejecuten las pruebas automáticas cada x tiempo, garantizando la calidad y estabilidad de la aplicación.
+
+### Frontend
+Se ha optado por el uso de React, una biblioteca de JavaScript (aunque se puede considerar como framework) muy usada en la actualidad para el desarrollo front. Entre alguna de las características de esta elección está la existencia de un ecosistema que permite integrarse de manera sencilla con el back y con el testing, además de su fácil integración con Docker.
+Este componente tendrá esta estructura. 
+~~~
+frontend/
+├── public/
+│   └── index.html
+├── src/
+│   ├── assets/          # Imágenes, fuentes, íconos, etc.
+│   ├── components/      # Componentes reutilizables (Button, Navbar, etc.)
+│   ├── pages/           # Páginas o vistas principales (Home, Login, etc.)
+│   ├── hooks/           # Custom hooks (useAuth, useFetch, etc.)
+│   ├── context/         # Contextos de React (AuthContext, ThemeContext)
+│   ├── services/        # Llamadas a APIs o lógica de negocio
+│   ├── styles/          # Estilos globales o archivos CSS
+│   ├── utils/           # Funciones auxiliares
+│   ├── App.js           # Componente raíz
+│   └── index.js         # Punto de entrada
+├── .env                 
+├── .gitignore
+├── Dockerfile
+├── package-lock.json
+└── package.json
+~~~
+Esta será accesible desde http://localhost:3000
+
+### Backend
+Se ha decidido usar Python con el framework Flask, debido a su ligereza y flexibilidad, a parte de que está ya habilitado para proyectos más pequeños.
+Además se empleará API REST, la cual será documentada mediante Swagger.
+Este componente tendrá esta arquitectura:
+~~~
+backend/
+    ├── dao/                  # Modelos de base de datos con SQLAlchemy 
+    ├── dao_schema/           # Schemas de Marshmallow 
+    ├── docs/                 # Documentación de la API 
+    ├── exceptions/           # Excepciones personalizadas 
+    ├── features/             # Lógica específica de cada módulo o funcionalidad
+    │   ├── nombre_feature/  
+    │   └── controller/       
+    ├── static/               # imágenes, CSS..
+    ├── utils/                # Funciones auxiliares o helpers reutilizables
+    ├── validations/          # Validaciones
+    ├── .gitignore            
+    ├── Dockerfile            
+    ├── main.py               # Punto de entrada de la aplicación Flask
+    └── requirements.txt      # Dependencias de Python necesarias 
+~~~
+
+### Persistencia de datos
+Se usa MySQL, conectado a Flask mediante SQLAlchemy (Object-Relational Mapping u ORM) y PyMySQL como driver.
+A contonuación se mostrará el Modelo Entidad Relación (MER) creado para ello.
+![Diagrama Entidad-Relación](./img/MER.png)
+
+### Testing
+Se diferencian dos partes
+#### Frontend Testing
+Se centra en la validación del comportamiento y la interacción de la interfaz visual.
+Se usan Selenium Java(framework de automatización basada en WebDriver)y Cucumber (se posibilita el uso del denominado Behavior Driven Development, BDD, que permite describir escenarios de prueba mediante un lenguaje natural).
+Tendrá la siguiente estructura, empleando el modelo de Page Object Model (POM).
+~~~
+frontend-testing/
+├── src/
+│   ├── java/                     
+│   │   ├── page/                 # Representan páginas o componentes del frontend
+│   │   └── steps/                # Definición de pasos usados en los escenarios de prueba
+│   └── resources/                
+│       ├── data/                 # Datos que se necesitan (xpath, expresiones regulares...)
+│       └── features/             # Archivos .feature escritos en Gherkin (escenarios de prueba para Cucumber)
+├── target/                       # Carpeta generada automáticamente por Maven con los resultados de compilación y reportes de pruebas
+├── .gitignore                    
+└── pom.xml                       # Archivo de configuración de Maven (dependencias, plugins, configuración del proyecto)
+~~~
+#### Backend Testing
+Tiene como propósito validar el correcto funcionamiento de la API REST desarrollada en Flask, asegurando que todas las operaciones CRUD, autenticación, manejo de errores y respuestas JSON se comporten de manera consistente. Se empleará Newman (Postman CLI), permiiendo la ejecución automática de las colecciones de endpoints definidas en Postman, validando códigos de estado, estructuras de respuesta y tiempos de ejecución.
+Tendrá la siguiente estructura
+~~~
+backend-testing/
+├── collections/                  # Carpeta con las colecciones de pruebas de API 
+├── environments/                 # Configuraciones de entorno para las pruebas (URLs, tokens, variables)
+├── package-lock.json             # Archivo generado automáticamente por npm
+└── package.json                  # Archivo de configuración del proyecto Node.js (dependencias, scripts de test, metadata)
+~~~
 
 ## Estado de arte o análisis del contexto
 
