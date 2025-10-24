@@ -17,6 +17,7 @@
   - [Sistema de Login](#sistema-de-login)
   - [Sistema de biblioteca](#sistema-de-biblioteca)
   - [Sistema de detalle del libro](#sistema-de-detalle-del-libro)
+  - [Admin](#admin)
 - [Alcance](#alcance)
   - [Funcionalidades implementadas](#funcionalidades-implementadas)
   - [Usuarios de la aplicación](#usuarios-de-la-aplicación)
@@ -168,13 +169,247 @@ Así mismo, una parte esencial de este proyecto es el después de crear una func
 - [ ] Generación de informe de pruebas correctas y falladas.
 
 ### Sistema de Login
-> Cuando tenga definida todas las funcionalidades de este sistema las pondré como objetivo.
+> Las tengo que redactar bien, sólo tengo un esquema
+~~~
+PANTALLA LOGIN/REGISTRARSE/RECUPERACIÓN CONTRASEÑA
+Dos botones: Login y Registrarse
+	
+1º Login
+	*Elementos	
+		* Usuario
+		* Contraseña
+		* Botón "Iniciar sesión"
+		* Botón "Recuperar contraseña"
+	*Validaciones
+		* Todos los campos obligatorios, en caso de campo vacío mostrar un mensaje de campo obligatorio
+		* Contraseña correcta
+	* Respuestas back:
+		* 200-> OK, usuario logeado
+		* 401-> Usuario o contraseña incorrectas.
+		* 500-> Error servidor
 
+2º Registrarse
+	* Elementos
+		* Nombre (50 caracteres máximo)
+		* Apellidos (60 caracteres máximo)
+		* Nombre de usuario (30 caracteres máximo)
+		* Fecha nacimiento
+		* Nombre biblioteca (100 caracteres máximo)
+		* Email
+		* Contraseña (100 caracteres máximo)
+		* Contraseña repetida (debe coincidir)
+		* Pregunta seguridad (200 caracteres máximo)
+		* Respuesta (100 caracteres máximo)
+		* Botón "Registrarse"
+	* Validaciones
+		* Todos los campos son obligatorios, en caso de campo vacío mostrar un mensaje de campo obligatorio.
+		* El nombre del usuario deber ser único.
+		* El email debe tener formato correcto y ser único.
+		* La contraseña debe tener como mínimo 8 caracteres, 1 mayúscula, 1 número y un símbolo.
+		* La contraseña repetida debe coincidir con la primera.
+		* La contraseña se tiene que proteger con un Hash previo a su almacenamiento.
+		* La respuesta se tiene que proteger con un Hash previo a su almacenamiento.
+		* El usuario debe tener 14 años como mínimo.
+	* Respuestas back:
+		* 201 -> OK, usuario creado correctamente.
+		* 400 -> Bad request (contraseña/email formato incorrecto, contraseñas no coinciden, email/usuario registrado).
+		* 500 -> Error servidor
+
+3º Recuperar contraseña
+	* Formulario 1
+		*Elementos
+			* Usuario
+			* Botón "Siguiente"
+			* Botón "Retroceder" (se vuelve a la página principal)
+		* Validaciones
+			* El usuario debe existir
+		* Respuestas back:
+			* 200 -> Usuario encontrado
+			* 404 -> Usuario no encontrado
+	* Formulario 2
+		* Elementos
+			* Pregunta seguridad (se recoge de la base de datos)
+			* Respuesta
+			* Botón "Siguiente"
+		* Validaciones
+			* La respuesta debe coincidir
+		* Respuestas back
+			* 200 -> La respuesta coincide.
+			* 400 -> La respuesta no coincide.
+	* Formulario 3
+		* Elementos:
+			* Contraseña 
+			* Contraseña repetida
+			* Botón enviar
+		* Validaciones
+			* La contraseña debe tener como mínimo 8 caracteres, 1 mayúscula, 1 número y un símbolo.
+			* La contraseña repetida debe coincidir con la primera.
+		* Respuestas back:
+			* 200 -> contraseña modificada con éxito
+			* 400 -> Bad request (contraseña formato incorrecto, contraseñas no coinciden).
+~~~
 ### Sistema de biblioteca
-> Cuando tenga definida todas las funcionalidades de este sistema las pondré como objetivo.
+> Las tengo que redactar bien, sólo tengo un esquema
+~~~
+PANTALLA BIBLIOTECA
+Tres partes: Header, Estantería y Menú hamburguesa
 
+1º HEADER
+	* Elementos
+		* Barra superior fija
+		* Campo búsqueda (usuario/biblioteca)
+		* Botón logout
+	* Validaciones
+		* No se puede hacer una búsqueda vacía.
+		* Al deslogearse, redirige a la página de login.
+		* Se elimina el token de sesión.
+	* Respuestas back
+		* 200 -> todo OK
+		* 404 -> No existe la biblioteca/usario buscado.
+		* 500 -> error servidor
+
+2º Estantería
+	* Elementos
+		* Representación de 3 o 4 libros por fila (9 o 12 en total)
+		* Cada libro muestra sólo la portada
+		* Paginación si hay más de (9 o 12) libros.
+	* Validaciones
+		* Si hay menos libros de la capacidad máxima, no hay paginación
+	* Respuestas back
+		* 200 -> Lista portadas devuelta correctamente
+		* 204 -> Estantería sin libros
+		* 500 -> error servidor
+
+3.1º Menú hamburguesa en biblioteca propia
+	* Elementos
+		* Subir libro (seleccionar archivo PDF/EPUB)
+		* Buscar libro en mi biblioteca por título/autor
+		* Filtrar por fecha de subida
+		* Filtrar por puntuación.
+	* Validaciones
+		* El archivo subido debe ser PDF o EPUB.
+		* El archivo no puede superar un tamaño límite
+		* Al filtrar o buscar, debe haber coincidencias exactas (por ejemplo, si buscas Harry te aparecerán 
+		  todos los libros que cuyo autor tenga Harry o que el título lleve Harry).
+	* Respuestas back
+		* 201 -> Libros subido correctamente
+		* 400 -> Formato de archivo no válido
+		* 404 -> No se encuentra ningún libro con ese criterio de búsqueda.
+
+3.1º Menú hamburguesa en biblioteca ajena
+	* Elementos
+		* Buscar libro en mi biblioteca por título/autor
+		* Filtrar por fecha de subida
+		* Filtrar por puntuación.
+	* Validaciones
+		* El archivo subido debe ser PDF o EPUB.
+		* El archivo no puede superar un tamaño límite
+		* Al filtrar o buscar, debe haber coincidencias exactas (por ejemplo, si buscas Harry te aparecerán 
+		  todos los libros que cuyo autor tenga Harry o que el título lleve Harry).
+	* Respuestas back
+		* 400 -> Formato de archivo no válido
+		* 404 -> No se encuentra ningún libro con ese criterio de búsqueda.
+~~~
 ### Sistema de detalle del libro
-> Cuando tenga definida todas las funcionalidades de este sistema las pondré como objetivo.
+> Las tengo que redactar bien, sólo tengo un esquema
+~~~
+PANTALLA DETALLE LIBRO
+Dos partes: Información y Reseñas
+
+1º Información del libro
+	* Elementos
+		* Portada del libro (imagen grande)
+		* Título
+		* Autor
+		* Categorías
+		* Puntuación media (1 a 5)
+		* Botón Descargar libro (PDF/EPUB)
+	* Validaciones
+		* El libro debe existir en la base de datos
+	* Respuestas back	
+		* 200 -> Datos del libro devueltos correctamente
+		* 404 -> Libro no encontrado
+		* 500 -> Error del servidor
+
+2º Reseñas
+	*Elementos
+		* Listado de reseñas
+		* Botón Añadir reseña
+		* Botón Editar / Eliminar reseña (si es tu reseña)
+	* Validaciones
+		* Solo un usuario puede escribir 1 reseña por libro
+		* La reseña tiene un límite de 500 caracteres
+	* Respuestas back	
+		* 201 -> Reseña creada correctamente
+		* 200 -> Reseña editada/eliminada con éxito
+		* 400 -> Datos inválidos o reseña duplicada
+		* 403 -> No autorizado (editar/eliminar reseña ajena)
+		* 404 -> Libro o reseña no encontrada
+
+3. Acciones adicionales en libro de estantería propia
+	*Elementos
+		* Botón Editar libro (inhabilitado, en función del tiempo)
+		* Botón Eliminar libro
+		* Botón Editar / Eliminar reseña (si es tu reseña)
+	* Validaciones
+		* Solo el dueño del libro puede editar o borrar
+	* Respuestas back	
+		* 201 -> 200 -> Libro editado/eliminado correctamente
+		* 400 -> Datos inválidos
+		* 403 -> No autorizado
+		* 404 -> Libro no encontrado
+
+4. Acciones adicionales en libro de estantería ajena
+	*Elementos
+		* Botón Añadir a mi biblioteca
+	* Validaciones
+		* No puedes añadir un libro que ya está en tu biblioteca
+	* Respuestas back	
+		* 201 -> Libro añadido a la biblioteca correctamente
+		* 400 -> El libro ya está en tu biblioteca
+		* 403 -> 404 -> Libro no encontrado
+~~~
+
+### Admin
+> Las tengo que redactar bien, sólo tengo un esquema
+~~~
+ADMIN
+1º Gestión de usuarios
+	* Elementos
+		* Listado de usuarios (nombre, email, estado, biblioteca asociada, rol)
+		* Botón Bloquear usuario
+		* Botón Eliminar usuario
+		* Botón Rectificar (dentro de los 3 días en caso bloqueo, 15 días si es eliminar)
+	* Validaciones
+		* No se puede eliminar un usuario ya eliminado definitivamente
+		* El administrador no puede eliminarse a sí mismo
+		* Un usuario bloqueado no puede acceder a la biblioteca.
+		* Un usuario eliminado no puede acceder a la biblioteca.
+	* Respuestas back
+		* 200 -> Acción realizada con éxito	
+		* 400 -> Acción inválida
+		* 403 -> No autorizado
+		* 404 -> Usuario no encontrado
+		* 500 -> Error del servidor
+
+2º Gestión libros/reseñas
+	* Elementos
+		* Listado de libros (título, autor, usuario propietario, estado).
+		* Listado de reseñas (texto, usuario, libro asociado, fecha).
+		* Botón Eliminar libro.
+		* Botón Eliminar reseña.
+	* Validaciones
+		* El administrador puede eliminar cualquier libro o reseña que incumpla normas.
+		* Una reseña eliminada no se puede recuperar.
+		* Un libro eliminado desaparece de todas las bibliotecas donde estaba compartido.
+		* El administrador no puede editar libros/reseñas, solo eliminarlos.
+	* Respuestas back
+		* 200 -> Libro/reseña eliminada con éxito.
+		* 400 -> Acción inválida
+		* 403 -> No autorizado
+		* 404 -> Libro o reseña no encontrada.
+		* 500 -> Error del servidor	
+~~~
 
 ## Alcance
 
