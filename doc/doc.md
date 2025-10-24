@@ -15,6 +15,11 @@
 - [Objetivos](#objetivos)
   - [Objetivos principales](#objetivos-principales)
   - [Sistema de Login](#sistema-de-login)
+    - [1.Login](#1login)
+    - [2.Registro](#2registro)
+    - [3.Recuperar contraseña](#3recuperar-contraseña)
+      - [Formulario1 recuperación de contraseña](#formulario1-recuperación-de-contraseña)
+      - [Formulario2 recuperación de contraseña](#formulario2-recuperación-de-contraseña)
   - [Sistema de biblioteca](#sistema-de-biblioteca)
   - [Sistema de detalle del libro](#sistema-de-detalle-del-libro)
   - [Admin](#admin)
@@ -23,6 +28,9 @@
   - [Usuarios de la aplicación](#usuarios-de-la-aplicación)
   - [Contexto](#contexto)
   - [Límites](#límites)
+  - [Planificación](#planificación)
+  - [Gastos](#gastos)
+  - [Normativa](#normativa)
 - [TODO: A partir de este punto eres libre de organizar la documentación como estimes pero debes desarrollar el cuerpo de tu proyecto con apartados y subapartados que completen tu documentación](#todo-a-partir-de-este-punto-eres-libre-de-organizar-la-documentación-como-estimes-pero-debes-desarrollar-el-cuerpo-de-tu-proyecto-con-apartados-y-subapartados-que-completen-tu-documentación)
 - [Conclusiones](#conclusiones)
 - [Referencias, Fuentes consultadas y Recursos externos: Webgrafía](#referencias-fuentes-consultadas-y-recursos-externos-webgrafía)
@@ -169,87 +177,52 @@ Así mismo, una parte esencial de este proyecto es el después de crear una func
 - [ ] Generación de informe de pruebas correctas y falladas.
 
 ### Sistema de Login
-> Las tengo que redactar bien, sólo tengo un esquema
-~~~
-PANTALLA LOGIN/REGISTRARSE/RECUPERACIÓN CONTRASEÑA
-Dos botones: Login y Registrarse
-	
-1º Login
-	*Elementos	
-		* Usuario
-		* Contraseña
-		* Botón "Iniciar sesión"
-		* Botón "Recuperar contraseña"
-	*Validaciones
-		* Todos los campos obligatorios, en caso de campo vacío mostrar un mensaje de campo obligatorio
-		* Contraseña correcta
-	* Respuestas back:
-		* 200-> OK, usuario logeado
-		* 401-> Usuario o contraseña incorrectas.
-		* 500-> Error servidor
+Se podrán diferencias tres elementos esenciales:
 
-2º Registrarse
-	* Elementos
-		* Nombre (50 caracteres máximo)
-		* Apellidos (60 caracteres máximo)
-		* Nombre de usuario (30 caracteres máximo)
-		* Fecha nacimiento
-		* Nombre biblioteca (100 caracteres máximo)
-		* Email
-		* Contraseña (100 caracteres máximo)
-		* Contraseña repetida (debe coincidir)
-		* Pregunta seguridad (200 caracteres máximo)
-		* Respuesta (100 caracteres máximo)
-		* Botón "Registrarse"
-	* Validaciones
-		* Todos los campos son obligatorios, en caso de campo vacío mostrar un mensaje de campo obligatorio.
-		* El nombre del usuario deber ser único.
-		* El email debe tener formato correcto y ser único.
-		* La contraseña debe tener como mínimo 8 caracteres, 1 mayúscula, 1 número y un símbolo.
-		* La contraseña repetida debe coincidir con la primera.
-		* La contraseña se tiene que proteger con un Hash previo a su almacenamiento.
-		* La respuesta se tiene que proteger con un Hash previo a su almacenamiento.
-		* El usuario debe tener 14 años como mínimo.
-	* Respuestas back:
-		* 201 -> OK, usuario creado correctamente.
-		* 400 -> Bad request (contraseña/email formato incorrecto, contraseñas no coinciden, email/usuario registrado).
-		* 500 -> Error servidor
+#### 1.Login
+El usuario introducirá su nombre de usuario y contraseña, y si existe se logeará. Si no existe, se llevará a un registro. También estará la posibilidad de recuperar la contraseña.
+Todos los campos serán obligatorios.
+![Login](img/BorradoresFront/Login/1.Login.png)	
 
-3º Recuperar contraseña
-	* Formulario 1
-		*Elementos
-			* Usuario
-			* Botón "Siguiente"
-			* Botón "Retroceder" (se vuelve a la página principal)
-		* Validaciones
-			* El usuario debe existir
-		* Respuestas back:
-			* 200 -> Usuario encontrado
-			* 404 -> Usuario no encontrado
-	* Formulario 2
-		* Elementos
-			* Pregunta seguridad (se recoge de la base de datos)
-			* Respuesta
-			* Botón "Siguiente"
-		* Validaciones
-			* La respuesta debe coincidir
-		* Respuestas back
-			* 200 -> La respuesta coincide.
-			* 400 -> La respuesta no coincide.
-	* Formulario 3
-		* Elementos:
-			* Contraseña 
-			* Contraseña repetida
-			* Botón enviar
-		* Validaciones
-			* La contraseña debe tener como mínimo 8 caracteres, 1 mayúscula, 1 número y un símbolo.
-			* La contraseña repetida debe coincidir con la primera.
-		* Respuestas back:
-			* 200 -> contraseña modificada con éxito
-			* 400 -> Bad request (contraseña formato incorrecto, contraseñas no coinciden).
-~~~
+#### 2.Registro
+El usuario para registrarse tendrá que rellenar un formulario en que se pidan los siguientes datos:
+- Nombre (50 caracteres máximo)
+- Apellidos (60 caracteres máximo)
+- Nombre de usuario (30 caracteres máximo)
+- Fecha nacimiento
+- Nombre biblioteca (100 caracteres máximo)
+- Contraseña (100 caracteres máximo)
+- Contraseña repetida (debe coincidir)
+- Pregunta seguridad (200 caracteres máximo)
+- Respuesta (100 caracteres máximo)
+- Botón "Registrarse"
+
+Se verificarán las siguientes acciones:
+- Todos los campos son obligatorios, en caso de campo vacío mostrar un mensaje de campo obligatorio.
+- El nombre del usuario deber ser único.
+- La contraseña debe tener como mínimo 8 caracteres, 1 mayúscula, 1 número y un símbolo.
+- La contraseña repetida debe coincidir con la primera.
+- La contraseña se tiene que proteger con un Hash previo a su almacenamiento.
+- La respuesta se tiene que proteger con un Hash previo a su almacenamiento.
+- El usuario debe tener 14 años como mínimo (se calculará a partide la fecha de nacimiento).
+![Registro](img/BorradoresFront/Login/2.Registrarse.png)
+
+#### 3.Recuperar contraseña
+Tendrá dos formularios.
+##### Formulario1 recuperación de contraseña
+En este formulario se verificará que el usuario existe; si no existe o se deja vacío, se mostrará un error.
+![Formulario1RecuperarContraseña](img/BorradoresFront/Login/3.1RecuperarContraseña.png)
+
+##### Formulario2 recuperación de contraseña
+Se introducirá la pregunta de seguridad y su respuesta, junto la nueva contraseña, la cual hay que escribir dos veces.
+Se verificará que:
+- La respuesta coincida con la introducida.
+- La contraseña debe tener como mínimo 8 caracteres, 1 mayúscula, 1 número y un símbolo.
+- La contraseña repetida debe coincidir con la primera.
+![Formulario2RecuperarContraseña](img/BorradoresFront/Login/3.2RecuperarContraseña.png)
+
 ### Sistema de biblioteca
-> Las tengo que redactar bien, sólo tengo un esquema
+> Las tengo que redactar bien, sólo tengo un esquema. Así mismo los componentes están sujetos a cambios
 ~~~
 PANTALLA BIBLIOTECA
 Tres partes: Header, Estantería y Menú hamburguesa
@@ -311,7 +284,8 @@ Tres partes: Header, Estantería y Menú hamburguesa
 		* 404 -> No se encuentra ningún libro con ese criterio de búsqueda.
 ~~~
 ### Sistema de detalle del libro
-> Las tengo que redactar bien, sólo tengo un esquema
+> Las tengo que redactar bien, sólo tengo un esquema. Así mismo los componentes están sujetos a cambios
+
 ~~~
 PANTALLA DETALLE LIBRO
 Dos partes: Información y Reseñas
@@ -444,6 +418,18 @@ ADMIN
 - **Pruebas unitarias**: por falta de tiempo, no se abordarán estas pruebas. Así mismo, estas son hechas más por desarrolladores, y lo que quiero mostrar es más el rol de tester.
 - **Edición de medatos del libro**: esto en función del tiempo, podrá ser incorporado.
 - **Aplicación responsive**: la aplicación sólo se mostrará para web de escritorio  por falta de tiempo.
+
+### Planificación
+Elaboré un [calendario en Trello](https://trello.com/b/u07xmNm6/mi-tablero-de-trello), definiendo todas lo que hice durante unos rangos basados en las fechas de entregas
+
+### Gastos
+Al ser una aplicación cuyo fin es que sirva como proyecto final, y no hay previsión de que salga a producción, los gastos son muy bajos. Al contar con ordenador propio, los únicos gastos que se pueden diferenciar son la electricidad y el internet, lo cuál conllevaría un gasto estimado de 150€ en total.
+
+### Normativa
+Al poder todos los usuarios subir libros, estos tendrán que cumplir con la normativa vigente española de propiedad intelectual. 
+No se permitirá subir ni compartir obras protegidas por derechos de autor sin el permiso del propietario. Si se detecta contenido que incumpla la normativa, será eliminado de la plataforma, tomando las medidad oportunas contra el usuario infractos.
+En cuanto a los datos personales (como nombre, apellidos y fecha de nacimiento), estos se usan únicamente para la gestión del perfil y se tratan de forma segura y confidencial, conforme al RGPD y la Ley de Protección de Datos española. Nunca se compartirá información con terceros y se garantizará la privacidad de sus usuarios.
+
 
 ## TODO: A partir de este punto eres libre de organizar la documentación como estimes pero debes desarrollar el cuerpo de tu proyecto con apartados y subapartados que completen tu documentación
 
