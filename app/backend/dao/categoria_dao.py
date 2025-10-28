@@ -1,6 +1,5 @@
 from database.db import db
 
-
 class Categoria(db.Model):
     __tablename__ = 'category'
 

@@ -8,3 +8,9 @@ class Libro(db.Model):
     author = db.Column(db.String(100), nullable=False)
     cover = db.Column(db.String(100), nullable=False)
     file = db.Column(db.String(100), nullable=False)
+    
+    def __init__(self, title, author, cover, file):
+        self.title = title
+        self.author = author
+        self.cover = cover
+        self.file = file
