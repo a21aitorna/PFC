@@ -14,3 +14,10 @@ class Libro(db.Model):
         self.author = author
         self.cover = cover
         self.file = file
+        
+    def as_dict(self):
+        return {
+            'id_book': self.id_book,
+            'title': self.title,
+            'author': self.author
+        }

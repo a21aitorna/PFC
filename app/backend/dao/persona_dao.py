@@ -37,6 +37,23 @@ class Persona(db.Model):
         self.delete_date = delete_date
         self.security_question = security_question
         self.answer = answer
-
+        
+    def as_dict(self):
+        return {
+            'id_user': self.id_user,
+            'user_role_id': self.id_rol,
+            'user_role_name': self.role.name if self.role else None,
+            'name': self.name,
+            'surname': self.surname,
+            'username': self.username,
+            'born_date': self.born_date,
+            'library_name': self.library_name,
+            'is_blocked': self.is_blocked,
+            'is_erased': self.is_erased,
+            'block_date': self.block_date,
+            'delete_date': self.delete_date,
+            'security_question': self.security_question
+        }
+        
     def __repr__(self):
         return f"<Persona {self.username}>"
