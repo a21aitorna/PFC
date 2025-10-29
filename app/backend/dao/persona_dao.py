@@ -1,10 +1,10 @@
 from database.db import db
 
 class Persona(db.Model):
-    __tablename__ = 'person'
+    __tablename__ = 'user'
 
     id_user = db.Column(db.Integer, primary_key=True)
-    id_role = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
+    id_role = db.Column(db.Integer, db.ForeignKey('role.id_role'), nullable=False)
     name = db.Column(db.String(50), nullable=False)
     surname = db.Column(db.String(100), nullable=False)
     username = db.Column(db.String(50), unique=True, nullable=False)

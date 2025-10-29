@@ -5,18 +5,20 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: biblioteca
-      MYSQL_USER: user
-      MYSQL_PASSWORD: userpass
+      MYSQL_DATABASE: AteneaProject
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
       - pfc-network
-  # -------------------
-  # Backend (Flask + SQLite)
-  # -------------------
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      timeout: 20s
+      retries: 10
+      start_period: 30s
+      interval: 10s
+
   backend:
     build:
       context: ./backend
@@ -25,16 +27,21 @@ services:
     ports:
       - "5000:5000"
     env_file:
-      - /backend/envs/dev/.env
+      - ./backend/envs/dev/.env
     environment:
-      FLASK_APP: main.py
+      FLASK_APP: main
       FLASK_RUN_HOST: 0.0.0.0
       FLASK_RUN_PORT: 5000
       FLASK_ENV: development
+      DATABASE_URL: mysql+pymysql://root:root@db:3306/AteneaProject
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - pfc-network
+    command: >
+      sh -c "sleep 15 &&
+           python -m flask run --host=0.0.0.0"
 
   # -------------------
   # Frontend (React)
@@ -126,4 +133,7 @@ services:
 networks:
   pfc-network:
     driver: bridge
+
+volumes:
+  mysql_data:
 
