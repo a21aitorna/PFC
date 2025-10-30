@@ -1,8 +1,14 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+
 function App() {
   return (
-    <div className="h-screen flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-4xl font-bold">
-      🎨 Tailwind funcionando perfectamente
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+      </Routes>
+    </Router>
   );
 }
+
 export default App;
