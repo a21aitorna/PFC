@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_jwt_extended import JWTManager
 
 from envs.dev.dev_env import config
 
@@ -15,6 +16,7 @@ app = Flask(__name__)
 app.config.from_object(config['dev'])
 
 init_app(app)
+jwt = JWTManager(app)
 
 @app.route('/')
 def index():

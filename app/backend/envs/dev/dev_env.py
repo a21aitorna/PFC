@@ -10,6 +10,7 @@ class DevConfig:
         f"mysql+pymysql://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}"
         f"@{os.getenv('MYSQL_HOST')}/{os.getenv('DATABASE_NAME')}"
     )
+    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 
 config = {
     'dev': DevConfig
