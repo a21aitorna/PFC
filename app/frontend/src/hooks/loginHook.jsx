@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import es from "../assets/i18n/es.json"
+
 export function useLogin() {
   const [usuario, setUsuario] = useState("");
   const [password, setPassword] = useState("");
@@ -9,7 +11,7 @@ export function useLogin() {
     e.preventDefault();
 
     if (!usuario.trim() || !password.trim()) {
-      setError("Todos los campos son obligatorios");
+      setError(es.login.requiredFields);
       return;
     }
 

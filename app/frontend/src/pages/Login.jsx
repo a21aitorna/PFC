@@ -9,6 +9,8 @@ import InputPassword from "../components/InputPassword";
 import Button from "../components/SendButton";
 import Footer from "../components/Footer";
 
+import es from "../assets/i18n/es.json"
+
 export default function Login() {
   const { usuario, password, error, setUsuario, setPassword, handleSubmit } = useLogin();
 
@@ -25,18 +27,18 @@ export default function Login() {
       <div className="flex flex-col items-center justify-center w-full min-h-screen pt-24 pb-16 px-4">
         <Card
           icon={Lock}
-          title="Iniciar Sesión"
-          subtitle="Ingresa tus credenciales para acceder a tu cuenta"
+          title={es.login.title}
+          subtitle={es.login.subtitle}
         >
           <form className="space-y-4 text-left" onSubmit={handleSubmit}>
             {/* Input usuario */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Usuario *
+                {es.login.usernameField}
               </label>
               <InputText
                 data-testid="usernameLogin"
-                placeholder="Ingresa tu usuario"
+                placeholder={es.login.usernamePlaceholder}
                 value={usuario}
                 onChange={(e) => setUsuario(e.target.value)}
               />
@@ -45,17 +47,17 @@ export default function Login() {
             {/* Input contraseña */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Contraseña *
+                {es.login.passwordField}
               </label>
               <InputPassword
                 data-testid="passwordLogin"
-                placeholder="Ingresa tu contraseña"
+                placeholder={es.login.passwordPlaceholder}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <div className="text-right mt-1">
                 <a href="#" className="text-xs text-indigo-600 hover:underline">
-                  ¿Olvidaste tu contraseña?
+                  {es.login.forgotPassword}
                 </a>
               </div>
             </div>
@@ -65,7 +67,7 @@ export default function Login() {
               <p className="text-red-500 text-sm font-medium">{error}</p>
             )}
 
-            <Button type="submit">Login / Registro</Button>
+            <Button type="submit">{es.login.loginButton}</Button>
           </form>
         </Card>
       </div>
