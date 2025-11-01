@@ -26,7 +26,7 @@ export default function Login() {
         )}
         
 
-        <div className="flex flex-col items-center justify-center w-full min-h-screen pt-24 pb-16 px-4">
+        <div datatest-id="loginCard" className="flex flex-col items-center justify-center w-full min-h-screen pt-24 pb-16 px-4">
             <Card
             icon={Lock}
             title="Iniciar Sesión"
@@ -39,6 +39,7 @@ export default function Login() {
                     Usuario *
                 </label>
                 <InputText
+                    data-testid="usernameLogin"
                     placeholder="Ingresa tu usuario"
                     value={usuario}
                     onChange={(e) => setUsuario(e.target.value)}
@@ -51,24 +52,25 @@ export default function Login() {
                     Contraseña *
                 </label>
                 <InputPassword
+                    data-testid="psswordLogin"
                     placeholder="Ingresa tu contraseña"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <div className="text-right mt-1">
-                    <a href="#" className="text-xs text-indigo-600 hover:underline">
+                    <a href="#" className="text-xs text-indigo-600 hover:underline" data-testid="forgottenPassword">
                     ¿Olvidaste tu contraseña?
                     </a>
                 </div>
                 </div>
 
                 {/* Botón */}
-                <Button type="submit">Login / Registro</Button>
+                <Button type="submit" data-testid="loginButton">Login / Registro</Button>
             </form>
             </Card>
         </div>
         
-        <div className="fixed bottom-0 left-0 w-full z-50">
+        <div datatest-id="footer" className="fixed bottom-0 left-0 w-full z-50">
             <Footer />
         </div>
     </Background>

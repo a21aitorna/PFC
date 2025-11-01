@@ -1,8 +1,13 @@
-// src/components/InputPassword.jsx
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
-export default function InputPassword({ placeholder, value, onChange, className = "" }) {
+export default function InputPassword({ 
+  placeholder, 
+  value, 
+  onChange, 
+  className = "",
+  ...props
+}) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -13,6 +18,7 @@ export default function InputPassword({ placeholder, value, onChange, className 
         value={value}
         onChange={onChange}
         className={`w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none pr-10 ${className}`}
+        {...props}
       />
       <button
         type="button"
