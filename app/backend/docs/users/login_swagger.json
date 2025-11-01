@@ -1,0 +1,25 @@
+{
+  "summary": "Login to the app",
+  "description": "Login in the app and retrieves an adequate JWT token",
+  "parameters": [
+    {
+      "in": "body",
+      "name": "credentials",
+      "description": "Username and password",
+      "required": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string" },
+          "password": { "type": "string" }
+        }
+      }
+    }
+  ],
+  "responses": {
+    "200": { "description": "Successful login" },
+    "400": { "description": "Bad request" },
+    "401": { "description": "Invalid username or password" }
+  },
+  "tags": ["Login"]
+}

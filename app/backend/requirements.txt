@@ -19,4 +19,4 @@ cryptography>=41.0
 python-dotenv==1.0.1        
 requests==2.32.3          
 
-
+Flasgger==0.9.7.1
