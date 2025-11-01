@@ -1,4 +1,4 @@
-import backgroundImage from "../assets/pruebaImagen.png"
+import backgroundImage from "../assets/images/background.png"
 
 export default function Background({ children }) {
   return (
