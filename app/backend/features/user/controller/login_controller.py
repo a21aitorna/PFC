@@ -6,8 +6,7 @@ from dao_schema.persona_schema import PersonaSchema
 import jwt
 import datetime
 
-from app.backend.exceptions.http_status import (BAD_REQUEST_EMPTY_LOGIN_MSG, BAD_REQUEST_USERNAME_LOGIN_MSG, BAD_REQUEST_PASSWORD_LOGIN_MSG, USER_NOT_FOUND_MSG, UNAUTHORIZED_LOGIN_MSG, USER_LOGGED_CORRECTLY)
-from flask import current_app as app
+from app.backend.exceptions.http_status import (BAD_REQUEST_EMPTY_LOGIN_MSG, BAD_REQUEST_USERNAME_LOGIN_MSG, BAD_REQUEST_PASSWORD_LOGIN_MSG, USER_NOT_FOUND_MSG, UNAUTHORIZED_LOGIN_MSG)
 
 # personas_schema = PersonaSchema(many=True)
 

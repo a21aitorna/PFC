@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
+from flasgger import Swagger
 
 from envs.dev.dev_env import config
 
@@ -12,11 +13,15 @@ from dao.reseña_dao import Reseña
 from dao.rol_dao import Rol
 from database.db import init_app
 
+from features.user.routes.login_routes import register_login_routes
 app = Flask(__name__)
 app.config.from_object(config['dev'])
 
 init_app(app)
+swagger = Swagger(app)
 jwt = JWTManager(app)
+
+register_login_routes(app)
 
 @app.route('/')
 def index():
