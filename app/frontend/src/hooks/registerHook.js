@@ -2,15 +2,15 @@ import { useState } from "react";
 
 export function useRegister() {
   const [formData, setFormData] = useState({
-    nombre: "",
-    apellidos: "",
-    usuario: "",
-    fechaNacimiento: "",
-    contraseña: "",
-    verificarContraseña: "",
-    biblioteca: "",
-    preguntaSeguridad: "",
-    respuesta: "",
+    name: "",
+    surname: "",
+    user: "",
+    bornDate: "",
+    password: "",
+    verifyPassword: "",
+    library: "",
+    securityQuestion: "",
+    answer: "",
   });
 
   // Maneja los cambios en los inputs

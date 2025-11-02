@@ -9,5 +9,20 @@
         "forgotPassword": "¿Has olvidado tu contraseña?",
         "loginButton": "Login / Registro",
         "requiredFields": "Todos los campos son obligatorios"
+    },
+    
+    "register":{
+        "title": "Registro de usuario",
+        "namePlaceholder": "Nombre",
+        "surnamePlaceholder": "Apellidos",
+        "usernamePlaceholder": "Nombre de usuario",
+        "birthDatePlaceholder": "Fecha de nacimiento",
+        "passwordPlaceholder": "Contraseña",
+        "verifyPasswordPlaceholder": "Verificar contraseña",
+        "libraryNamePlaceholder": "Nombre de la biblioteca",
+        "securityQuestionPlaceholder": "Pregunta de seguridad",
+        "answerPlaceholder": "Respuesta", 
+        "registerButton": "Registrarse",
+        "requiredFields": "Todos los campos son obligatorios"
     }
 }
