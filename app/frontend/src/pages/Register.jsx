@@ -44,7 +44,7 @@ export default function Register() {
       <div className="flex flex-col items-center justify-center w-full min-h-screen pt-24 pb-16 px-4">
         <Card title={es.register.title}>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* Nombre y Apellidos */}
+            {/* Inputs nombre y apellidos */}
             <div className="grid grid-cols-2 gap-4">
               {campos.filter((c) => c.name === "name" || c.name === "surname").map((campo) => (
                   <InputText
