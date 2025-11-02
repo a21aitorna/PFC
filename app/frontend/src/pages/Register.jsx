@@ -1,4 +1,3 @@
-import { Lock } from "lucide-react";
 import { useRegister } from "../hooks/registerHook";
 
 import Background from "../components/Background";
@@ -13,8 +12,6 @@ import es from "../assets/i18n/es.json";
 
 export default function Register() {
   const { formData, handleChange, handleSubmit } = useRegister();
-
-  const mostrarHeader = true;
 
   const campos = [
     { name: "name", placeholder: es.register.namePlaceholder, type: "text", data_testid: "nameRegister" },
@@ -34,71 +31,70 @@ export default function Register() {
   };
 
   return (
-    <Background data-testid="login-background">
-      {mostrarHeader && (
-        <div className="fixed top-0 left-0 w-full z-50">
-          <Header />
-        </div>
-      )}
+    <Background data-testid="login-background" className="overflow-hidden">
+      {/* Header fijo */}
+      <div className="fixed top-0 left-0 w-full z-50 h-[64px]">
+        <Header />
+      </div>
 
-      <div className="flex flex-col min-h-screen pt-[64px] pb-[64px]">
-        <div className="flex-grow flex items-center justify-center px-4">
-          <div className="w-full max-w-md">
-            <Card title={es.register.title}>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                {/* Inputs nombre y apellidos */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {campos
-                    .filter((c) => c.name === "name" || c.name === "surname")
-                    .map((campo) => (
-                      <InputText
-                        key={campo.name}
-                        placeholder={campo.placeholder}
-                        name={campo.name}
-                        value={formData[campo.name]}
-                        onChange={handleChange}
-                        required
-                        data-testid={campo.data_testid}
-                      />
-                    ))}
-                </div>
-
-                {/* Resto de campos */}
+      {/* Contenido centrado */}
+      <div className="flex items-center justify-center h-[calc(100vh-128px)] px-4">
+        <div className="w-full max-w-md">
+          <Card title={es.register.title}>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              {/* Nombre y Apellidos */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {campos
-                  .filter((c) => c.name !== "name" && c.name !== "surname")
-                  .map((campo) =>
-                    campo.type === "password" ? (
-                      <InputPassword
-                        key={campo.name}
-                        placeholder={campo.placeholder}
-                        name={campo.name}
-                        value={formData[campo.name]}
-                        onChange={handleChange}
-                        data-testid={campo.data_testid}
-                      />
-                    ) : (
-                      <InputText
-                        key={campo.name}
-                        type={campo.type}
-                        placeholder={campo.placeholder}
-                        name={campo.name}
-                        value={formData[campo.name]}
-                        onChange={handleChange}
-                        data-testid={campo.data_testid}
-                      />
-                    )
-                  )}
+                  .filter((c) => c.name === "name" || c.name === "surname")
+                  .map((campo) => (
+                    <InputText
+                      key={campo.name}
+                      placeholder={campo.placeholder}
+                      name={campo.name}
+                      value={formData[campo.name]}
+                      onChange={handleChange}
+                      required
+                      data-testid={campo.data_testid}
+                    />
+                  ))}
+              </div>
 
-                <Button type="submit" data-testid="register-submit">
-                  {es.register.registerButton}
-                </Button>
-              </form>
-            </Card>
-          </div>
+              {/* Resto de campos */}
+              {campos
+                .filter((c) => c.name !== "name" && c.name !== "surname")
+                .map((campo) =>
+                  campo.type === "password" ? (
+                    <InputPassword
+                      key={campo.name}
+                      placeholder={campo.placeholder}
+                      name={campo.name}
+                      value={formData[campo.name]}
+                      onChange={handleChange}
+                      data-testid={campo.data_testid}
+                    />
+                  ) : (
+                    <InputText
+                      key={campo.name}
+                      type={campo.type}
+                      placeholder={campo.placeholder}
+                      name={campo.name}
+                      value={formData[campo.name]}
+                      onChange={handleChange}
+                      data-testid={campo.data_testid}
+                    />
+                  )
+                )}
+
+              <Button type="submit" data-testid="register-submit">
+                {es.register.registerButton}
+              </Button>
+            </form>
+          </Card>
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 w-full z-50">
+      {/* Footer fijo */}
+      <div className="fixed bottom-0 left-0 w-full z-50 h-[64px]">
         <Footer />
       </div>
     </Background>
