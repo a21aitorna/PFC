@@ -1,11 +1,8 @@
-import os
 from flask import Blueprint, request
 from flasgger import swag_from
 from features.user.controller import login_controller
 
 login_routes = Blueprint('login_routes', __name__, url_prefix="/api")
-# swagger_path = os.path.join(os.path.dirname(__file__), '../../../docs/users/login_swagger.yml'
-# )
 swagger_path = '/app/backend/docs/users/login_swagger.yml'
 def register_login_routes(app):
     app.register_blueprint(login_routes)
