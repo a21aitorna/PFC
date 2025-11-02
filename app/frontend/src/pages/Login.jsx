@@ -56,7 +56,7 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
               />
               <div className="text-right mt-1">
-                <a href="#" className="text-xs text-indigo-600 hover:underline">
+                <a href="#" className="text-xs text-indigo-600 hover:underline" data-testid="forgottenPasswordLogin">
                   {es.login.forgotPassword}
                 </a>
               </div>
