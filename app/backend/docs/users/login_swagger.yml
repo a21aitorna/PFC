@@ -1,29 +1,29 @@
-openapi: "3.0.0"
-info:
-  title: Login API
-  version: "1.0.0"
-paths:
-  /api/login:
-    post:
-      summary: Login to the app
-      description: Logins in the app and retrieves a JWT token depending on the role id of the user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                password:
-                  type: string
-      responses:
-        '200':
-          description: Successful login
-        '400':
-          description: Bad request
-        '401':
-          description: Invalid username or password
-      tags:
-        - Login
+tags:
+  - Login
+summary: Login to the app
+description: Logins in the app and retrieves a JWT token depending on the role id of the user
+consumes:
+  - application/json
+parameters:
+  - in: body
+    name: body
+    required: true
+    schema:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          example: "user123"
+        password:
+          type: string
+          example: "password123"
+responses:
+  200:
+    description: Successful login
+  400:
+    description: Bad request
+  401:
+    description: Invalid username or password
