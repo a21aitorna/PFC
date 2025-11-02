@@ -9,89 +9,97 @@ import InputPassword from "../components/InputPassword";
 import Button from "../components/SendButton";
 import Footer from "../components/Footer";
 
-import es from "../assets/i18n/es.json"
+import es from "../assets/i18n/es.json";
 
 export default function Register() {
-    const {formData, handleChange, handleSubmit} = useRegister()
+  const { formData, handleChange, handleSubmit } = useRegister();
 
-    const mostrarHeader = true;
+  const mostrarHeader = true;
 
-    const campos = [
-        { name: "name", placeholder: es.register.namePlaceholder, type: "text", data_testid: "nameRegister" },
-        { name: "surname", placeholder: es.register.surnamePlaceholder, type: "text", data_testid: "surnameRegister" },
-        { name: "username", placeholder: es.register.usernamePlaceholder, type: "text", data_testid: "usernameRegister" },
-        { name: "dataBorn", placeholder: es.register.birthDatePlaceholder, type: "date", data_testid: "birthdayRegister" },
-        { name: "password", placeholder: es.register.passwordPlaceholder, type: "password", data_testid: "passwordRegister" },
-        { name: "verifyPassword", placeholder: es.register.verifyPasswordPlaceholder, type: "password", data_testid: "verifyPasswordRegister" },
-        { name: "library", placeholder: es.register.libraryNamePlaceholder, type: "text", data_testid: "libraryRegister" },
-        { name: "securityQuestion", placeholder: es.register.securityQuestionPlaceholder, type: "text", data_testid: "securityQuestionRegister" },
-        { name: "answer", placeholder: es.register.answerPlaceholder, type: "text", data_testid: "answerField" },
-    ];
+  const campos = [
+    { name: "name", placeholder: es.register.namePlaceholder, type: "text", data_testid: "nameRegister" },
+    { name: "surname", placeholder: es.register.surnamePlaceholder, type: "text", data_testid: "surnameRegister" },
+    { name: "username", placeholder: es.register.usernamePlaceholder, type: "text", data_testid: "usernameRegister" },
+    { name: "dataBorn", placeholder: es.register.birthDatePlaceholder, type: "date", data_testid: "birthdayRegister" },
+    { name: "password", placeholder: es.register.passwordPlaceholder, type: "password", data_testid: "passwordRegister" },
+    { name: "verifyPassword", placeholder: es.register.verifyPasswordPlaceholder, type: "password", data_testid: "verifyPasswordRegister" },
+    { name: "library", placeholder: es.register.libraryNamePlaceholder, type: "text", data_testid: "libraryRegister" },
+    { name: "securityQuestion", placeholder: es.register.securityQuestionPlaceholder, type: "text", data_testid: "securityQuestionRegister" },
+    { name: "answer", placeholder: es.register.answerPlaceholder, type: "text", data_testid: "answerField" },
+  ];
 
   const onSubmit = (datos) => {
-      console.log("Enviando datos al backend:", datos);
-        // Aquí podrías hacer fetch/axios.post() a tu API
+    console.log("Enviando datos al backend:", datos);
+    // Aquí podrías hacer fetch/axios.post() a tu API
   };
 
   return (
     <Background data-testid="login-background">
-          {mostrarHeader && (
-            <div className="fixed top-0 left-0 w-full z-50">
-              <Header />
-            </div>
-          )}
+      {mostrarHeader && (
+        <div className="fixed top-0 left-0 w-full z-50">
+          <Header />
+        </div>
+      )}
 
-      <div className="fw-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
-        <Card title={es.register.title}>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* Inputs nombre y apellidos */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {campos.filter((c) => c.name === "name" || c.name === "surname").map((campo) => (
-                  <InputText
-                    key={campo.name}
-                    placeholder={campo.placeholder}
-                    name={campo.name}
-                    value={formData[campo.name]}
-                    onChange={handleChange}
-                    required
-                    data-testid={campo.data_testid}
-                  />
-                ))}
-            </div>
+      <div className="flex flex-col min-h-screen pt-[64px] pb-[64px]">
+        <div className="flex-grow flex items-center justify-center px-4">
+          <div className="w-full max-w-md">
+            <Card title={es.register.title}>
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                {/* Inputs nombre y apellidos */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {campos
+                    .filter((c) => c.name === "name" || c.name === "surname")
+                    .map((campo) => (
+                      <InputText
+                        key={campo.name}
+                        placeholder={campo.placeholder}
+                        name={campo.name}
+                        value={formData[campo.name]}
+                        onChange={handleChange}
+                        required
+                        data-testid={campo.data_testid}
+                      />
+                    ))}
+                </div>
 
-            {/* Resto de campos */}
-            {campos.filter((c) => c.name !== "name" && c.name !== "surname").map((campo) =>
-                campo.type === "password" ? (
-                  <InputPassword
-                    key={campo.name}
-                    placeholder={campo.placeholder}
-                    name={campo.name}
-                    value={formData[campo.name]}
-                    onChange={handleChange}
-                    data-testid={campo.data_testid}
-                  />
-                ) : (
-                  <InputText
-                    key={campo.name}
-                    type={campo.type}
-                    placeholder={campo.placeholder}
-                    name={campo.name}
-                    value={formData[campo.name]}
-                    onChange={handleChange}
-                    data-testid={campo.data_testid}
-                  />
-                )
-              )}
+                {/* Resto de campos */}
+                {campos
+                  .filter((c) => c.name !== "name" && c.name !== "surname")
+                  .map((campo) =>
+                    campo.type === "password" ? (
+                      <InputPassword
+                        key={campo.name}
+                        placeholder={campo.placeholder}
+                        name={campo.name}
+                        value={formData[campo.name]}
+                        onChange={handleChange}
+                        data-testid={campo.data_testid}
+                      />
+                    ) : (
+                      <InputText
+                        key={campo.name}
+                        type={campo.type}
+                        placeholder={campo.placeholder}
+                        name={campo.name}
+                        value={formData[campo.name]}
+                        onChange={handleChange}
+                        data-testid={campo.data_testid}
+                      />
+                    )
+                  )}
 
-            <Button type="submit" data-testid="register-submit">
-              {es.register.registerButton}
-            </Button>
-          </form>
-        </Card>
+                <Button type="submit" data-testid="register-submit">
+                  {es.register.registerButton}
+                </Button>
+              </form>
+            </Card>
+          </div>
+        </div>
       </div>
 
       <div className="fixed bottom-0 left-0 w-full z-50">
-          <Footer />
+        <Footer />
       </div>
     </Background>
   );
