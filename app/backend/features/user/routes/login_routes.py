@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from flasgger import swag_from
-from features.user.controller import login_controller
+from features.user.controller.login_controller import login_controller
 
 login_routes = Blueprint('login_routes', __name__, url_prefix="/api")
 
