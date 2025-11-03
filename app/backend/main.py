@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flasgger import Swagger
 
@@ -21,6 +22,9 @@ from seed import seed_roles
 
 app = Flask(__name__)
 app.config.from_object(config['dev'])
+
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+
 init_app(app)
 
 with app.app_context():
