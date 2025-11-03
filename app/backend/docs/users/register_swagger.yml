@@ -23,26 +23,26 @@ parameters:
       properties:
         name:
           type: string
-          example: "Lucía"
+          example: "usuario"
         surname:
           type: string
-          example: "Martínez"
+          example: "usuario1"
         username:
           type: string
-          example: "lucia_m"
+          example: "user123"
         password:
           type: string
-          example: "Prueba@123"
+          example: "Password123"
         repeat_password:
           type: string
-          example: "Prueba@123"
+          example: "Password123"
         born_date:
           type: string
           format: date
           example: "2005-11-01"
         library_name:
           type: string
-          example: "Biblioteca Central"
+          example: "Biblioteca x"
         security_question:
           type: string
           example: "¿Cuál es tu color favorito?"
