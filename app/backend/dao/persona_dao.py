@@ -16,7 +16,7 @@ class Persona(db.Model):
     block_date = db.Column(db.Date)
     delete_date = db.Column(db.Date)
     security_question = db.Column(db.String(200), nullable=False)
-    answer = db.Column(db.String(100), nullable=False)
+    answer = db.Column(db.String(500), nullable=False)
 
     role = db.relationship('Rol', backref='usuarios', lazy=True)
 
@@ -24,7 +24,7 @@ class Persona(db.Model):
                  library_name, security_question, answer, 
                  is_blocked=False, is_erased=False, 
                  block_date=None, delete_date=None):
-        self.id_rol = id_role
+        self.id_role = id_role
         self.name = name
         self.surname = surname
         self.username = username
