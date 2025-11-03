@@ -10,7 +10,7 @@ class LibroSubido(db.Model):
     upload_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     rating = db.Column(db.Float, default=0.0)
 
-    user = db.relationship('Usuario', backref='libros_subidos', lazy=True)
+    user = db.relationship('Persona', backref='libros_subidos', lazy=True)
     book = db.relationship('Libro', backref='subidas', lazy=True)
 
     def __init__(self, user_id, book_id, upload_date=None, rating=0.0):

@@ -12,7 +12,7 @@ def register_user():
     data = request.get_json()
     
     required_fields = [
-        'id_role', 'name', 'surname', 'username', 'password',
+        'name', 'surname', 'username', 'password',
         'born_date', 'library_name', 'security_question', 'answer'
     ]
     
@@ -51,7 +51,7 @@ def register_user():
     new_user = Persona(
         id_role = 2,
         name = data['name'],
-        surname = data['username'],
+        surname = data['surname'],
         username = data['username'],
         password = hashed_password,
         born_date = birth_date,

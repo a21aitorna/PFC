@@ -3,7 +3,7 @@ from database.db import db
 
 def get_role_by_name(role_name):
     """Devuelve un rol por su nombre"""
-    return Rol.query.filter_by(role_name).first()
+    return Rol.query.filter_by(role_name=role_name).first()
 
 def create_role(role_name):
     """Crea un rol si no existe"""

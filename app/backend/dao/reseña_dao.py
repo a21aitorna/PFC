@@ -11,7 +11,7 @@ class Reseña(db.Model):
     book_rating = db.Column(db.Integer)
     creation_date = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
-    user = db.relationship('Usuario', backref='reseñas', lazy=True)
+    user = db.relationship('Persona', backref='reseñas', lazy=True)
     book = db.relationship('Libro', backref='reseñas', lazy=True)
 
     def __init__(self, user_id, book_id, review_text, book_rating, creation_date=None):
