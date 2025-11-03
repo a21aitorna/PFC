@@ -1,0 +1,58 @@
+tags:
+  - Register
+summary: Register a new user
+description: Creates a new user in the app with role "User". Password and answer to the security question are hashed before saving.
+consumes:
+  - application/json
+parameters:
+  - in: body
+    name: body
+    required: true
+    schema:
+      type: object
+      required:
+        - name
+        - surname
+        - username
+        - password
+        - repeat_password
+        - born_date
+        - library_name
+        - security_question
+        - answer
+      properties:
+        name:
+          type: string
+          example: "Lucía"
+        surname:
+          type: string
+          example: "Martínez"
+        username:
+          type: string
+          example: "lucia_m"
+        password:
+          type: string
+          example: "Prueba@123"
+        repeat_password:
+          type: string
+          example: "Prueba@123"
+        born_date:
+          type: string
+          format: date
+          example: "2005-11-01"
+        library_name:
+          type: string
+          example: "Biblioteca Central"
+        security_question:
+          type: string
+          example: "¿Cuál es tu color favorito?"
+        answer:
+          type: string
+          example: "Azul"
+responses:
+  201:
+    description: User created successfully
+  400:
+    description: Bad request (missing fields, password invalid, username already taken, underage, etc.)
+  500:
+    description: Internal server error

@@ -2,6 +2,7 @@ from flask import request, jsonify
 from flask_jwt_extended import create_access_token
 from dao.persona_dao import Persona
 from werkzeug.security import check_password_hash
+from repo.users_repo import get_user_by_username
 from dao_schema.persona_schema import PersonaSchema
 
 from exceptions.http_status import (BAD_REQUEST_EMPTY_LOGIN_MSG, BAD_REQUEST_USERNAME_LOGIN_MSG, BAD_REQUEST_PASSWORD_LOGIN_MSG, USER_NOT_FOUND_MSG, UNAUTHORIZED_LOGIN_MSG)
@@ -20,7 +21,7 @@ def login_controller():
     if not password:
         return BAD_REQUEST_PASSWORD_LOGIN_MSG
     
-    user = Persona.query.filter_by(username=username).first()
+    user = get_user_by_username(username)
     
     if not user:
         return USER_NOT_FOUND_MSG

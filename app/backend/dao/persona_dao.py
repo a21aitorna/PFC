@@ -20,11 +20,11 @@ class Persona(db.Model):
 
     role = db.relationship('Rol', backref='usuarios', lazy=True)
 
-    def __init__(self, id_rol, name, surname, username, password, born_date, 
+    def __init__(self, id_role, name, surname, username, password, born_date, 
                  library_name, security_question, answer, 
                  is_blocked=False, is_erased=False, 
                  block_date=None, delete_date=None):
-        self.id_rol = id_rol
+        self.id_rol = id_role
         self.name = name
         self.surname = surname
         self.username = username
@@ -41,7 +41,7 @@ class Persona(db.Model):
     def as_dict(self):
         return {
             'id_user': self.id_user,
-            'user_role_id': self.id_rol,
+            'user_role_id': self.id_role,
             'user_role_name': self.role.name if self.role else None,
             'name': self.name,
             'surname': self.surname,
