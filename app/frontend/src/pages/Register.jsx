@@ -39,58 +39,56 @@ export default function Register() {
 
       {/* Contenido centrado */}
       <div className="flex items-center justify-center h-[calc(100vh-128px)] px-4">
-        <div className="w-full max-w-md">
-          <Card title={es.register.title}>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              {/* Nombre y Apellidos */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {campos
-                  .filter((c) => c.name === "name" || c.name === "surname")
-                  .map((campo) => (
-                    <InputText
-                      key={campo.name}
-                      placeholder={campo.placeholder}
-                      name={campo.name}
-                      value={formData[campo.name]}
-                      onChange={handleChange}
-                      required
-                      data-testid={campo.data_testid}
-                    />
-                  ))}
-              </div>
-
-              {/* Resto de campos */}
+        <Card title={es.register.title}>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Nombre y Apellidos */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {campos
-                .filter((c) => c.name !== "name" && c.name !== "surname")
-                .map((campo) =>
-                  campo.type === "password" ? (
-                    <InputPassword
-                      key={campo.name}
-                      placeholder={campo.placeholder}
-                      name={campo.name}
-                      value={formData[campo.name]}
-                      onChange={handleChange}
-                      data-testid={campo.data_testid}
-                    />
-                  ) : (
-                    <InputText
-                      key={campo.name}
-                      type={campo.type}
-                      placeholder={campo.placeholder}
-                      name={campo.name}
-                      value={formData[campo.name]}
-                      onChange={handleChange}
-                      data-testid={campo.data_testid}
-                    />
-                  )
-                )}
+                .filter((c) => c.name === "name" || c.name === "surname")
+                .map((campo) => (
+                  <InputText
+                    key={campo.name}
+                    placeholder={campo.placeholder}
+                    name={campo.name}
+                    value={formData[campo.name]}
+                    onChange={handleChange}
+                    required
+                    data-testid={campo.data_testid}
+                  />
+                ))}
+            </div>
 
-              <Button type="submit" data-testid="register-submit">
-                {es.register.registerButton}
-              </Button>
-            </form>
-          </Card>
-        </div>
+            {/* Resto de campos */}
+            {campos
+              .filter((c) => c.name !== "name" && c.name !== "surname")
+              .map((campo) =>
+                campo.type === "password" ? (
+                  <InputPassword
+                    key={campo.name}
+                    placeholder={campo.placeholder}
+                    name={campo.name}
+                    value={formData[campo.name]}
+                    onChange={handleChange}
+                    data-testid={campo.data_testid}
+                  />
+                ) : (
+                  <InputText
+                    key={campo.name}
+                    type={campo.type}
+                    placeholder={campo.placeholder}
+                    name={campo.name}
+                    value={formData[campo.name]}
+                    onChange={handleChange}
+                    data-testid={campo.data_testid}
+                  />
+                )
+              )}
+
+            <Button type="submit" data-testid="register-submit">
+              {es.register.registerButton}
+            </Button>
+          </form>
+        </Card>
       </div>
 
       {/* Footer fijo */}
