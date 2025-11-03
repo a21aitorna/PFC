@@ -32,10 +32,10 @@ parameters:
           example: "user123"
         password:
           type: string
-          example: "Password123"
+          example: "Password123."
         repeat_password:
           type: string
-          example: "Password123"
+          example: "Password123."
         born_date:
           type: string
           format: date
