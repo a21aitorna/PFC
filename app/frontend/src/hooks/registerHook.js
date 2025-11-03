@@ -6,9 +6,9 @@ export function useRegister() {
     name: "",
     surname: "",
     username: "",
-    dataBorn: "",           // Fecha de nacimiento en el front
+    dataBorn: "",     
     password: "",
-    verifyPassword: "",     // Repetir contraseña en el front
+    verifyPassword: "",
     library: "",
     securityQuestion: "",
     answer: "",
@@ -29,7 +29,7 @@ export function useRegister() {
     e.preventDefault();
     setError("");
 
-    console.log("📌 Datos del formulario antes de validación:", formData);
+    console.log("Datos del formulario antes de validación:", formData);
 
     // Validaciones básicas
     if (
@@ -70,7 +70,7 @@ export function useRegister() {
         answer: formData.answer,
       };
 
-      console.log("📤 Payload enviado al backend:", payload);
+      console.log("Payload enviado al backend:", payload);
 
       const res = await fetch("http://localhost:5000/api/register", {
         method: "POST",
