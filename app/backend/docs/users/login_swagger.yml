@@ -19,7 +19,7 @@ parameters:
           example: "user123"
         password:
           type: string
-          example: "Password123"
+          example: "Password123."
 responses:
   200:
     description: Successful login
