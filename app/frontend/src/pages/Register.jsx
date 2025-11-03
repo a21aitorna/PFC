@@ -1,5 +1,3 @@
-import { useRegister } from "../hooks/registerHook";
-
 import Background from "../components/Background";
 import Header from "../components/Header";
 import Card from "../components/Card";
@@ -9,9 +7,10 @@ import Button from "../components/SendButton";
 import Footer from "../components/Footer";
 
 import es from "../assets/i18n/es.json";
+import { useRegister } from "../hooks/registerHook";
 
 export default function Register() {
-  const { formData, handleChange, handleSubmit } = useRegister();
+  const { formData, handleChange, handleSubmit, error, loading } = useRegister();
 
   const campos = [
     { name: "name", placeholder: es.register.namePlaceholder, type: "text", data_testid: "nameRegister" },
@@ -25,13 +24,8 @@ export default function Register() {
     { name: "answer", placeholder: es.register.answerPlaceholder, type: "text", data_testid: "answerField" },
   ];
 
-  const onSubmit = (datos) => {
-    console.log("Enviando datos al backend:", datos);
-    // Aquí podrías hacer fetch/axios.post() a tu API
-  };
-
   return (
-    <Background data-testid="login-background" className="overflow-hidden">
+    <Background data-testid="register-background" className="overflow-hidden">
       {/* Header fijo */}
       <div className="fixed top-0 left-0 w-full z-50 h-[64px]">
         <Header />
@@ -40,7 +34,7 @@ export default function Register() {
       {/* Contenido centrado */}
       <div className="flex items-center justify-center h-[calc(100vh-128px)] px-4">
         <Card title={es.register.title}>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Nombre y Apellidos */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {campos
@@ -69,6 +63,7 @@ export default function Register() {
                     name={campo.name}
                     value={formData[campo.name]}
                     onChange={handleChange}
+                    required
                     data-testid={campo.data_testid}
                   />
                 ) : (
@@ -79,13 +74,17 @@ export default function Register() {
                     name={campo.name}
                     value={formData[campo.name]}
                     onChange={handleChange}
+                    required
                     data-testid={campo.data_testid}
                   />
                 )
               )}
 
-            <Button type="submit" data-testid="register-submit">
-              {es.register.registerButton}
+            {/* Mensaje de error */}
+            {error && <p className="text-red-500 text-sm font-medium">{error}</p>}
+
+            <Button type="submit" data-testid="register-submit" disabled={loading}>
+              {loading ? "Registrando..." : es.register.registerButton}
             </Button>
           </form>
         </Card>
