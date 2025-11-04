@@ -23,6 +23,10 @@
         "securityQuestionPlaceholder": "Pregunta de seguridad",
         "answerPlaceholder": "Respuesta", 
         "registerButton": "Registrarse",
-        "requiredFields": "Todos los campos son obligatorios"
+        "requiredFields": "Todos los campos son obligatorios",
+        "passwordsMismatch": "Las contraseñas no coinciden",
+        "invalidPassword": "La contraseña es inválida. Mínimo, debe tener 8 caracteres, una mayúscula, un número y un símbolo",
+        "invalidAge": "El usuario debe tener 14 años mínimo",
+        "usernameExists": "Ya existe un usuario con este nombre de usuario"
     }
 }

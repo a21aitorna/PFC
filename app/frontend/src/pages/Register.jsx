@@ -26,12 +26,10 @@ export default function Register() {
 
   return (
     <Background data-testid="register-background" className="overflow-hidden">
-      {/* Header fijo */}
       <div className="fixed top-0 left-0 w-full z-50 h-[64px]">
         <Header />
       </div>
 
-      {/* Contenido centrado */}
       <div className="flex items-center justify-center h-[calc(100vh-128px)] px-4">
         <Card title={es.register.title}>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -46,27 +44,27 @@ export default function Register() {
                     name={campo.name}
                     value={formData[campo.name]}
                     onChange={handleChange}
-                    required
                     data-testid={campo.data_testid}
                   />
                 ))}
             </div>
 
-            {/* Resto de campos */}
+
             {campos
               .filter((c) => c.name !== "name" && c.name !== "surname")
               .map((campo) =>
                 campo.type === "password" ? (
+                  //Campos de contraseña
                   <InputPassword
                     key={campo.name}
                     placeholder={campo.placeholder}
                     name={campo.name}
                     value={formData[campo.name]}
                     onChange={handleChange}
-                    required
                     data-testid={campo.data_testid}
                   />
                 ) : (
+                  // Resto de campos
                   <InputText
                     key={campo.name}
                     type={campo.type}
@@ -74,14 +72,15 @@ export default function Register() {
                     name={campo.name}
                     value={formData[campo.name]}
                     onChange={handleChange}
-                    required
                     data-testid={campo.data_testid}
                   />
                 )
               )}
 
             {/* Mensaje de error */}
-            {error && <p className="text-red-500 text-sm font-medium">{error}</p>}
+            {error && 
+              <p data-testid="motivoError" className="text-red-500 text-sm font-medium">{error}</p>
+            }
 
             <Button type="submit" data-testid="register-submit" disabled={loading}>
               {loading ? "Registrando..." : es.register.registerButton}
@@ -90,7 +89,6 @@ export default function Register() {
         </Card>
       </div>
 
-      {/* Footer fijo */}
       <div className="fixed bottom-0 left-0 w-full z-50 h-[64px]">
         <Footer />
       </div>

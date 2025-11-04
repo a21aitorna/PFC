@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import es from "../assets/i18n/es.json";
 
 export function useRegister() {
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
     username: "",
-    dataBorn: "",     
+    dataBorn: "",
     password: "",
     verifyPassword: "",
     library: "",
@@ -16,48 +17,32 @@ export function useRegister() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
 
-  // Maneja los cambios en los inputs
+  //Mapeo códigos del backend con los mensajes del front 
+  const errorCodeMap = {
+    "2001": es.register.requiredFields,
+    "2002": es.register.passwordsMismatch,
+    "2003": es.register.invalidPassword,
+    "2005": es.register.invalidAge,
+    "2006": es.register.usernameExists,
+  };
+
+  //Manejo cambios en inputs
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Maneja el envío del formulario
+  //Manejo el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    console.log("Datos del formulario antes de validación:", formData);
-
-    // Validaciones básicas
-    if (
-      !formData.name ||
-      !formData.surname ||
-      !formData.username ||
-      !formData.password ||
-      !formData.verifyPassword ||
-      !formData.dataBorn ||
-      !formData.library ||
-      !formData.securityQuestion ||
-      !formData.answer
-    ) {
-      console.warn("⚠️ Campos obligatorios faltantes");
-      setError("Todos los campos obligatorios deben estar completos");
-      return;
-    }
-
-    if (formData.password !== formData.verifyPassword) {
-      console.warn("⚠️ Las contraseñas no coinciden");
-      setError("Las contraseñas no coinciden");
-      return;
-    }
 
     setLoading(true);
 
     try {
-      // Mapeo de nombres al formato que espera el backend
+      // Mapear nombres de campos con los del back backend
       const payload = {
         name: formData.name,
         surname: formData.surname,
@@ -70,7 +55,7 @@ export function useRegister() {
         answer: formData.answer,
       };
 
-      console.log("Payload enviado al backend:", payload);
+      console.log("📦 Payload enviado al backend:", payload);
 
       const res = await fetch("http://localhost:5000/api/register", {
         method: "POST",
@@ -79,17 +64,17 @@ export function useRegister() {
       });
 
       const data = await res.json();
-      console.log(" Respuesta del backend:", data);
 
       if (!res.ok) {
-        //setError(data.msg || "Error al registrar el usuario");
-        setError("Error al registrar el usuario");
-      } else {
-        // Redirigir a la página de login u otra página después de registro
-        navigate("/login");
+        // 🧠 Mostrar mensaje según el código recibido del back
+        const message = errorCodeMap[data.code] || "Ocurrió un error inesperado durante el registro.";
+        setError(message);
+        return;
       }
+
+      // ✅ Registro exitoso
+      navigate("/login");
     } catch (err) {
-      console.error("Error conectando al servidor:", err);
       setError("Error conectando al servidor");
     } finally {
       setLoading(false);
