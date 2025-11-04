@@ -1,6 +1,6 @@
 import es from "../assets/i18n/es.json";
 import { User, ArrowLeft } from "lucide-react";
-import { useRecoverPasswordPageOne } from "../hooks/recoverPasswordOneHook"; 
+import { useRecoverPasswordPageOne } from "../hooks/recoverPasswordPageOneHook"; 
 
 import Background from "../components/Background";
 import Header from "../components/Header";
