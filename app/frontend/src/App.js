@@ -10,7 +10,7 @@ function App() {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/recover-password" element={<RecoverPasswordPageOne />} />
+        <Route path="/recover-password-verify-user" element={<RecoverPasswordPageOne />} />
       </Routes>
     </Router>
   );

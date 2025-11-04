@@ -1,4 +1,8 @@
 {
+    "conexionServidor":{
+        "errorConexion" : "Error conectando al servidor"
+    },
+
     "login":{
         "title": "Iniciar sesión",
         "subtitle": "Ingresa tus credenciales para acceder a tu cuenta",
@@ -27,6 +31,20 @@
         "passwordsMismatch": "Las contraseñas no coinciden",
         "invalidPassword": "La contraseña es inválida. Mínimo, debe tener 8 caracteres, una mayúscula, un número y un símbolo",
         "invalidAge": "El usuario debe tener 14 años mínimo",
-        "usernameExists": "Ya existe un usuario con este nombre de usuario"
+        "usernameExists": "Ya existe un usuario con este nombre de usuario",
+        "errorInesperado": "Ocurrió un error inesperado durante el registro",
+        "registroEnProceso": "Registrando..."
+    },
+
+    "recoverPassword":{
+        "title": "Recuperar contraseña",
+        "subtitle": "Introduce tu nombre de usuario para cont",
+        "usernameField": "Nombre de usuario",
+        "usernamePlaceholder": "Introduce tu nombre de usuario",
+        "continueButton": "Continuar",
+        "returnLogin": "Volver al inicio de sesión",
+        "verifyUserEmptyField": "El campo es obligatorio",
+        "userNotFound": "El usuario no existe o no se ha encontrado",
+        "errorInesperado": "Ocurrió un error inesperado durante la validación"
     }
 }

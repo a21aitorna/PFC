@@ -15,7 +15,7 @@ def register_user_routes(app):
 def register_user_route():
     return register_user()
 
-@user_routes.post('/recover-password/verify-pasword')
+@user_routes.post('/recover-password/verify-user')
 @swag_from(recover_password_verify_path)
 def verify_recover_user_route():
     return verify_recover_user()

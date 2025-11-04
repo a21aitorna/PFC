@@ -1,3 +1,6 @@
+import es from "../assets/i18n/es.json";
+import { useRegister } from "../hooks/registerHook";
+
 import Background from "../components/Background";
 import Header from "../components/Header";
 import Card from "../components/Card";
@@ -6,8 +9,6 @@ import InputPassword from "../components/InputPassword";
 import Button from "../components/SendButton";
 import Footer from "../components/Footer";
 
-import es from "../assets/i18n/es.json";
-import { useRegister } from "../hooks/registerHook";
 
 export default function Register() {
   const { formData, handleChange, handleSubmit, error, loading } = useRegister();
@@ -83,7 +84,7 @@ export default function Register() {
             }
 
             <Button type="submit" data-testid="register-submit" disabled={loading}>
-              {loading ? "Registrando..." : es.register.registerButton}
+              {loading ? es.register.registroEnProceso : es.register.registerButton}
             </Button>
           </form>
         </Card>

@@ -55,8 +55,6 @@ export function useRegister() {
         answer: formData.answer,
       };
 
-      console.log("📦 Payload enviado al backend:", payload);
-
       const res = await fetch("http://localhost:5000/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -66,16 +64,16 @@ export function useRegister() {
       const data = await res.json();
 
       if (!res.ok) {
-        // 🧠 Mostrar mensaje según el código recibido del back
-        const message = errorCodeMap[data.code] || "Ocurrió un error inesperado durante el registro.";
+        // Mostrar error según el código recibido del back
+        const message = errorCodeMap[data.code] || es.register.errorInesperado;
         setError(message);
         return;
       }
 
-      // ✅ Registro exitoso
+      // Registro exitoso
       navigate("/login");
     } catch (err) {
-      setError("Error conectando al servidor");
+      setError(es.conexionServidor.errorConexion);
     } finally {
       setLoading(false);
     }

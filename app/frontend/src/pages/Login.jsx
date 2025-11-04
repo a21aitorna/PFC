@@ -1,3 +1,4 @@
+import es from "../assets/i18n/es.json"
 import { Lock } from "lucide-react";
 import { useLogin } from "../hooks/loginHook";
 
@@ -9,7 +10,7 @@ import InputPassword from "../components/InputPassword";
 import Button from "../components/SendButton";
 import Footer from "../components/Footer";
 
-import es from "../assets/i18n/es.json"
+
 
 export default function Login() {
   const { usuario, password, error, setUsuario, setPassword, handleSubmit } = useLogin();
@@ -56,7 +57,7 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
               />
               <div className="text-right mt-1">
-                <a href="#" className="text-xs text-indigo-600 hover:underline" data-testid="forgottenPasswordLogin">
+                <a href="/recover-password-verify-user" className="text-xs text-indigo-600 hover:underline" data-testid="forgottenPasswordLogin">
                   {es.login.forgotPassword}
                 </a>
               </div>
