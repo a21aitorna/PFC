@@ -5,10 +5,12 @@ from validations.password_validation import validate_password
 from validations.age_validation import age_validation
 from repo.users_repo import (get_user_by_username, save_user)
 from dao.persona_dao import Persona
-from exceptions.http_status import (INTERNAL_SERVER_ERROR_MSG, BAD_REQUEST_EMPTY_REGISTER_MSG, BAD_REQUEST_PASSWORD_MISMATCH_REGISTER_MSG, BAD_REQUEST_INVALID_PASSWORD_REGISTER_MSG, BAD_REQUEST_INVALID_DATE_REGISTER_MSG, BAD_REQUEST_UNDERAGE_REGISTER_MSG, BAD_REQUEST_USERNAME_ALREADY_EXISTS_REGISTER_MSG, USER_CORRECT_REGISTER_MSG)
+from exceptions.http_status import (USER_NOT_FOUND_MSG, INTERNAL_SERVER_ERROR_MSG, BAD_REQUEST_EMPTY_REGISTER_MSG, BAD_REQUEST_PASSWORD_MISMATCH_REGISTER_MSG, 
+                                    BAD_REQUEST_INVALID_PASSWORD_REGISTER_MSG, BAD_REQUEST_INVALID_DATE_REGISTER_MSG, BAD_REQUEST_UNDERAGE_REGISTER_MSG, BAD_REQUEST_USERNAME_ALREADY_EXISTS_REGISTER_MSG, 
+                                    USER_CORRECT_REGISTER_MSG, BAD_REQUEST_EMPTY_RECOVER_PASSWORD_MSG, USER_FOUND_RECOVER_PASSWORD_MSG)
 
 def register_user():
-    """Controlador para registrar un usuario nuevo"""
+    """Registrar un usuario nuevo"""
     data = request.get_json()
     
     required_fields = [
@@ -66,3 +68,23 @@ def register_user():
     except Exception:
         return INTERNAL_SERVER_ERROR_MSG
     
+def verify_recover_user():
+    """Primer paso de la recuperación de la contraseña, verificar que existe el usuario"""
+    try:
+        data = request.get_json()
+        username = data.get("username")
+        
+        #Validación de campos completos
+        if not username:
+            return BAD_REQUEST_EMPTY_RECOVER_PASSWORD_MSG
+        
+        user = get_user_by_username(username)
+        
+        #Validación de la existencia del usuario
+        if not user:
+            return USER_NOT_FOUND_MSG
+        
+        return USER_FOUND_RECOVER_PASSWORD_MSG
+    
+    except Exception as e:
+        return INTERNAL_SERVER_ERROR_MSG
