@@ -65,7 +65,7 @@ export default function Login() {
 
             {/* Mensaje de error */}
             {error && (
-              <p data-testid="motivoError" className="text-red-500 text-sm font-medium">{error}</p>
+              <p data-testid="errorReason" className="text-red-500 text-sm font-medium">{error}</p>
             )}
 
             <Button type="submit">{es.login.loginButton}</Button>

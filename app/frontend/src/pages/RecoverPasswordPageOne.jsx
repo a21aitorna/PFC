@@ -34,18 +34,20 @@ export default function RecoverPasswordPageOne() {
               placeholder={es.recoverPassword.usernamePlaceholder}
               value={usuario}
               onChange={(e) => setUsuario(e.target.value)}
+              data-testid = "usernameRecovery"
             />
           </div>
 
           {/* Mensaje de error */}
           {error && (
-            <p data-testid="motivoError" className="text-red-500 text-sm font-medium">{error}</p>
+            <p data-testid="errorReason" className="text-red-500 text-sm font-medium">{error}</p>
           )}
 
-          <Button type="submit" disabled={loading}>{es.recoverPassword.continueButton}</Button>
+          <Button type="submit" disabled={loading} data-testid="continueButtonRecovery">{es.recoverPassword.continueButton}</Button>
         </form>
 
         <button
+          data-testid = "loginReturnRecovery"
           onClick={() => (window.location.href = "/login")}
           className="mt-6 flex items-center justify-center text-sm text-indigo-600 hover:text-indigo-800 transition"
         >
