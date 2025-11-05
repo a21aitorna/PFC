@@ -27,3 +27,8 @@ with app.app_context():
 
     BAD_REQUEST_EMPTY_RECOVER_PASSWORD_MSG = jsonify({"msg": "Bad request. All the fields are mandatory","code":"3001"}), HTTPStatus.BAD_REQUEST
     USER_FOUND_RECOVER_PASSWORD_MSG = jsonify({"msg":"User was found", "code":"3002"}), HTTPStatus.OK
+    BAD_REQUEST_ANSWER_MISMATCH_RECOVER_PASSWORD_MSG = jsonify({"msg":"Bad request. The answer does not match","code":"3003"}), HTTPStatus.BAD_REQUEST
+    BAD_REQUEST_PASSWORD_MISMATCH_RECOVER_PASSWORD_MSG = jsonify({"msg": "Bad request. Passwords do not match", "code":"3004"}), HTTPStatus.BAD_REQUEST
+    BAD_REQUEST_INVALID_PASSWORD_RECOVER_PASSWORD_MSG = jsonify({"msg": "Bad request. The password is invalid", "code":"3005"}), HTTPStatus.BAD_REQUEST
+    USER_PASSWORD_UPDATED_MSG = jsonify({"msg": "The password was updated correctly", "code":"3006"}), HTTPStatus.OK
+    BAD_REQUEST_USERNAME_NOT_FOUND_MSG = jsonify({"msg": "Bad request. The username was not found", "code":"3007"}), HTTPStatus.BAD_REQUEST
