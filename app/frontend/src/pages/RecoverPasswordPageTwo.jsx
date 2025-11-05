@@ -1,7 +1,5 @@
-import es from "../assets/i18n/es.json";
 import { ShieldCheck, ArrowLeft } from "lucide-react";
-import { useRecoverPasswordPageTwo } from "../hooks/recoverPasswordPageTwoHook"; 
-
+import { useRecoverPasswordPageTwo } from "../hooks/recoverPasswordPageTwoHook";
 import Background from "../components/Background";
 import Header from "../components/Header";
 import Card from "../components/Card";
@@ -10,9 +8,18 @@ import InputPassword from "../components/InputPassword";
 import Button from "../components/SendButton";
 import Footer from "../components/Footer";
 
-
-export default function SecurityQuestion() {
-  const { formData, errors, success, handleChange, handleSubmit } = useRecoverPasswordPageTwo();
+export default function RecoverPasswordPageTwo() {
+  const {
+    username,
+    formData,
+    errors,
+    success,
+    loading,
+    securityQuestion,
+    handleChange,
+    handleSubmit,
+    goBackToLogin,
+  } = useRecoverPasswordPageTwo();
 
   return (
     <Background>
@@ -21,11 +28,12 @@ export default function SecurityQuestion() {
       <Card
         icon={ShieldCheck}
         title="Pregunta de Seguridad"
-        subtitle="Usuario: x"
+        subtitle={`Usuario: ${username || "Desconocido"}`}
         className="mt-20"
       >
+        {/* Volver al inicio */}
         <button
-          onClick={() => (window.location.href = "/login")}
+          onClick={goBackToLogin}
           className="flex items-center text-sm text-gray-500 mb-4 hover:text-indigo-600 transition mx-auto"
         >
           <ArrowLeft size={16} className="mr-1" />
@@ -36,14 +44,15 @@ export default function SecurityQuestion() {
           {/* Pregunta de seguridad */}
           <div>
             <label className="block text-sm font-medium mb-1">
-              ¿Cuál es tu color favorito?
+              {securityQuestion
+                ? securityQuestion
+                : "Cargando pregunta de seguridad..."}
             </label>
             <InputText
               name="answer"
               placeholder="Ingresa tu respuesta"
               value={formData.answer}
               onChange={handleChange}
-              required
             />
             {errors.answer && (
               <p className="text-xs text-red-500 mt-1">{errors.answer}</p>
@@ -63,7 +72,6 @@ export default function SecurityQuestion() {
               placeholder="Ingresa la nueva contraseña"
               value={formData.password}
               onChange={handleChange}
-              required
             />
             {errors.password && (
               <p className="text-xs text-red-500 mt-1">{errors.password}</p>
@@ -80,7 +88,6 @@ export default function SecurityQuestion() {
               placeholder="Confirma la nueva contraseña"
               value={formData.confirmPassword}
               onChange={handleChange}
-              required
             />
             {errors.confirmPassword && (
               <p className="text-xs text-red-500 mt-1">
@@ -89,11 +96,21 @@ export default function SecurityQuestion() {
             )}
           </div>
 
-          <Button type="submit">Restablecer Contraseña</Button>
+          {/* Botón enviar */}
+          <Button type="submit" disabled={loading}>
+            {loading ? "Restableciendo..." : "Restablecer Contraseña"}
+          </Button>
 
+          {/* Mensajes de estado */}
           {success && (
             <p className="text-green-600 text-sm mt-3 text-center">
-              Contraseña restablecida con éxito.
+              Contraseña restablecida con éxito
+            </p>
+          )}
+
+          {errors.general && (
+            <p className="text-red-600 text-sm mt-3 text-center">
+              {errors.general}
             </p>
           )}
         </form>

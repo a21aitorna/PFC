@@ -32,7 +32,7 @@ export function useRecoverPasswordPageOne() {
       if (response.ok) {
         // Ir a la siguente página
         console.log("Usuario encontrado:", data); //BORRAR LUEGO UNA VEZ IMPLEMENTADA LA SEGUNDA PARTE DE LA VALIDACIÓN!
-        // navigate("/recover-password-step-two", { state: { username: usuario } });
+        navigate("/recover-password-enter-new-password", { state: { username: usuario } });
       } else {
         //Mostrar error según el código del backend
         const customMsg = errorCodeMap[data.code] || es.recoverPassword.errorInesperado;
