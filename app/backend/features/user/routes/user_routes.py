@@ -22,7 +22,7 @@ def register_user_route():
 def verify_recover_user_route():
     return verify_recover_user()
 
-@user_routes.post('/recover-password/security_question')
+@user_routes.get('/recover-password/security-question')
 @swag_from(recover_password_get_question_path)
 def get_security_question_route():
     return get_security_question()

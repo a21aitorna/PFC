@@ -32,3 +32,4 @@ with app.app_context():
     BAD_REQUEST_INVALID_PASSWORD_RECOVER_PASSWORD_MSG = jsonify({"msg": "Bad request. The password is invalid", "code":"3005"}), HTTPStatus.BAD_REQUEST
     USER_PASSWORD_UPDATED_MSG = jsonify({"msg": "The password was updated correctly", "code":"3006"}), HTTPStatus.OK
     BAD_REQUEST_USERNAME_NOT_FOUND_MSG = jsonify({"msg": "Bad request. The username was not found", "code":"3007"}), HTTPStatus.BAD_REQUEST
+    BAD_REQUEST_SAME_PASSWORD_RECOVER_PASSWORD_MSG= ({"msg": "Bad request. The new password is alrady in use", "code": "3008"}), HTTPStatus.BAD_REQUEST

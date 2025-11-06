@@ -27,6 +27,11 @@ def get_answer_by_username(username):
     user = get_user_by_username(username)
     return user.answer
 
+def get_password_by_username(username):
+    """Obtener la contraseña del usuario"""
+    user = get_user_by_username(username)
+    return user.password
+
 def update_user_password(username, hashed_password):
     """Actualizar la contraseña del usuario"""
     user = get_user_by_username(username)

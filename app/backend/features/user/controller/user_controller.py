@@ -3,12 +3,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from validations.password_validation import validate_password
 from validations.age_validation import age_validation
-from repo.users_repo import (get_user_by_username, save_user, get_security_question_by_username, get_answer_by_username, update_user_password)
+from repo.users_repo import (get_user_by_username, save_user, get_security_question_by_username, get_answer_by_username, get_password_by_username, update_user_password)
 from dao.persona_dao import Persona
 from exceptions.http_status import (USER_NOT_FOUND_MSG, INTERNAL_SERVER_ERROR_MSG, BAD_REQUEST_EMPTY_REGISTER_MSG, BAD_REQUEST_PASSWORD_MISMATCH_REGISTER_MSG, 
                                     BAD_REQUEST_INVALID_PASSWORD_REGISTER_MSG, BAD_REQUEST_INVALID_DATE_REGISTER_MSG, BAD_REQUEST_UNDERAGE_REGISTER_MSG, BAD_REQUEST_USERNAME_ALREADY_EXISTS_REGISTER_MSG, 
                                     USER_CORRECT_REGISTER_MSG, BAD_REQUEST_EMPTY_RECOVER_PASSWORD_MSG, USER_FOUND_RECOVER_PASSWORD_MSG, BAD_REQUEST_ANSWER_MISMATCH_RECOVER_PASSWORD_MSG,
-                                    BAD_REQUEST_PASSWORD_MISMATCH_RECOVER_PASSWORD_MSG, BAD_REQUEST_INVALID_PASSWORD_RECOVER_PASSWORD_MSG, USER_PASSWORD_UPDATED_MSG, BAD_REQUEST_USERNAME_NOT_FOUND_MSG)
+                                    BAD_REQUEST_PASSWORD_MISMATCH_RECOVER_PASSWORD_MSG, BAD_REQUEST_INVALID_PASSWORD_RECOVER_PASSWORD_MSG, USER_PASSWORD_UPDATED_MSG, BAD_REQUEST_USERNAME_NOT_FOUND_MSG, BAD_REQUEST_SAME_PASSWORD_RECOVER_PASSWORD_MSG)
 
 def register_user():
     """Registrar un usuario nuevo"""
@@ -90,14 +90,10 @@ def verify_recover_user():
     except Exception as e:
         return INTERNAL_SERVER_ERROR_MSG
     
-
-        return INTERNAL_SERVER_ERROR_MSG
-    
 def get_security_question():
     """Devuelve la pregunta de seguridad del usuario (ya validado)"""
     try:
-        data = request.get_json()
-        username = data.get("username")
+        username = request.args.get("username")
         #Valida si se envía nombre de usuario
         if not username:
             return BAD_REQUEST_USERNAME_NOT_FOUND_MSG
@@ -145,6 +141,11 @@ def update_new_password():
         if not validate_password(password):
             return BAD_REQUEST_INVALID_PASSWORD_RECOVER_PASSWORD_MSG
         
+        #Validar que la nueva contraseña no sea la misma que la que se tiene
+        old_password = get_password_by_username(username)
+        if check_password_hash(old_password, password):
+            return BAD_REQUEST_SAME_PASSWORD_RECOVER_PASSWORD_MSG
+                    
         #Hashear y actualizar contraseña
         hashed_password = generate_password_hash(password)
         update_user_password(username, hashed_password)
