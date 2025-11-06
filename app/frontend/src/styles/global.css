@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: 'GelioRetsina';
+    src: url('../assets/fontStyle/GelioRetsina.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.font-gelio {
+  font-family: 'GelioRetsina', serif;
+  letter-spacing: 0.04em;
+}
