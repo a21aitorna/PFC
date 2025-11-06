@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { API_BASE } from "../config/api";
 import es from "../assets/i18n/es.json";
 
 export function useRegister() {
@@ -19,7 +21,6 @@ export function useRegister() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  //Mapeo códigos del backend con los mensajes del front 
   const errorCodeMap = {
     "2001": es.register.requiredFields,
     "2002": es.register.passwordsMismatch,
@@ -28,21 +29,17 @@ export function useRegister() {
     "2006": es.register.usernameExists,
   };
 
-  //Manejo cambios en inputs
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  //Manejo el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
-
     setLoading(true);
 
     try {
-      // Mapear nombres de campos con los del back backend
+      //Mapeo con los nombres esperados por el backend
       const payload = {
         name: formData.name,
         surname: formData.surname,
@@ -55,29 +52,42 @@ export function useRegister() {
         answer: formData.answer,
       };
 
-      const res = await fetch("http://localhost:5000/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const response = await axios.post(`${API_BASE}/register`, payload);
 
-      const data = await res.json();
+      const data = response.data;
 
-      if (!res.ok) {
-        // Mostrar error según el código recibido del back
-        const message = errorCodeMap[data.code] || es.register.errorInesperado;
-        setError(message);
+      if (data?.code && errorCodeMap[data.code]) {
+        setError(errorCodeMap[data.code]);
         return;
       }
 
-      // Registro exitoso
       navigate("/login");
+
     } catch (err) {
-      setError(es.conexionServidor.errorConexion);
+      console.error(err);
+
+      if (err.response) {
+        const serverCode = err.response.data?.code;
+
+        if (serverCode && errorCodeMap[serverCode]) {
+          setError(errorCodeMap[serverCode]);
+        } else {
+          setError(es.register.errorInesperado);
+        }
+      } else {
+        setError(es.conexionServidor.errorConexion);
+      }
+
     } finally {
       setLoading(false);
     }
   };
 
-  return { formData, handleChange, handleSubmit, error, loading };
+  return {
+    formData,
+    handleChange,
+    handleSubmit,
+    error,
+    loading,
+  };
 }
