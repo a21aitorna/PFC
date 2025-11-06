@@ -41,7 +41,6 @@ export default function RecoverPasswordPageOne() {
             />
           </div>
 
-          {/* ✅ Mensaje de error: encima del botón y alineado a la izquierda */}
           {error && (
             <p
               data-testid="errorReason"

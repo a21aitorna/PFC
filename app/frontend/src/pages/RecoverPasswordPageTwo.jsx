@@ -23,7 +23,7 @@ export default function RecoverPasswordPageTwo() {
     goBackToLogin,
   } = useRecoverPasswordPageTwo();
 
-    const mostrarHeader = true;
+  const mostrarHeader = true;
 
   return (
     <Background>
@@ -36,7 +36,10 @@ export default function RecoverPasswordPageTwo() {
       <Card
         icon={ShieldCheck}
         title={es.recoverPassword.title}
-        subtitle={`${es.recoverPassword.subtitle2} ${username}` ||`${es.recoverPassword.subtitle2Error}`}
+        subtitle={
+          `${es.recoverPassword.subtitle2} ${username}` ||
+          `${es.recoverPassword.subtitle2Error}`
+        }
         className="mt-20"
       >
         {/* Volver al inicio */}
@@ -53,18 +56,17 @@ export default function RecoverPasswordPageTwo() {
           {/* Pregunta de seguridad */}
           <div>
             <label className="block text-sm font-medium mb-1">
-              {securityQuestion ? securityQuestion : `${es.recoverPassword.loadingQuestion}`}
+              {securityQuestion
+                ? securityQuestion
+                : `${es.recoverPassword.loadingQuestion}`}
             </label>
             <InputText
               name="answer"
               placeholder={es.recoverPassword.answerPlaceholder}
               value={formData.answer}
               onChange={handleChange}
-              data-testid = "answerRecovery"
+              data-testid="answerRecovery"
             />
-            {/* {errors.answer && (
-              <p className="text-xs text-red-500 mt-1">{errors.answer}</p>
-            )} */}
             <p className="text-xs text-gray-400 mt-1">
               {es.recoverPassword.answerHint}
             </p>
@@ -82,9 +84,6 @@ export default function RecoverPasswordPageTwo() {
               onChange={handleChange}
               data-testid="newPasswordRecovery"
             />
-            {/* {errors.password && (
-              <p className="text-xs text-red-500 mt-1">{errors.password}</p>
-            )} */}
           </div>
 
           {/* Confirmar contraseña */}
@@ -99,27 +98,39 @@ export default function RecoverPasswordPageTwo() {
               onChange={handleChange}
               data-testid="repeatNewPasswordRecovery"
             />
-            {/* {errors.confirmPassword && (
-              <p className="text-xs text-red-500 mt-1">
-                {errors.confirmPassword}
-              </p>
-            )} */}
           </div>
 
-          {/* Botón enviar */}
-          <Button type="submit" disabled={loading} data-testid="updateButtonRecovery">
-            {loading ? `${es.recoverPassword.updatingPasswordButton}` : `${es.recoverPassword.updatePasswordButton}`}
-          </Button>
-
-          {/* Mensajes de estado */}
-          {success && (
-            <p data-testid="successMessage" className="text-green-600 text-sm mt-3 text-center">
-              {es.recoverPassword.successText}
+          {/* ✅ Error arriba del botón y alineado a la izquierda */}
+          {error && (
+            <p
+              data-testid="errorReason"
+              className="text-red-500 text-sm font-medium text-left mt-2"
+            >
+              {error}
             </p>
           )}
 
-          {error && (
-            <p data-testid="errorReason" className="text-red-500 text-sm font-medium">{error}</p>
+          {/* Botón enviar */}
+          <div className="pt-2">
+            <Button
+              type="submit"
+              disabled={loading}
+              data-testid="updateButtonRecovery"
+            >
+              {loading
+                ? `${es.recoverPassword.updatingPasswordButton}`
+                : `${es.recoverPassword.updatePasswordButton}`}
+            </Button>
+          </div>
+
+          {/* Mensaje de éxito */}
+          {success && (
+            <p
+              data-testid="successMessage"
+              className="text-green-600 text-sm mt-3 text-center"
+            >
+              {es.recoverPassword.successText}
+            </p>
           )}
         </form>
       </Card>
