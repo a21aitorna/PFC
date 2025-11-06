@@ -4,6 +4,8 @@ summary: Login to the app
 description: Logins in the app and retrieves a JWT token depending on the role id of the user
 consumes:
   - application/json
+produces:
+  - application/json
 parameters:
   - in: body
     name: body
@@ -23,7 +25,44 @@ parameters:
 responses:
   200:
     description: Successful login
+    schema:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
   400:
     description: Bad request
+    schema:
+      type: object
+      properties:
+        msg:
+          type: string
+          example: "Bad request. Username and password are mandatory fields"
+        code:
+          type: string
+          example: "1001"
   401:
-    description: Invalid username or password
+    description: Unauthorized
+    schema:
+      type: object
+      properties:
+        msg:
+          type: string
+          example: "Unauthorized. The credentials are wrong"
+        code:
+          type: string
+          example: "1005"
+  404:
+    description: User not found
+    schema:
+      type: object
+      properties:
+        msg:
+          type: string
+          example: "The user is not found"
+        code:
+          type: string
+          example: "1004"
+  500: 
+    description: Internal server error
