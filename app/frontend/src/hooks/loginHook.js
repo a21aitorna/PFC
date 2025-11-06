@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { API_BASE } from "../config/api";
 import es from "../assets/i18n/es.json";
 
 export function useLogin() {
@@ -7,43 +9,53 @@ export function useLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // para redirigir
+  const navigate = useNavigate();
 
+  const errorCodeMap = {
+    "1001": es.login.requiredFields,
+    "1002": es.login.requiredUsername,
+    "1003": es.login.requiredPassword
+  }
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!usuario.trim() || !password.trim()) {
-      setError(es.login.requiredFields);
-      return;
-    }
 
     setError("");
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: usuario,
-          password: password,
-        }),
+      const response = await axios.post(`${API_BASE}/login`, {
+        username: usuario,
+        password: password,
       });
 
-      const data = await response.json();
+      const data = response.data;
 
-      if (response.ok) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        // navigate("/libreria"); // nueva página
-      } else {
-        // Usuario no encontrado o error: ir a registro
-        navigate("/register");
+      if (data?.code && errorCodeMap[data.code]) {
+        setError(errorCodeMap[data.code]);
+        return;
       }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      // navigate("/libreria");
 
     } catch (err) {
       console.error(err);
-      setError("Error conectando al servidor");
+
+      if (err.response) {
+        const serverCode = err.response.data?.code;
+
+        if (serverCode && errorCodeMap[serverCode]) {
+          setError(errorCodeMap[serverCode]);
+          return;
+        }
+
+        navigate("/register");
+
+      } else {
+        setError(es.conexionServidor.errorConexion);
+      }
     } finally {
       setLoading(false);
     }

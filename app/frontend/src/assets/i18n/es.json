@@ -12,7 +12,10 @@
         "passwordPlaceholder": "Ingresa tu contraseña",
         "forgotPassword": "¿Has olvidado tu contraseña?",
         "loginButton": "Login / Registro",
-        "requiredFields": "Todos los campos son obligatorios"
+        "requiredFields": "Todos los campos son obligatorios",
+        "requiredUsername": "El campo usuario es obligatorio",
+        "requiredPassword": "El campo contraseña es obligatorio",
+        "loginError": "Error en el inicio de sesión"
     },
     
     "register":{
