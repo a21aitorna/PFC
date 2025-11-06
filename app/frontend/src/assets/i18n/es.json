@@ -38,13 +38,32 @@
 
     "recoverPassword":{
         "title": "Recuperar contraseña",
-        "subtitle": "Introduce tu nombre de usuario para cont",
+        "subtitle": "Introduce tu nombre de usuario para continuar",
+        "subtitle2": "Usuario: ",
+        "subtitle2Error": "Desconocido",
         "usernameField": "Nombre de usuario",
         "usernamePlaceholder": "Introduce tu nombre de usuario",
         "continueButton": "Continuar",
         "returnLogin": "Volver al inicio de sesión",
         "verifyUserEmptyField": "El campo es obligatorio",
         "userNotFound": "El usuario no existe o no se ha encontrado",
-        "errorInesperado": "Ocurrió un error inesperado durante la validación"
+        "errorInesperado": "Ocurrió un error inesperado durante la validación",
+        "loadingQuestion": "Cargando pregunta de seguridad",
+        "answerPlaceholder": "Ingresa tu respuesta",
+        "answerHint": "La respuesta distingue máyusculas y minúsculas",
+        "newPasswordField": "Nueva contraseña *",
+        "newPasswordPlaceholder": "Ingresa la nueva contraseña",
+        "verifyPasswordField": " Confirmar contraseña *",
+        "verifyPasswordPlaceholder": "Confirma la nueva contraseña",
+        "updatePasswordButton": "Restablecer contraseña",
+        "updatingPasswordButton": "Restableciendo",
+        "successText": "Contraseña restablecida con éxito",
+        "emptyFields": "Todos los campos son obligatorios",
+        "answerMismatch": "La respuesta no es correcta",
+        "passwordsMismatch": "Las contraseñas no coinciden",
+        "invalidPassword": "La contraseña es inválida. Mínimo, debe tener 8 caracteres, una mayúscula, un número y un símbolo",
+        "passwordAlreayUsed": "La nueva contraseña ya está siendo usada",
+        "questionNotObtained": "No se pudo obtener la pregunta de seguridad",
+        "returnLoginError": "Error inesperado volviendo al login"
     }
 }

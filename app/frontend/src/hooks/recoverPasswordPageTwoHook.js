@@ -2,11 +2,21 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE } from "../config/api";
+import es from "../assets/i18n/es.json"
 
 export function useRecoverPasswordPageTwo() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const username = state?.username || ""; // Recupera el usuario de la pantalla anterior
+  const username = state?.username || "";
+
+  const errorCodeMap = {
+    "3001": es.recoverPassword.emptyFields,
+    "3003": es.recoverPassword.answerMismatch,
+    "3004": es.recoverPassword.passwordsMismatch,
+    "3005": es.recoverPassword.invalidPassword,
+    "3007": es.recoverPassword.userNotFound,
+    "3008": es.recoverPassword.passwordAlreayUsed,
+  };
 
   const [formData, setFormData] = useState({
     answer: "",
@@ -15,99 +25,101 @@ export function useRecoverPasswordPageTwo() {
   });
 
   const [securityQuestion, setSecurityQuestion] = useState("");
-  const [errors, setErrors] = useState({});
+  const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Se pide la pregunta de seguridad
+  // Obtener la pregunta de seguridad
   useEffect(() => {
     const fetchSecurityQuestion = async () => {
       if (!username) return;
       try {
-        const res = await axios.get(`${API_BASE}/recover-password/security-question`, {
-          params: { username },
-        });
+        const res = await axios.get(
+          `${API_BASE}/recover-password/security-question`,
+          { params: { username } }
+        );
         setSecurityQuestion(res.data.security_question);
-      } catch (error) {
-        console.error("Error al obtener la pregunta de seguridad:", error);
-        setErrors({ general: "No se pudo obtener la pregunta de seguridad." });
+      } catch (err) {
+        setError(es.recoverPassword.questionNotObtained);
       }
     };
 
     fetchSecurityQuestion();
   }, [username]);
 
-  // Maneja cambios de los campos
+  // Cambiar campos
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" }));
+    setError("");
   };
 
-  // Validar datos antes del envío
-  const validate = () => {
-    const newErrors = {};
-    if (!formData.answer.trim())
-      newErrors.answer = "La respuesta es obligatoria";
-    if (formData.password.length < 8)
-      newErrors.password = "La contraseña debe tener al menos 8 caracteres";
-    if (formData.password !== formData.confirmPassword)
-      newErrors.confirmPassword = "Las contraseñas no coinciden";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  //Enviar formulario al backend
+  // Enviar formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
 
     setLoading(true);
-    setErrors({});
+    setError("");
     setSuccess(false);
 
     try {
-      const response = await axios.post(`${API_BASE}/recover-password/update-password`, {
-        username,
-        answer: formData.answer,
-        password: formData.password,
-        repeat_password: formData.confirmPassword,
-      });
+      const response = await axios.post(
+        `${API_BASE}/recover-password/update-password`,
+        {
+          username,
+          answer: formData.answer,
+          password: formData.password,
+          repeat_password: formData.confirmPassword,
+        },
+        {
+          validateStatus: () => true, // Evita error por status != 2xx
+        }
+      );
 
-      if (response.status === 200) {
+      const isSuccess =
+        response.data.success === true ||
+        response.data.status === true ||
+        response.data.status === "ok" ||
+        response.status === 200;
+
+      if (isSuccess) {
         setSuccess(true);
         setFormData({ answer: "", password: "", confirmPassword: "" });
-      }
-    } catch (error) {
-      if (error.response) {
-        const { status } = error.response;
-        if (status === 400) {
-          setErrors({ general: "Datos incorrectos o formato inválido." });
-        } else if (status === 404) {
-          setErrors({ general: "Usuario no encontrado." });
-        } else {
-          setErrors({ general: "Error interno del servidor." });
-        }
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
       } else {
-        setErrors({ general: "No se pudo conectar con el servidor." });
+        const customMsg =
+          errorCodeMap[response.data.code] ||
+          response.data.message || es.recoverPassword.returnLoginError;
+        setError(customMsg);
+      }
+    } catch (err) {
+      if (err.response) {
+        const msg =
+          errorCodeMap[err.response.data?.code] ||
+          err.response.data?.message;
+        setError(msg);
+      } else if (err.request) {
+        setError(es.conexionServidor.errorConexion);
       }
     } finally {
       setLoading(false);
     }
   };
 
-  // Función para volver al login
   const goBackToLogin = () => navigate("/login");
 
   return {
     username,
     formData,
-    errors,
+    error,
     success,
     loading,
     securityQuestion,
     handleChange,
     handleSubmit,
-    goBackToLogin, // Exportamos el navigate para usarlo en el componente
+    goBackToLogin,
   };
 }

@@ -11,13 +11,18 @@ import Footer from "../components/Footer";
 
 
 export default function RecoverPasswordPageOne() {
-
   const {usuario, setUsuario, handleSubmit, error, loading } = useRecoverPasswordPageOne();
+
+  const mostrarHeader = true;
 
   return (
 
     <Background>
-      <Header />
+      {mostrarHeader && (
+        <div className="fixed top-0 left-0 w-full z-50">
+          <Header />
+        </div>
+      )}
 
       <Card
         icon={User}
