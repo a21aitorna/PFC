@@ -100,7 +100,6 @@ export default function RecoverPasswordPageTwo() {
             />
           </div>
 
-          {/* ✅ Error arriba del botón y alineado a la izquierda */}
           {error && (
             <p
               data-testid="errorReason"
