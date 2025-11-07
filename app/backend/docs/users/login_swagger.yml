@@ -38,10 +38,14 @@ responses:
       properties:
         msg:
           type: string
-          example: "Bad request. Username and password are mandatory fields"
         code:
           type: string
-          example: "1001"
+    examples:
+      application/json:
+        possible_errors:
+          - { msg: "Bad request. Username and password are mandatory fields", "code": "1001"}
+          - { msg: "Bad request. Username is a mandatory field", "code": "1002"}
+          - { msg: "Bad request. Password is a mandatory field", "code": "1003"}
   401:
     description: Unauthorized
     schema:
