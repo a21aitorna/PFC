@@ -1,0 +1,283 @@
+{
+	"info": {
+		"_postman_id": "bf3fe9cf-37b1-4d9b-8dab-b8f828be9edb",
+		"name": "Register",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49839284",
+		"_collection_link": "https://aitornalonso-2090623.postman.co/workspace/Aitor-Novoa-Alonso's-Workspace~e8a4c94e-4ae3-4253-81a3-d8a6da4d89f1/collection/49839284-bf3fe9cf-37b1-4d9b-8dab-b8f828be9edb?action=share&source=collection_link&creator=49839284"
+	},
+	"item": [
+		{
+			"name": "SuccessRegister",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let baseUser = \"user\"\r",
+							"let actualTime = Date.now();\r",
+							"let user = `${baseUser}_${actualTime}`;\r",
+							"let username = `${baseUser}_${actualTime}`;\r",
+							"pm.environment.set(\"user\", user);\r",
+							"pm.environment.set(\"username\", username);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response code is 2007\", function () {\r",
+							"    pm.expect(response.code).to.eql(\"2007\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"answer\": \"Azul\",\r\n  \"born_date\": \"2005-11-01\",\r\n  \"library_name\": \"Biblioteca X\",\r\n  \"name\": \"{{user}}\",\r\n  \"password\": \"Password123.\",\r\n  \"repeat_password\": \"Password123.\",\r\n  \"security_question\": \"¿Cuál es tu color favorito?\",\r\n  \"surname\": \"usuario1\",\r\n  \"username\": \"{{username}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MandatoryFieldsRegister",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response code is 2001\", function () {\r",
+							"    pm.expect(response.code).to.eql(\"2001\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"answer\": \"Azul\",\r\n  \"born_date\": \"2005-11-01\",\r\n  \"library_name\": \"Biblioteca X\",\r\n  \"name\": \"{{user}}\",\r\n  \"password\": \"\",\r\n  \"repeat_password\": \"Password123\",\r\n  \"security_question\": \"¿Cuál es tu color favorito?\",\r\n  \"surname\": \"usuario1\",\r\n  \"username\": \"{{username}}\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "InvalidaFormatDateRegister",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response code is 2004\", function () {\r",
+							"    pm.expect(response.code).to.eql(\"2004\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"answer\": \"Azul\",\r\n  \"born_date\": \"07-11-2025\",\r\n  \"library_name\": \"Biblioteca X\",\r\n  \"name\": \"{{user}}\",\r\n  \"password\": \"Password123.\",\r\n  \"repeat_password\": \"Password123.\",\r\n  \"security_question\": \"¿Cuál es tu color favorito?\",\r\n  \"surname\": \"usuario1\",\r\n  \"username\": \"{{username}}\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "InvalidAgeRegister",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response code is 2005\", function () {\r",
+							"    pm.expect(response.code).to.eql(\"2005\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"answer\": \"Azul\",\r\n  \"born_date\": \"2025-07-01\",\r\n  \"library_name\": \"Biblioteca X\",\r\n  \"name\": \"{{user}}\",\r\n  \"password\": \"Password123.\",\r\n  \"repeat_password\": \"Password123.\",\r\n  \"security_question\": \"¿Cuál es tu color favorito?\",\r\n  \"surname\": \"usuario1\",\r\n  \"username\": \"{{username}}\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UsernameExistsRegister",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response code is 2006\", function () {\r",
+							"    pm.expect(response.code).to.eql(\"2006\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"answer\": \"Azul\",\r\n  \"born_date\": \"1999-07-01\",\r\n  \"library_name\": \"Biblioteca X\",\r\n  \"name\": \"{{user}}\",\r\n  \"password\": \"Password123.\",\r\n  \"repeat_password\": \"Password123.\",\r\n  \"security_question\": \"¿Cuál es tu color favorito?\",\r\n  \"surname\": \"usuario1\",\r\n  \"username\": \"{{username}}\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
