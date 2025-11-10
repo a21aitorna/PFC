@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import RecoverPasswordPageOne from "./pages/RecoverPasswordPageOne";
 import RecoverPasswordPageTwo from "./pages/RecoverPasswordPageTwo";
+import Library from "./pages/Library";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/recover-password-verify-user" element={<RecoverPasswordPageOne />} />
         <Route path="/recover-password-enter-new-password" element={<RecoverPasswordPageTwo />} />
+        <Route path="/library" element={<Library />} />
       </Routes>
     </Router>
   );
