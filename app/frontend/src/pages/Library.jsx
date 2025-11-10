@@ -27,19 +27,22 @@ export default function Library() {
   const currentBooks = filteredBooks.slice(indexOfFirst, indexOfLast);
   const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
 
-    const mostrarHeader = true;
+  const mostrarHeader = true;
 
   return (
-   <Background>
-         {mostrarHeader && (
-           <div className="fixed top-0 left-0 w-full z-50">
-             <Header />
-           </div>
-         )}
+    <Background>
+      {/* Header fijo */}
+      {mostrarHeader && (
+        <div className="fixed top-0 left-0 w-full z-50 h-16">
+          <Header />
+        </div>
+      )}
 
-      <div className="flex flex-col md:flex-row w-full max-w-7xl flex-1 px-6 py-8 space-y-6 md:space-y-0 md:space-x-6 mx-auto">
+      {/* Contenedor principal */}
+      <div className="mt-16 mb-16 flex flex-col md:flex-row w-full max-w-7xl flex-1 px-6 py-8 
+                      space-y-6 md:space-y-0 md:space-x-6 mx-auto h-auto">
         {/* Panel lateral izquierdo */}
-        <aside className="md:w-1/4 space-y-6">
+        <aside className="md:w-1/4 space-y-6 flex-shrink-0">
           {/* Buscar */}
           <div className="bg-white/90 rounded-2xl shadow-lg p-4">
             <p className="text-sm font-medium text-gray-700 mb-2">Buscar</p>
@@ -50,10 +53,7 @@ export default function Library() {
                 onChange={(e) => setSearch(e.target.value)}
                 className="pl-10"
               />
-              <Search
-                className="absolute left-3 top-2.5 text-gray-400"
-                size={18}
-              />
+              <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
             </div>
           </div>
 
@@ -84,14 +84,13 @@ export default function Library() {
         </aside>
 
         {/* Sección principal */}
-        <main className="flex-1 bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col min-h-0">
+        <main className="flex-1 bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col 
+                         max-h-[calc(100vh-8rem)]">
           {/* Header dentro de la card */}
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800">
               Mi Librería{" "}
-              <span className="text-sm text-gray-500">
-                ({filteredBooks.length} libros)
-              </span>
+              <span className="text-sm text-gray-500">({filteredBooks.length} libros)</span>
             </h2>
             <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm transition-all">
               <Plus size={16} /> Añadir Libro
@@ -104,7 +103,7 @@ export default function Library() {
           ) : (
             <>
               {/* Contenido scrollable */}
-              <div className="flex-1 overflow-y-auto">
+              <div className="flex-1 overflow-y-auto pb-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {currentBooks.map((book, index) => (
                     <div
@@ -138,7 +137,7 @@ export default function Library() {
                 </div>
               </div>
 
-              {/* Paginación fija abajo */}
+              {/* Paginación */}
               {totalPages > 1 && (
                 <div className="flex justify-center mt-4 space-x-2">
                   {Array.from({ length: totalPages }, (_, i) => (
@@ -161,9 +160,10 @@ export default function Library() {
         </main>
       </div>
 
-        <div className="fixed bottom-0 left-0 w-full z-50">
-                     <Footer />
-                   </div>
+      {/* Footer fijo */}
+      <div className="fixed bottom-0 left-0 w-full z-50 h-16">
+        <Footer />
+      </div>
     </Background>
   );
 }
