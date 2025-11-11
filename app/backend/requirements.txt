@@ -20,3 +20,7 @@ python-dotenv==1.0.1
 requests==2.32.3          
 
 Flasgger==0.9.7.1
+
+PyMuPDF==1.24.10       
+ebooklib==0.18
+Pillow==10.4.0
