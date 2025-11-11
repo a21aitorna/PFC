@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { API_BASE } from "../config/api";
 
 export function useLibrary() {
   const [books, setBooks] = useState([]);
@@ -10,102 +12,15 @@ export function useLibrary() {
   const [sortOrder, setSortOrder] = useState("asc"); // "asc" o "desc"
 
   useEffect(() => {
-    // Simulación de carga desde API
-    setTimeout(() => {
-      const mockBooks = [
-        {
-          title: "Cien años de soledad",
-          author: "Gabriel García Márquez",
-          rating: 5,
-          date: "15/7/2024",
-          color: "amber",
-          cover: "/covers/cien-anos.jpg"
-        },
-        {
-          title: "Don Quijote de la Mancha",
-          author: "Miguel de Cervantes",
-          rating: 5,
-          date: "20/2/2024",
-          color: "red",
-          cover: "/covers/don-quijote.jpg"
-        },
-        {
-          title: "1984",
-          author: "George Orwell",
-          rating: 4,
-          date: "10/9/2024",
-          color: "gray",
-          cover: "/covers/1984.jpg"
-        },
-        {
-          title: "El principito",
-          author: "Antoine de Saint-Exupéry",
-          rating: 5,
-          date: "25/3/2024",
-          color: "blue",
-          cover: "/covers/principito.jpg"
-        },
-        {
-          title: "Rayuela",
-          author: "Julio Cortázar",
-          rating: 5,
-          date: "5/4/2024",
-          color: "green",
-          cover: "/covers/rayuela.jpg"
-        },
-        {
-          title: "El amor en los tiempos del cólera",
-          author: "Gabriel García Márquez",
-          rating: 5,
-          date: "8/5/2024",
-          color: "pink",
-          cover: "/covers/amor.jpg"
-        },
-        {
-          title: "Ficciones",
-          author: "Jorge Luis Borges",
-          rating: 5,
-          date: "15/7/2024",
-          color: "violet",
-          cover: "/covers/ficciones.jpg"
-        },
-        {
-          title: "La sombra del viento",
-          author: "Carlos Ruiz Zafón",
-          rating: 5,
-          date: "12/5/2024",
-          color: "indigo",
-          cover: "/covers/sombra.jpg"
-        },
-        {
-          title: "La sombra del viento",
-          author: "Carlos Ruiz Zafón",
-          rating: 5,
-          date: "12/5/2024",
-          color: "indigo",
-          cover: "/covers/sombra.jpg"
-        },
-        {
-          title: "La sombra del viento",
-          author: "Carlos Ruiz Zafón",
-          rating: 5,
-          date: "12/5/2024",
-          color: "indigo",
-          cover: "/covers/sombra.jpg"
-        },
-        {
-          title: "La sombra del viento",
-          author: "Carlos Ruiz Zafón",
-          rating: 5,
-          date: "12/5/2024",
-          color: "indigo",
-          cover: "/covers/sombra.jpg"
-        }
-      ];
-      setBooks(mockBooks);
-      setFilteredBooks(mockBooks);
-      setLoading(false);
-    }, 1000);
+    // Carga inicial desde backend
+    setLoading(true);
+    axios.get(`${API_BASE}/books/list`) // Endpoint opcional para listar libros
+      .then(res => {
+        setBooks(res.data);
+        setFilteredBooks(res.data);
+      })
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -135,6 +50,32 @@ export function useLibrary() {
     setFilteredBooks(filtered);
   }, [search, books, sortOption, sortOrder]);
 
+  // ----------------------------
+  // Nueva función para subir libros
+  // ----------------------------
+  const uploadBook = async (file, userId) => {
+    if (!file) return { error: "No se seleccionó ningún archivo" };
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("user_id", userId);
+
+    try {
+      const res = await axios.post(`${API_BASE}/books/upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+
+      // Agregamos el libro recién subido al estado
+      setBooks(prev => [res.data.book, ...prev]);
+      setFilteredBooks(prev => [res.data.book, ...prev]);
+
+      return { success: true, book: res.data.book };
+    } catch (err) {
+      console.error(err);
+      return { error: err.response?.data?.error || "Error al subir el libro" };
+    }
+  };
+
   return {
     books,
     filteredBooks,
@@ -145,5 +86,6 @@ export function useLibrary() {
     setSortOption,
     sortOrder,
     setSortOrder,
+    uploadBook, // <-- nueva función
   };
 }

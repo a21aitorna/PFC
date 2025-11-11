@@ -5,7 +5,7 @@ import Background from "../components/Background";
 import Header from "../components/Header";
 import InputText from "../components/InputText";
 import Footer from "../components/Footer";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export default function Library() {
   const {
@@ -17,6 +17,7 @@ export default function Library() {
     setSortOption,
     sortOrder,
     setSortOrder,
+    uploadBook, // función del hook
   } = useLibrary();
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,6 +29,28 @@ export default function Library() {
   const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
 
   const mostrarHeader = true;
+  const fileInputRef = useRef(null);
+
+  // ----------------------------
+  // Funciones para subir libros
+  // ----------------------------
+  const handleAddBookClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const userId = 1; // Cambiar por usuario logueado real
+    const result = await uploadBook(file, userId);
+
+    if (result.error) {
+      alert(result.error);
+    } else {
+      alert(`Libro "${result.book.title}" subido correctamente`);
+    }
+  };
 
   return (
     <Background>
@@ -92,9 +115,21 @@ export default function Library() {
               Mi Librería{" "}
               <span className="text-sm text-gray-500">({filteredBooks.length} libros)</span>
             </h2>
-            <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm transition-all">
-              <Plus size={16} /> Añadir Libro
-            </button>
+            <div>
+              <button
+                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm transition-all"
+                onClick={handleAddBookClick}
+              >
+                <Plus size={16} /> Añadir Libro
+              </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+                accept=".pdf,.epub"
+              />
+            </div>
           </div>
 
           {/* Loader o grid */}

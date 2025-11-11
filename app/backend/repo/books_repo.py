@@ -1,7 +1,10 @@
 import os
 from utils.extractor_metadatos import extract_metadata
 from database.db import db
-from dao import Libro, LibroSubido, Categoria, LibroCategoria
+from dao.libro_dao import Libro
+from dao.libro_subido_dao import LibroSubido
+from dao.categoria_dao import Categoria
+from dao.libro_categoria_dao import LibroCategoria
 
 UPLOAD_FOLDER = 'uploads/books'
 
