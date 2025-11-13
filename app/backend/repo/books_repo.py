@@ -124,3 +124,13 @@ def save_book(file_path: str, filename: str, user_id: int) -> Tuple[Optional[Lib
             print(f"Error en limpieza: {cleanup_error}")
             
         return None, f"Error en base de datos: {str(e)}"
+
+def get_user_books(user_id: int):
+    """Obtener todos los libros subidos por un usuario"""
+    libros = (
+        db.session.query(Libro)
+        .join(LibroSubido, Libro.id_book == LibroSubido.book_id)
+        .filter(LibroSubido.user_id == user_id)
+        .all()
+    )
+    return libros

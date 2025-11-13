@@ -1,6 +1,11 @@
 from dao.persona_dao import Persona
 from database.db import db
 
+def get_user_by_user_id(id_user):
+    """Obtener usuario por su id"""
+    user = Persona.query.filter_by(id_user=id_user).first()
+    return user
+
 def get_user_by_username(username):
     """Obtener usuario por su nombre de usuario"""
     user = Persona.query.filter_by(username=username).first()

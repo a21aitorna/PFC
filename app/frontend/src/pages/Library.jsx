@@ -7,7 +7,7 @@ import InputText from "../components/InputText";
 import Footer from "../components/Footer";
 import { useState, useRef } from "react";
 
-export default function Library() {
+export default function Library({ userId }) {
   const {
     filteredBooks,
     search,
@@ -17,8 +17,8 @@ export default function Library() {
     setSortOption,
     sortOrder,
     setSortOrder,
-    uploadBook, // función del hook
-  } = useLibrary();
+    uploadBook,
+  } = useLibrary(userId);
 
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 9;
@@ -31,9 +31,9 @@ export default function Library() {
   const mostrarHeader = true;
   const fileInputRef = useRef(null);
 
-  // ----------------------------
-  // Funciones para subir libros
-  // ----------------------------
+  // -----------------------
+  // Subir libros
+  // -----------------------
   const handleAddBookClick = () => {
     fileInputRef.current.click();
   };
@@ -42,8 +42,7 @@ export default function Library() {
     const file = e.target.files[0];
     if (!file) return;
 
-    const userId = 1; // Cambiar por usuario logueado real
-    const result = await uploadBook(file, userId);
+    const result = await uploadBook(file);
 
     if (result.error) {
       alert(result.error);
@@ -71,7 +70,7 @@ export default function Library() {
             <p className="text-sm font-medium text-gray-700 mb-2">Buscar</p>
             <div className="relative">
               <InputText
-                placeholder="Usuarios y Librerías..."
+                placeholder="Buscar libros..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="pl-10"
@@ -137,13 +136,12 @@ export default function Library() {
             <p className="text-center text-gray-500 mt-10">Cargando libros...</p>
           ) : (
             <>
-              {/* Contenido scrollable */}
               <div className="flex-1 overflow-y-auto pb-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {currentBooks.map((book, index) => (
                     <div
                       key={index}
-                      className={`rounded-xl shadow-md p-4 bg-${book.color}-100 flex space-x-4 items-start`}
+                      className="rounded-xl shadow-md p-4 bg-gray-100 flex space-x-4 items-start"
                     >
                       {book.cover && (
                         <img
@@ -160,12 +158,12 @@ export default function Library() {
                             <Star
                               key={i}
                               size={14}
-                              fill={i < book.rating ? "currentColor" : "none"}
+                              fill={i < (book.rating || 0) ? "currentColor" : "none"}
                               stroke="currentColor"
                             />
                           ))}
                         </div>
-                        <p className="text-gray-400 text-xs">{book.date}</p>
+                        <p className="text-gray-400 text-xs">{book.created_at?.split("T")[0]}</p>
                       </div>
                     </div>
                   ))}

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE } from "../config/api";
 import es from "../assets/i18n/es.json";
+import { useUser } from "../context/userProvider";
 
 export function useLogin() {
   const [usuario, setUsuario] = useState("");
@@ -11,12 +12,20 @@ export function useLogin() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const { setUser, logout } = useUser(); // ✅ usamos logout del contexto
+
   const errorCodeMap = {
     "1001": es.login.requiredFields,
     "1002": es.login.requiredUsername,
     "1003": es.login.requiredPassword
-  }
-  
+  };
+
+  // Mapeo de id_role a rutas y nombres de rol
+  const roleMap = {
+    1: { name: "admin", path: "/admin" },
+    2: { name: "usuario", path: "/library" }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -36,9 +45,23 @@ export function useLogin() {
         return;
       }
 
+      // ✅ Limpiamos cualquier sesión previa
+      logout();
+
+      // ✅ Guardamos nuevo token y usuario
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
-      // navigate("/libreria");
+
+      // ✅ Actualizamos el contexto
+      setUser(data.user);
+
+      // ✅ Redirigimos según el rol
+      const roleInfo = roleMap[data.user.id_role];
+      if (roleInfo) {
+        navigate(roleInfo.path);
+      } else {
+        navigate("/");
+      }
 
     } catch (err) {
       console.error(err);

@@ -4,19 +4,27 @@ import Register from "./pages/Register";
 import RecoverPasswordPageOne from "./pages/RecoverPasswordPageOne";
 import RecoverPasswordPageTwo from "./pages/RecoverPasswordPageTwo";
 import Library from "./pages/Library";
+import { UserProvider } from "./context/userProvider"; // ✅ ruta correcta
+import { ProtectedRoute } from "./components/ProtectedRoute"; // ✅ protegido
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/recover-password-verify-user" element={<RecoverPasswordPageOne />} />
-        <Route path="/recover-password-enter-new-password" element={<RecoverPasswordPageTwo />} />
-        <Route path="/library" element={<Library />} />
-      </Routes>
-    </Router>
+    <UserProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/recover-password-verify-user" element={<RecoverPasswordPageOne />} />
+          <Route path="/recover-password-enter-new-password" element={<RecoverPasswordPageTwo />} />
+
+          {/* ✅ Rutas protegidas */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/library" element={<Library />} />
+          </Route>
+        </Routes>
+      </Router>
+    </UserProvider>
   );
 }
 

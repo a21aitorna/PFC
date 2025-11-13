@@ -1,30 +1,54 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_BASE } from "../config/api";
+import { useUser } from "../context/userProvider";
 
 export function useLibrary() {
+  const { user, loading: userLoading } = useUser();
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const [sortOption, setSortOption] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
 
-  const [sortOption, setSortOption] = useState(""); // "date" o "rating"
-  const [sortOrder, setSortOrder] = useState("asc"); // "asc" o "desc"
+  // -----------------------
+  // Cargar libros del usuario
+  // -----------------------
+  const fetchBooks = async () => {
+    if (!user?.id_user) {
+      setBooks([]);
+      setFilteredBooks([]);
+      setLoading(false);
+      return;
+    }
 
-  useEffect(() => {
-    // Carga inicial desde backend
     setLoading(true);
-    axios.get(`${API_BASE}/books/list`) // Endpoint opcional para listar libros
-      .then(res => {
-        setBooks(res.data);
-        setFilteredBooks(res.data);
-      })
-      .catch(err => console.error(err))
-      .finally(() => setLoading(false));
-  }, []);
+    try {
+      const res = await axios.get(`${API_BASE}/books/user/${user.id_user}`);
+      setBooks(res.data);
+      setFilteredBooks(res.data);
+    } catch (err) {
+      console.error("Error cargando libros:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  // -----------------------
+  // Cargar libros automáticamente al entrar o cambiar de usuario
+  // -----------------------
   useEffect(() => {
-    let filtered = books;
+    if (!userLoading && user?.id_user) {
+      fetchBooks();
+    }
+  }, [user?.id_user, userLoading]);
+
+  // -----------------------
+  // Filtrar y ordenar libros
+  // -----------------------
+  useEffect(() => {
+    let filtered = [...books];
 
     if (search) {
       filtered = filtered.filter(
@@ -35,13 +59,15 @@ export function useLibrary() {
     }
 
     if (sortOption) {
-      filtered = filtered.sort((a, b) => {
+      filtered.sort((a, b) => {
         if (sortOption === "date") {
-          const dateA = new Date(a.date.split("/").reverse().join("/"));
-          const dateB = new Date(b.date.split("/").reverse().join("/"));
+          const dateA = new Date(a.created_at);
+          const dateB = new Date(b.created_at);
           return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
         } else if (sortOption === "rating") {
-          return sortOrder === "asc" ? a.rating - b.rating : b.rating - a.rating;
+          return sortOrder === "asc"
+            ? (a.rating || 0) - (b.rating || 0)
+            : (b.rating || 0) - (a.rating || 0);
         }
         return 0;
       });
@@ -50,28 +76,28 @@ export function useLibrary() {
     setFilteredBooks(filtered);
   }, [search, books, sortOption, sortOrder]);
 
-  // ----------------------------
-  // Nueva función para subir libros
-  // ----------------------------
-  const uploadBook = async (file, userId) => {
+  // -----------------------
+  // Subir libro
+  // -----------------------
+  const uploadBook = async (file) => {
     if (!file) return { error: "No se seleccionó ningún archivo" };
+    if (!user?.id_user) return { error: "Usuario no logueado" };
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("user_id", userId);
+    formData.append("user_id", user.id_user);
 
     try {
       const res = await axios.post(`${API_BASE}/books/upload`, formData, {
-        headers: { "Content-Type": "multipart/form-data" }
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
-      // Agregamos el libro recién subido al estado
-      setBooks(prev => [res.data.book, ...prev]);
-      setFilteredBooks(prev => [res.data.book, ...prev]);
+      setBooks((prev) => [res.data.book, ...prev]);
+      setFilteredBooks((prev) => [res.data.book, ...prev]);
 
       return { success: true, book: res.data.book };
     } catch (err) {
-      console.error(err);
+      console.error("Error subiendo libro:", err);
       return { error: err.response?.data?.error || "Error al subir el libro" };
     }
   };
@@ -79,13 +105,14 @@ export function useLibrary() {
   return {
     books,
     filteredBooks,
+    loading,
     search,
     setSearch,
-    loading,
     sortOption,
     setSortOption,
     sortOrder,
     setSortOrder,
-    uploadBook, // <-- nueva función
+    uploadBook,
+    fetchBooks,
   };
 }

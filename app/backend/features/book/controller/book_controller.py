@@ -1,11 +1,12 @@
 from flask import request, jsonify
 from repo import books_repo
+from repo.users_repo import get_user_by_user_id
 from exceptions.http_status import (
+    USER_NOT_FOUND_MSG,
     BAD_REQUEST_BOOK_NOT_FOUND_UPLOAD_BOOK,
     BAD_REQUEST_USER_NOT_FOUND_UPLOAD_BOOK,
     BAD_REQUEST_INVALID_FILE_UPLOAD_BOOK
 )
-import os
 
 ALLOWED_EXTENSIONS = {'pdf', 'epub'}
 
@@ -13,7 +14,7 @@ def allowed_file(filename):
     """Revisa los formatos de los libros, permitiendo sólo PDF y EPUB"""
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def upload_book():
+def upload_book_controller():
     """Subir libro y devolver rutas relativas de libro y portada para front"""
     
     # Validar archivo
@@ -52,3 +53,20 @@ def upload_book():
         },
         'uploaded_by_user': user_id
     })
+    
+def get_user_books_controller(user_id):
+    """Obtener todos los libros de un usuario y devolver JSON listo para el front"""
+    user = get_user_by_user_id(user_id)
+    if not user:
+        return USER_NOT_FOUND_MSG
+    libros = books_repo.get_user_books(user_id)
+    result = []
+    for libro in libros:
+        result.append({
+            "id_book": libro.id_book,
+            "title": libro.title,
+            "author": libro.author,
+            "cover": f"/{libro.cover}" if libro.cover else None,
+            "file": f"/{libro.file}" if libro.file else None,
+        })
+    return jsonify(result)
