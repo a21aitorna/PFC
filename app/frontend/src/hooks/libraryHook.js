@@ -12,9 +12,6 @@ export function useLibrary() {
   const [sortOption, setSortOption] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
-  // -----------------------
-  // Cargar libros del usuario
-  // -----------------------
   const fetchBooks = async () => {
     if (!user?.id_user) {
       setBooks([]);
@@ -35,18 +32,12 @@ export function useLibrary() {
     }
   };
 
-  // -----------------------
-  // Cargar libros automáticamente al entrar o cambiar de usuario
-  // -----------------------
   useEffect(() => {
     if (!userLoading && user?.id_user) {
       fetchBooks();
     }
   }, [user?.id_user, userLoading]);
 
-  // -----------------------
-  // Filtrar y ordenar libros
-  // -----------------------
   useEffect(() => {
     let filtered = [...books];
 
@@ -76,9 +67,7 @@ export function useLibrary() {
     setFilteredBooks(filtered);
   }, [search, books, sortOption, sortOrder]);
 
-  // -----------------------
-  // Subir libro
-  // -----------------------
+ 
   const uploadBook = async (file) => {
     if (!file) return { error: "No se seleccionó ningún archivo" };
     if (!user?.id_user) return { error: "Usuario no logueado" };

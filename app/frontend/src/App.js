@@ -4,8 +4,8 @@ import Register from "./pages/Register";
 import RecoverPasswordPageOne from "./pages/RecoverPasswordPageOne";
 import RecoverPasswordPageTwo from "./pages/RecoverPasswordPageTwo";
 import Library from "./pages/Library";
-import { UserProvider } from "./context/userProvider"; // ✅ ruta correcta
-import { ProtectedRoute } from "./components/ProtectedRoute"; // ✅ protegido
+import { UserProvider } from "./context/userProvider"; 
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function App() {
   return (

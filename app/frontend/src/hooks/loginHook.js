@@ -45,17 +45,13 @@ export function useLogin() {
         return;
       }
 
-      // ✅ Limpiamos cualquier sesión previa
       logout();
 
-      // ✅ Guardamos nuevo token y usuario
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      // ✅ Actualizamos el contexto
       setUser(data.user);
 
-      // ✅ Redirigimos según el rol
       const roleInfo = roleMap[data.user.id_role];
       if (roleInfo) {
         navigate(roleInfo.path);
