@@ -5,6 +5,7 @@ import Background from "../components/Background";
 import Header from "../components/Header";
 import InputText from "../components/InputText";
 import Footer from "../components/Footer";
+import PanelCard from "../components/PanelCard";
 import { useState, useRef } from "react";
 
 export default function Library({ userId }) {
@@ -28,12 +29,8 @@ export default function Library({ userId }) {
   const currentBooks = filteredBooks.slice(indexOfFirst, indexOfLast);
   const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
 
-  const mostrarHeader = true;
   const fileInputRef = useRef(null);
 
-  // -----------------------
-  // Subir libros
-  // -----------------------
   const handleAddBookClick = () => {
     fileInputRef.current.click();
   };
@@ -54,19 +51,19 @@ export default function Library({ userId }) {
   return (
     <Background>
       {/* Header fijo */}
-      {mostrarHeader && (
-        <div className="fixed top-0 left-0 w-full z-50 h-16">
-          <Header />
-        </div>
-      )}
+      <div className="fixed top-0 left-0 w-full z-50 h-16">
+        <Header />
+      </div>
 
-      {/* Contenedor principal */}
+      {/* Layout */}
       <div className="mt-16 mb-16 flex flex-col md:flex-row w-full max-w-7xl flex-1 px-6 py-8 
                       space-y-6 md:space-y-0 md:space-x-6 mx-auto h-auto">
-        {/* Panel lateral izquierdo */}
+
+        {/* Sidebar */}
         <aside className="md:w-1/4 space-y-6 flex-shrink-0">
+
           {/* Buscar */}
-          <div className="bg-white/90 rounded-2xl shadow-lg p-4">
+          <PanelCard>
             <p className="text-sm font-medium text-gray-700 mb-2">Buscar</p>
             <div className="relative">
               <InputText
@@ -77,15 +74,15 @@ export default function Library({ userId }) {
               />
               <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
             </div>
-          </div>
+          </PanelCard>
 
           {/* Ordenar */}
-          <div className="bg-white/90 rounded-2xl shadow-lg p-4">
+          <PanelCard>
             <p className="text-sm font-medium text-gray-700 mb-2">Ordenar por</p>
             <select
               value={sortOption}
               onChange={(e) => setSortOption(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-2 py-1 mt-1 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              className="w-full border border-gray-300 rounded-lg px-2 py-1 mt-1 text-sm"
             >
               <option value="">-- Seleccionar --</option>
               <option value="date">Fecha</option>
@@ -96,52 +93,55 @@ export default function Library({ userId }) {
               <select
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg px-2 py-1 mt-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                className="w-full border border-gray-300 rounded-lg px-2 py-1 mt-2 text-sm"
               >
                 <option value="asc">Ascendente</option>
                 <option value="desc">Descendente</option>
               </select>
             )}
-          </div>
+          </PanelCard>
+
         </aside>
 
-        {/* Sección principal */}
-        <main className="flex-1 bg-white/90 rounded-2xl shadow-lg p-6 flex flex-col 
-                         max-h-[calc(100vh-8rem)]">
-          {/* Header dentro de la card */}
+        {/* Contenedor principal */}
+        <PanelCard className="flex-1 flex flex-col max-h-[calc(100vh-8rem)]">
+
+          {/* Encabezado */}
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800">
-              Mi Librería{" "}
-              <span className="text-sm text-gray-500">({filteredBooks.length} libros)</span>
+              Mi Librería <span className="text-sm text-gray-500">
+                ({filteredBooks.length} libros)
+              </span>
             </h2>
-            <div>
-              <button
-                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm transition-all"
-                onClick={handleAddBookClick}
-              >
-                <Plus size={16} /> Añadir Libro
-              </button>
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-                accept=".pdf,.epub"
-              />
-            </div>
+
+            <button
+              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm"
+              onClick={handleAddBookClick}
+            >
+              <Plus size={16} /> Añadir Libro
+            </button>
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              style={{ display: "none" }}
+              accept=".pdf,.epub"
+            />
           </div>
 
-          {/* Loader o grid */}
+          {/* Carga o contenido */}
           {loading ? (
             <p className="text-center text-gray-500 mt-10">Cargando libros...</p>
           ) : (
             <>
+              {/* Grid de libros */}
               <div className="flex-1 overflow-y-auto pb-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {currentBooks.map((book, index) => (
                     <div
                       key={index}
-                      className="rounded-xl shadow-md p-4 bg-gray-100 flex space-x-4 items-start"
+                      className="rounded-xl shadow-md p-4 bg-white/60 backdrop-blur-sm border border-white/20 flex space-x-4 items-start"
                     >
                       {book.cover && (
                         <img
@@ -150,9 +150,12 @@ export default function Library({ userId }) {
                           className="w-20 h-28 object-cover rounded-md flex-shrink-0"
                         />
                       )}
-                      <div className="flex-1 flex flex-col text-sm text-gray-800">
+
+                      <div className="flex-1 text-sm text-gray-800">
                         <h3 className="font-semibold">{book.title}</h3>
                         <p className="text-gray-600">{book.author}</p>
+
+                        {/* Rating */}
                         <div className="flex items-center space-x-1 text-yellow-500">
                           {[...Array(5)].map((_, i) => (
                             <Star
@@ -163,7 +166,10 @@ export default function Library({ userId }) {
                             />
                           ))}
                         </div>
-                        <p className="text-gray-400 text-xs">{book.created_at?.split("T")[0]}</p>
+
+                        <p className="text-gray-400 text-xs">
+                          {book.created_at?.split("T")[0]}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -190,7 +196,8 @@ export default function Library({ userId }) {
               )}
             </>
           )}
-        </main>
+        </PanelCard>
+
       </div>
 
       {/* Footer fijo */}

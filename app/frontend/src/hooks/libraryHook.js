@@ -12,6 +12,26 @@ export function useLibrary() {
   const [sortOption, setSortOption] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
 
+  const ALLOWED_EXTENSIONS = ['pdf', 'epub'];
+
+  //Verificar tipo de archivos
+  const allowedFile = (filename) => {
+    // Validar que filename sea un string
+    if (typeof filename !== 'string') return false;
+    
+    // Debe contener un punto
+    if (!filename.includes('.')) return false;
+
+    // Extraer la extensión
+    const ext = filename.split('.').pop().toLowerCase();
+
+    // Revisar si está permitida
+    return ALLOWED_EXTENSIONS.includes(ext);
+  };
+
+  // -------------------------------
+  // FETCH BOOKS DEL USUARIO
+  // -------------------------------
   const fetchBooks = async () => {
     if (!user?.id_user) {
       setBooks([]);
@@ -38,6 +58,9 @@ export function useLibrary() {
     }
   }, [user?.id_user, userLoading]);
 
+  // -------------------------------
+  // FILTRADO Y ORDENAMIENTO
+  // -------------------------------
   useEffect(() => {
     let filtered = [...books];
 
@@ -67,10 +90,13 @@ export function useLibrary() {
     setFilteredBooks(filtered);
   }, [search, books, sortOption, sortOrder]);
 
- 
+  // -------------------------------
+  // SUBIR LIBRO
+  // -------------------------------
   const uploadBook = async (file) => {
     if (!file) return { error: "No se seleccionó ningún archivo" };
     if (!user?.id_user) return { error: "Usuario no logueado" };
+    if (!allowedFile(file.name)) return { error: "Formato no permitido" };
 
     const formData = new FormData();
     formData.append("file", file);
@@ -81,10 +107,21 @@ export function useLibrary() {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      setBooks((prev) => [res.data.book, ...prev]);
-      setFilteredBooks((prev) => [res.data.book, ...prev]);
+      // Normalizar la portada para que cargue desde el backend inmediatamente
+      const uploaded = res.data.book;
+      const coverFileName = uploaded.cover ? uploaded.cover.split("/").pop() : null;
 
-      return { success: true, book: res.data.book };
+      const normalizedBook = {
+        ...uploaded,
+        cover: coverFileName ? `${API_BASE}/books/cover/${coverFileName}` : null,
+      };
+
+      // Actualizamos el estado para mostrar inmediatamente
+      setBooks((prev) => [normalizedBook, ...prev]);
+      setFilteredBooks((prev) => [normalizedBook, ...prev]);
+
+      return { success: true, book: normalizedBook };
+
     } catch (err) {
       console.error("Error subiendo libro:", err);
       return { error: err.response?.data?.error || "Error al subir el libro" };
