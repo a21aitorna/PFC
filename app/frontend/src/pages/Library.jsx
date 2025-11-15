@@ -1,4 +1,4 @@
-import { Search, Plus, Star, LogOut } from "lucide-react";
+import { Search, Plus, Star, Download, Trash2 } from "lucide-react";
 import { useLibrary } from "../hooks/libraryHook";
 import { useUser } from "../context/userProvider";
 
@@ -154,7 +154,7 @@ export default function Library({ userId }) {
             {/* Encabezado: Mi Librería + Añadir libro */}
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-800">
-                Mi Librería <span className="text-sm text-gray-500">
+                Mi Librería  <span className="text-sm text-gray-500">
                   ({filteredBooks.length} libros)
                 </span>
               </h2>
@@ -209,6 +209,22 @@ export default function Library({ userId }) {
                                 stroke="currentColor"
                               />
                             ))}
+                          </div>
+
+                          <div className="flex items-center gap-4 mt-2">
+                            <button
+                              className="flex items-center justify-center p-1 rounded-lg hover:bg-gray-200"
+                              title="Descargar"
+                            >
+                              <Download size={18} />
+                            </button>
+
+                            <button
+                              className="flex items-center justify-center p-1 rounded-lg hover:bg-gray-200"
+                              title="Eliminar"
+                            >
+                              <Trash2 size={18} />
+                            </button>
                           </div>
 
                           <p className="text-gray-400 text-xs">
