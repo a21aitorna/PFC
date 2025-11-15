@@ -7,15 +7,14 @@ import { useUser } from "../context/userProvider";
 export function useLibrary() {
   const { user, loading: userLoading } = useUser();
   
-  // 👍 Aquí sí puedes usar el Hook.
   const navigate = useNavigate();
 
   const goToUserLibrary = (userId) => {
     navigate(`/library/${userId}`);
   };
-  // -------------------------------
+ 
   // ESTADOS BASE
-  // -------------------------------
+  const [libraryName, setLibraryName] = useState("");
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [search, setSearch] = useState("");
@@ -25,16 +24,13 @@ export function useLibrary() {
 
   const ALLOWED_EXTENSIONS = ["pdf", "epub"];
 
-  // -------------------------------
   // ESTADO DEL BUSCADOR GLOBAL
-  // -------------------------------
   const [userQuery, setUserQuery] = useState("");
   const [userResults, setUserResults] = useState([]);
   const [loadingUserSearch, setLoadingUserSearch] = useState(false);
 
-  // -------------------------------
-  // LÓGICA: BUSCAR USUARIOS / LIBRERÍAS
-  // -------------------------------
+
+  // Buscar usuarios/librerías
   useEffect(() => {
     if (userQuery.trim() === "") {
       setUserResults([]);
@@ -58,9 +54,7 @@ export function useLibrary() {
     return () => clearTimeout(delay);
   }, [userQuery]);
 
-  // -------------------------------
-  // VERIFICAR TIPO DE ARCHIVO
-  // -------------------------------
+  // Verifica el tipo de  archivo
   const allowedFile = (filename) => {
     if (typeof filename !== "string") return false;
     if (!filename.includes(".")) return false;
@@ -68,9 +62,30 @@ export function useLibrary() {
     return ALLOWED_EXTENSIONS.includes(ext);
   };
 
-  // -------------------------------
-  // FETCH BOOKS DEL USUARIO
-  // -------------------------------
+  // Fetch para obtener el nombre de la librería
+  const fetchLibraryName = async () => {
+    if (!user?.username) return;
+
+    try {
+      const res = await axios.get(`${API_BASE}/library-name?username=${encodeURIComponent(user.username)}`);
+      if(res.data?.library_name) {
+        setLibraryName(res.data.library_name);
+      }
+
+    } catch (error) {
+      console.error("Error obteniendo el nombre de la librería")
+    }
+
+  }
+
+  // Cargar nombre de librería también cuando user está listo
+  useEffect(() => {
+    if (!userLoading && user?.username) {
+      fetchLibraryName();
+    }
+  }, [user?.username, userLoading]);
+
+  // Fetch para obtener los libros del usuario
   const fetchBooks = async () => {
     if (!user?.id_user) {
       setBooks([]);
@@ -129,9 +144,8 @@ export function useLibrary() {
     setFilteredBooks(filtered);
   }, [search, books, sortOption, sortOrder]);
 
-  // -------------------------------
-  // SUBIR LIBRO
-  // -------------------------------
+
+  // Subir un libro
   const uploadBook = async (file) => {
     if (!file) return { error: "No se seleccionó ningún archivo" };
     if (!user?.id_user) return { error: "Usuario no logueado" };
@@ -168,29 +182,19 @@ export function useLibrary() {
     }
   };
 
-  // -------------------------------
-  // RETURN DEL HOOK
-  // -------------------------------
   return {
     books,
     filteredBooks,
     loading,
-
-    // búsqueda local libros
     search,
     setSearch,
-
-    // ordenamiento
     sortOption,
     setSortOption,
     sortOrder,
     setSortOrder,
-
-    // upload
+    libraryName,
     uploadBook,
     fetchBooks,
-
-    // *** buscador global ***
     userQuery,
     setUserQuery,
     userResults,

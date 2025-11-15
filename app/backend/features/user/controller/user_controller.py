@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from validations.password_validation import validate_password
 from validations.age_validation import age_validation
-from repo.users_repo import (get_user_by_username, save_user, get_security_question_by_username, get_answer_by_username, get_password_by_username, update_user_password)
+from repo.users_repo import (get_user_by_username, save_user, get_security_question_by_username, get_answer_by_username, get_password_by_username, update_user_password, get_user_library_name)
 from dao.persona_dao import Persona
 from exceptions.http_status import (USER_NOT_FOUND_MSG, INTERNAL_SERVER_ERROR_MSG, BAD_REQUEST_EMPTY_REGISTER_MSG, BAD_REQUEST_PASSWORD_MISMATCH_REGISTER_MSG, 
                                     BAD_REQUEST_INVALID_PASSWORD_REGISTER_MSG, BAD_REQUEST_INVALID_DATE_REGISTER_MSG, BAD_REQUEST_UNDERAGE_REGISTER_MSG, BAD_REQUEST_USERNAME_ALREADY_EXISTS_REGISTER_MSG, 
@@ -154,3 +154,23 @@ def update_new_password():
     
     except Exception as e:
         return INTERNAL_SERVER_ERROR_MSG
+    
+def get_user_library_name_controller():
+    """Devuelve el nombre de la librería del usuario"""
+    try:
+        username = request.args.get("username")
+        #Valida si existe el nomnbre de usuario
+        if not username:
+            return BAD_REQUEST_USERNAME_NOT_FOUND_MSG
+        
+        user = get_user_by_username(username)
+        #Valida si existe el usuario
+        if not user:
+            return USER_NOT_FOUND_MSG
+        
+        library_name = get_user_library_name(username)
+        return jsonify({"library_name": library_name}), 200
+    
+    except Exception as e:
+        print(f"Error al intentar obtener el nombre de la librería: {e}")
+        

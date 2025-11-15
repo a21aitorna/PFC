@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flasgger import swag_from
-from features.user.controller.user_controller import register_user, verify_recover_user, get_security_question, update_new_password
+from features.user.controller.user_controller import register_user, verify_recover_user, get_security_question, update_new_password, get_user_library_name_controller
 
 user_routes = Blueprint('user_routes', __name__, url_prefix="/api")
 
@@ -31,3 +31,7 @@ def get_security_question_route():
 @swag_from(recover_password_update_password_path)
 def update_new_password_route():
     return update_new_password()
+
+@user_routes.get('/library-name')
+def get_library_name():
+    return get_user_library_name_controller()

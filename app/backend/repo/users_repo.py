@@ -44,3 +44,8 @@ def update_user_password(username, hashed_password):
     # db.session.flush() -> se escribe en base de datos pero no confirma el cambio
     db.session.commit()
     return user
+
+def get_user_library_name(username):
+    """Obtener el nombre de la librería del usuario"""
+    user = get_user_by_username(username)
+    return user.library_name

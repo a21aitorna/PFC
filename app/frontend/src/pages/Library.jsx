@@ -19,6 +19,7 @@ export default function Library({ userId }) {
     setSortOption,
     sortOrder,
     setSortOrder,
+    libraryName,
     uploadBook,
     userQuery,
     setUserQuery,
@@ -27,6 +28,7 @@ export default function Library({ userId }) {
   } = useLibrary(userId);
 
   const { user, logout} = useUser();
+  console.log("USER:", user);
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 9;
 
@@ -154,7 +156,8 @@ export default function Library({ userId }) {
             {/* Encabezado: Mi Librería + Añadir libro */}
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-800">
-                Mi Librería  <span className="text-sm text-gray-500">
+                {libraryName || "ESTA MIERDA NO FUCA"}{" "}<span className="text-sm text-gray-500">
+                
                   ({filteredBooks.length} libros)
                 </span>
               </h2>
