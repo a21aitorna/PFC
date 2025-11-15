@@ -1,5 +1,6 @@
-import { Search, Plus, Star } from "lucide-react";
+import { Search, Plus, Star, LogOut } from "lucide-react";
 import { useLibrary } from "../hooks/libraryHook";
+import { useUser } from "../context/userProvider";
 
 import Background from "../components/Background";
 import Header from "../components/Header";
@@ -25,6 +26,7 @@ export default function Library({ userId }) {
     goToUserLibrary
   } = useLibrary(userId);
 
+  const { user, logout} = useUser();
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 9;
 
@@ -56,8 +58,9 @@ export default function Library({ userId }) {
     <Background>
       {/* Header fijo */}
       <div className="fixed top-0 left-0 w-full z-50 h-16">
-        <Header />
+        <Header user={user} logout={logout} />
       </div>
+
 
       {/* Contenedor principal */}
       <div className="mt-20 mb-16 w-full max-w-7xl mx-auto px-6 flex flex-col space-y-6">
