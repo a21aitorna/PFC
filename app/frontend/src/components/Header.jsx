@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { LogOut } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { useUser } from "../context/userProvider";
 import logoAtenea from "../assets/images/logoAtenea.png";
 
@@ -39,12 +39,21 @@ export default function Header() {
 
 
       {user && (
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-1 text-white hover:text-red-500"
-        >
-          <LogOut size={24} />
-        </button>
+        <div className="flex items-center gap-4">
+          {/* Icono y nombre de usuario */}
+          <div className="flex items-center gap-2 text-white">
+            <User size={20} />
+            <span className="font-medium">{user.username}</span>
+          </div>
+
+          {/* Botón logout */}
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-1 text-white hover:text-red-500"
+          >
+            <LogOut size={24} />
+          </button>
+        </div>
       )}
     </header>
   );
