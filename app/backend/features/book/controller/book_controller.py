@@ -1,4 +1,6 @@
-from flask import request, jsonify
+# import logging
+from flask import request, jsonify, abort,send_from_directory
+from werkzeug.utils import secure_filename
 from repo import books_repo
 from repo.users_repo import get_user_by_user_id
 from exceptions.http_status import (
@@ -7,17 +9,18 @@ from exceptions.http_status import (
     BAD_REQUEST_USER_NOT_FOUND_UPLOAD_BOOK,
     BAD_REQUEST_INVALID_FILE_UPLOAD_BOOK
 )
+import os
 
 ALLOWED_EXTENSIONS = {'pdf', 'epub'}
 
 def allowed_file(filename):
-    """Revisa los formatos de los libros, permitiendo sólo PDF y EPUB"""
+    """Revisa los formatos permitidos."""
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
 def upload_book_controller():
-    """Subir libro y devolver rutas relativas de libro y portada para front"""
+    """Subir libro y devolver rutas de libro y portada para el front."""
     
-    # Validar archivo
     if 'file' not in request.files:
         return BAD_REQUEST_BOOK_NOT_FOUND_UPLOAD_BOOK
 
@@ -30,17 +33,17 @@ def upload_book_controller():
     if file.filename == '' or not allowed_file(file.filename):
         return BAD_REQUEST_INVALID_FILE_UPLOAD_BOOK
 
-    # Guardar archivo físico en uploads/books
+    # Guardar libro físico
     file_path, filename = books_repo.save_book_file(file)
 
-    # Guardar libro y portada en DB
+    # Guardar libro + portada en BD
     libro, error = books_repo.save_book(file_path, filename, user_id)
     if error:
         return jsonify({'error': error}), 500
 
-    # Rutas relativas que podrá usar el front
-    book_file_url = f"/uploads/{libro.file}" if libro.file else None
-    cover_file_url = f"/uploads/{libro.cover}" if libro.cover else None
+    # Generar URLs
+    book_file_url = f"/api/books/file/{libro.file}" if libro.file else None
+    cover_file_url = f"/api/books/cover/{libro.cover}" if libro.cover else None
 
     return jsonify({
         'message': 'Libro subido exitosamente',
@@ -53,20 +56,70 @@ def upload_book_controller():
         },
         'uploaded_by_user': user_id
     })
-    
+
+
+
 def get_user_books_controller(user_id):
-    """Obtener todos los libros de un usuario y devolver JSON listo para el front"""
+    """Devuelve todos los libros de un usuario."""
+    
     user = get_user_by_user_id(user_id)
     if not user:
         return USER_NOT_FOUND_MSG
+
     libros = books_repo.get_user_books(user_id)
     result = []
+
     for libro in libros:
         result.append({
             "id_book": libro.id_book,
             "title": libro.title,
             "author": libro.author,
-            "cover": f"/{libro.cover}" if libro.cover else None,
-            "file": f"/{libro.file}" if libro.file else None,
+
+            "cover": f"http://localhost:5000/api/books/cover/{libro.cover}"
+                     if libro.cover else None,
+
+            "file": f"http://localhost:5000/api/books/file/{libro.file}"
+                    if libro.file else None,
         })
+
     return jsonify(result)
+
+def get_book_cover_controller(filename):
+    """Devuelve una portada desde uploads/covers."""
+    filename = secure_filename(filename)
+
+    base_folder = os.path.join(os.path.dirname(__file__), '..', '..', 'uploads', 'covers')
+    file_path = os.path.join(base_folder, filename)
+
+    if not os.path.exists(file_path):
+        abort(404)
+
+    from flask import send_from_directory
+    return send_from_directory(base_folder, filename)
+
+
+
+def get_book_cover_controller(filename):
+    # logging.info(f"Solicitando portada: {filename}")
+
+    # Carpeta real donde deberían estar las portadas
+    base_folder = os.path.join(
+        os.path.dirname(__file__),
+        '..', '..', '..', 'uploads', 'covers'
+    )
+
+    # Normalizamos la ruta
+    base_folder = os.path.abspath(base_folder)
+
+    # file_path = os.path.join(base_folder, filename)
+
+    #  Logs para depuración
+    # logging.info(f" Carpeta base donde busca imágenes: {base_folder}")
+    # logging.info(f"Ruta completa del archivo buscado: {file_path}")
+    # logging.info(f"¿Existe el archivo?: {'Sí' if os.path.exists(file_path) else 'No'}")
+
+    # if not os.path.exists(file_path):
+    #     logging.error(f" Portada NO encontrada en: {file_path}")
+    #     abort(404, description="Portada no encontrada")
+
+    return send_from_directory(base_folder, filename)

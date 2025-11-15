@@ -16,52 +16,63 @@ UPLOADS_FOLDER = os.path.join(BASE_DIR, '../uploads')   # backend/uploads
 BOOKS_FOLDER = os.path.join(UPLOADS_FOLDER, 'books')
 COVERS_FOLDER = os.path.join(UPLOADS_FOLDER, 'covers')
 
+
+# ------------------------------
+# utilidades
+# ------------------------------
+
 def ensure_directories():
     """Asegura que existan los directorios necesarios"""
     os.makedirs(BOOKS_FOLDER, exist_ok=True)
     os.makedirs(COVERS_FOLDER, exist_ok=True)
 
+
 def save_book_file(file_storage) -> Tuple[str, str]:
-    """Guardar el libro (PDF/EPUB)B"""
+    """
+    Guarda el archivo del libro en uploads/books (devuelve la ruta absoluta y el filename).
+    """
     ensure_directories()
+
     filename = secure_filename(file_storage.filename)
     unique_filename = f"{uuid.uuid4().hex}_{filename}"
+
     file_path = os.path.join(BOOKS_FOLDER, unique_filename)
     file_storage.save(file_path)
+
     print(f"Archivo guardado en: {os.path.abspath(file_path)}")
-    relative_path = os.path.join('uploads', 'books', unique_filename)
-    return file_path, relative_path
+
+    return file_path, unique_filename  # SOLO filename para la base de datos
+
 
 def save_cover(cover_path) -> Optional[str]:
-    """Guardar la portada y retornar ruta para DB: uploads/covers/..."""
+    """
+    Guarda la portada en uploads/covers y devuelve solo el filename.
+    """
     if not cover_path or not os.path.exists(cover_path):
         return None
 
     try:
         ensure_directories()
-        # SOLO el nombre del archivo
+
         original_filename = os.path.basename(cover_path)
         cover_filename = f"{uuid.uuid4().hex}_{original_filename}"
+
         new_cover_path = os.path.join(COVERS_FOLDER, cover_filename)
-        
-        # Copiar la imagen a COVERS_FOLDER
+
         shutil.copy2(cover_path, new_cover_path)
-        
-        # Intentar eliminar el archivo temporal original
+
         try:
             os.remove(cover_path)
         except OSError as e:
             print(f"Advertencia: No se pudo eliminar archivo temporal {cover_path}: {e}")
 
-        # Ruta relativa correcta para la DB
-        return os.path.join('uploads', 'covers', cover_filename)
-
+        return cover_filename  # <-- SOLO nombre
     except Exception as e:
         print(f"Error guardando portada: {e}")
         return None
 
+
 def get_or_create_category(cat_name):
-    """Obtener o crear categoría"""
     category = Categoria.query.filter_by(category_name=cat_name).first()
     if not category:
         category = Categoria(category_name=cat_name)
@@ -69,52 +80,54 @@ def get_or_create_category(cat_name):
         db.session.flush()
     return category
 
+
 def save_book_categories(libro, categories):
-    """Guardar las categorías del libro"""
     for cat_name in categories:
         if cat_name and cat_name.strip():
             category = get_or_create_category(cat_name.strip())
             libro_categoria = LibroCategoria(book_id=libro.id_book, category_id=category.id_category)
             db.session.add(libro_categoria)
 
+
 def save_book(file_path: str, filename: str, user_id: int) -> Tuple[Optional[Libro], Optional[str]]:
-    """Guardar libro en DB y portada"""
+    """
+    Guarda el libro, su portada y metadatos en BD.
+    filename -> el nombre del archivo del libro.
+    """
     metadata = extract_metadata(file_path, filename)
     if not metadata:
         return None, "No se pudieron extraer metadatos"
 
     try:
-        # Guardar la portada y obtener ruta para DB
-        relative_cover_path = save_cover(metadata.get('cover_path'))
-        
-        # Ruta del libro para DB: uploads/books/archivo.epub
-        relative_file_path = os.path.join('uploads', 'books', os.path.basename(file_path))
+        # Guardar portada: devuelve SOLO filename
+        cover_filename = save_cover(metadata.get('cover_path'))
 
-        # Crear libro en DB
+        book_filename = filename  # filename ya es solo el nombre del archivo
+
         libro = Libro(
             title=metadata.get('title', 'Sin título'),
             author=metadata.get('author', 'Autor desconocido'),
-            cover=relative_cover_path,
-            file=relative_file_path
+            cover=cover_filename,
+            file=book_filename
         )
         db.session.add(libro)
         db.session.flush()
 
-        # Guardar categorías
+        # Categorías
         save_book_categories(libro, metadata.get('categories', []))
 
-        # Registrar subida del usuario
+        # Relación usuario - libro
         subida = LibroSubido(user_id=user_id, book_id=libro.id_book)
         db.session.add(subida)
-        
+
         db.session.commit()
         return libro, None
 
     except Exception as e:
         db.session.rollback()
         print(f"Error al guardar libro: {e}")
-        
-        # Limpiar archivos en caso de error
+
+        # Limpieza
         try:
             if os.path.exists(file_path):
                 os.remove(file_path)
@@ -122,15 +135,13 @@ def save_book(file_path: str, filename: str, user_id: int) -> Tuple[Optional[Lib
                 os.remove(metadata['cover_path'])
         except Exception as cleanup_error:
             print(f"Error en limpieza: {cleanup_error}")
-            
+
         return None, f"Error en base de datos: {str(e)}"
 
 def get_user_books(user_id: int):
-    """Obtener todos los libros subidos por un usuario"""
-    libros = (
+    return (
         db.session.query(Libro)
         .join(LibroSubido, Libro.id_book == LibroSubido.book_id)
         .filter(LibroSubido.user_id == user_id)
         .all()
     )
-    return libros
