@@ -180,6 +180,30 @@ export function useLibrary() {
     }
   };
 
+  const deleteBook = async (bookId) => {
+  if (!user?.id_user) return { error: "Usuario no logueado" };
+
+  try {
+    const res = await axios.delete(
+      `${API_BASE}/books/delete/user/${user.id_user}/book/${bookId}`
+    );
+
+    // 🔥 Si el borrado fue exitoso → actualiza el estado
+    if (res.data && res.data.code === "4000") { // AJUSTA segun tu backend
+      setBooks(prev => prev.filter(b => b.id_book !== bookId));
+      setFilteredBooks(prev => prev.filter(b => b.id_book !== bookId));
+      return { success: true };
+    }
+
+    return { error: res.data?.msg || "Error eliminando el libro" };
+
+  } catch (err) {
+    console.error("🔥 Error eliminando libro:", err);
+    return { error: "Error eliminando el libro" };
+  }
+};
+
+
   return {
     books,
     filteredBooks,
@@ -197,6 +221,7 @@ export function useLibrary() {
     setUserQuery,
     userResults,
     loadingUserSearch,
-    goToUserLibrary
+    goToUserLibrary,
+    deleteBook
   };
 }

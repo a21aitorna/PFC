@@ -24,7 +24,8 @@ export default function Library({ userId }) {
     userQuery,
     setUserQuery,
     userResults,
-    goToUserLibrary
+    goToUserLibrary,
+    deleteBook
   } = useLibrary(userId);
 
   const { user, logout} = useUser();
@@ -53,6 +54,20 @@ export default function Library({ userId }) {
       alert(result.error);
     } else {
       alert(`Libro "${result.book.title}" subido correctamente`);
+    }
+  };
+
+  const handleDelete = async (book) => {
+    const ok =  window.confirm(`¿Seguro que quieres eliminarlo? Esta acción es irreversible`)
+    if(!ok) return;
+
+    const result = await deleteBook(book.id_book);
+
+    if (result.error){
+      alert(result.error);
+    }
+    else {
+      alert("Libro eliminado correctamente");
     }
   };
 
@@ -225,6 +240,7 @@ export default function Library({ userId }) {
                             <button
                               className="flex items-center justify-center p-1 rounded-lg hover:bg-gray-200"
                               title="Eliminar"
+                              onClick={() => handleDelete(book)}
                             >
                               <Trash2 size={18} />
                             </button>
