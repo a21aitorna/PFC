@@ -188,8 +188,7 @@ export function useLibrary() {
       `${API_BASE}/books/delete/user/${user.id_user}/book/${bookId}`
     );
 
-    // 🔥 Si el borrado fue exitoso → actualiza el estado
-    if (res.data && res.data.code === "4000") { // AJUSTA segun tu backend
+    if (res.status === 200) { 
       setBooks(prev => prev.filter(b => b.id_book !== bookId));
       setFilteredBooks(prev => prev.filter(b => b.id_book !== bookId));
       return { success: true };
