@@ -1,15 +1,20 @@
-# import logging
+import logging
+import os
 from flask import request, jsonify, abort,send_from_directory
 from werkzeug.utils import secure_filename
-from repo import books_repo
+from repo.books_repo import save_book_file, save_book, get_user_books, delete_book
 from repo.users_repo import get_user_by_user_id
 from exceptions.http_status import (
     USER_NOT_FOUND_MSG,
     BAD_REQUEST_BOOK_NOT_FOUND_UPLOAD_BOOK,
     BAD_REQUEST_USER_NOT_FOUND_UPLOAD_BOOK,
-    BAD_REQUEST_INVALID_FILE_UPLOAD_BOOK
+    BAD_REQUEST_INVALID_FILE_UPLOAD_BOOK,
+    BAD_REQUEST_BOOK_NOT_FOUND_DELETE_MSG,
+    BAD_REQUEST_USER_NOT_FOUND_DELETE_MSG,
+    BAD_REQUEST_BOOK_COULD_NOT_BE_DELETED_MSG,
+    BOOK_CORRECT_DELETE_MSG,
+    ERROR_DELETING_BOOK_MSG
 )
-import os
 
 ALLOWED_EXTENSIONS = {'pdf', 'epub'}
 
@@ -34,10 +39,10 @@ def upload_book_controller():
         return BAD_REQUEST_INVALID_FILE_UPLOAD_BOOK
 
     # Guardar libro físico
-    file_path, filename = books_repo.save_book_file(file)
+    file_path, filename = save_book_file(file)
 
     # Guardar libro + portada en BD
-    libro, error = books_repo.save_book(file_path, filename, user_id)
+    libro, error = save_book(file_path, filename, user_id)
     if error:
         return jsonify({'error': error}), 500
 
@@ -66,7 +71,7 @@ def get_user_books_controller(user_id):
     if not user:
         return USER_NOT_FOUND_MSG
 
-    libros = books_repo.get_user_books(user_id)
+    libros = get_user_books(user_id)
     result = []
 
     for libro in libros:
@@ -123,3 +128,41 @@ def get_book_cover_controller(filename):
     #     abort(404, description="Portada no encontrada")
 
     return send_from_directory(base_folder, filename)
+
+logging.basicConfig(level=logging.DEBUG, format='[%(levelname)s] %(message)s')
+
+def delete_book_controller(user_id, book_id):
+    """Eliminar un libro de la librería de un usuario, incluyendo archivos físicos"""
+    logging.debug(f"Inicio delete_book_controller - user_id: {user_id}, book_id: {book_id}")
+    
+    # Valida si el usuario existe en la base de datos
+    user = get_user_by_user_id(user_id)
+    if not user:
+        logging.warning("Usuario no encontrado")
+        return USER_NOT_FOUND_MSG
+    
+    # Valida si el libro existe
+    if not book_id:
+        logging.warning("book_id no proporcionado")
+        return BAD_REQUEST_BOOK_NOT_FOUND_DELETE_MSG
+    
+    # Valida si el usuario existe
+    if not user_id:
+        logging.warning("user_id no proporcionado")
+        return BAD_REQUEST_USER_NOT_FOUND_DELETE_MSG
+    
+    try:
+        logging.debug("Llamando a delete_book...")
+        success = delete_book(user_id, book_id)  # Asegúrate del orden correcto de parámetros
+        logging.debug(f"delete_book returned: {success}")
+        
+        if not success:
+            logging.error("delete_book falló")
+            return BAD_REQUEST_BOOK_COULD_NOT_BE_DELETED_MSG
+        
+        logging.info("Libro eliminado correctamente")
+        return BOOK_CORRECT_DELETE_MSG
+        
+    except Exception as e:
+        logging.exception(f"Exception en delete_book_controller: {e}")
+        return ERROR_DELETING_BOOK_MSG

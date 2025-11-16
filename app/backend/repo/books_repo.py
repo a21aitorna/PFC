@@ -10,16 +10,11 @@ from dao.libro_subido_dao import LibroSubido
 from dao.categoria_dao import Categoria
 from dao.libro_categoria_dao import LibroCategoria
 
-# --- Rutas de carpetas ---
+# Rutas de carpetas
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # backend/repo
 UPLOADS_FOLDER = os.path.join(BASE_DIR, '../uploads')   # backend/uploads
 BOOKS_FOLDER = os.path.join(UPLOADS_FOLDER, 'books')
 COVERS_FOLDER = os.path.join(UPLOADS_FOLDER, 'covers')
-
-
-# ------------------------------
-# utilidades
-# ------------------------------
 
 def ensure_directories():
     """Asegura que existan los directorios necesarios"""
@@ -41,7 +36,7 @@ def save_book_file(file_storage) -> Tuple[str, str]:
 
     print(f"Archivo guardado en: {os.path.abspath(file_path)}")
 
-    return file_path, unique_filename  # SOLO filename para la base de datos
+    return file_path, unique_filename
 
 
 def save_cover(cover_path) -> Optional[str]:
@@ -66,13 +61,14 @@ def save_cover(cover_path) -> Optional[str]:
         except OSError as e:
             print(f"Advertencia: No se pudo eliminar archivo temporal {cover_path}: {e}")
 
-        return cover_filename  # <-- SOLO nombre
+        return cover_filename
     except Exception as e:
         print(f"Error guardando portada: {e}")
         return None
 
 
 def get_or_create_category(cat_name):
+    """Busca una categoría por nombre o la crea si no existe"""
     category = Categoria.query.filter_by(category_name=cat_name).first()
     if not category:
         category = Categoria(category_name=cat_name)
@@ -82,6 +78,7 @@ def get_or_create_category(cat_name):
 
 
 def save_book_categories(libro, categories):
+    """Asocia categorías a un libro"""
     for cat_name in categories:
         if cat_name and cat_name.strip():
             category = get_or_create_category(cat_name.strip())
@@ -90,20 +87,17 @@ def save_book_categories(libro, categories):
 
 
 def save_book(file_path: str, filename: str, user_id: int) -> Tuple[Optional[Libro], Optional[str]]:
-    """
-    Guarda el libro, su portada y metadatos en BD.
-    filename -> el nombre del archivo del libro.
-    """
+    """Guarda el libro, su portada y metadatos en BD."""
     metadata = extract_metadata(file_path, filename)
     if not metadata:
         return None, "No se pudieron extraer metadatos"
 
     try:
-        # Guardar portada: devuelve SOLO filename
+        #Guardar portada
         cover_filename = save_cover(metadata.get('cover_path'))
+        book_filename = filename
 
-        book_filename = filename  # filename ya es solo el nombre del archivo
-
+        #Guardar libro en base de datos
         libro = Libro(
             title=metadata.get('title', 'Sin título'),
             author=metadata.get('author', 'Autor desconocido'),
@@ -113,13 +107,12 @@ def save_book(file_path: str, filename: str, user_id: int) -> Tuple[Optional[Lib
         db.session.add(libro)
         db.session.flush()
 
-        # Categorías
+        #Asocia categoría
         save_book_categories(libro, metadata.get('categories', []))
 
-        # Relación usuario - libro
+        # Guarda la relación usuario libro
         subida = LibroSubido(user_id=user_id, book_id=libro.id_book)
         db.session.add(subida)
-
         db.session.commit()
         return libro, None
 
@@ -127,7 +120,7 @@ def save_book(file_path: str, filename: str, user_id: int) -> Tuple[Optional[Lib
         db.session.rollback()
         print(f"Error al guardar libro: {e}")
 
-        # Limpieza
+        #Limpiar archivos en caso de fallo
         try:
             if os.path.exists(file_path):
                 os.remove(file_path)
@@ -138,10 +131,51 @@ def save_book(file_path: str, filename: str, user_id: int) -> Tuple[Optional[Lib
 
         return None, f"Error en base de datos: {str(e)}"
 
-def get_user_books(user_id: int):
+def get_user_books(user_id):
+    """Obtiene todos los libros de un usuario"""
     return (
         db.session.query(Libro)
         .join(LibroSubido, Libro.id_book == LibroSubido.book_id)
         .filter(LibroSubido.user_id == user_id)
         .all()
     )
+
+def delete_book(id_user, id_book):
+    """Elimina un libro y la relación con el usuario, así como los archivos físicos relacionados a ellos"""
+
+    # Obtener relación libro-usuario
+    libro_subido = LibroSubido.query.filter_by(user_id=id_user, book_id=id_book).first()
+    if not libro_subido:
+        return False
+
+    # Obtener relaciones libro-categorias
+    libro_categorias = LibroCategoria.query.filter_by(book_id=id_book).all()
+
+    # Obtener libro
+    libro = Libro.query.get(id_book)
+    if not libro:
+        return False
+
+    # Eliminar archivos físicos
+    try:
+        if libro.cover and os.path.exists(os.path.join(COVERS_FOLDER, libro.cover)):
+            os.remove(os.path.join(COVERS_FOLDER, libro.cover))
+        if libro.file and os.path.exists(os.path.join(BOOKS_FOLDER, libro.file)):
+            os.remove(os.path.join(BOOKS_FOLDER, libro.file))
+    except Exception as e:
+        print(f"Error eliminando archivos físicos: {e}")
+        return False
+
+    # Eliminar de la base de datos
+    try:
+        
+        db.session.delete(libro_subido)
+        for lc in libro_categorias:
+            db.session.delete(lc)
+        db.session.delete(libro)
+        db.session.commit()
+        return True
+
+    except Exception as e:
+        db.session.rollback()
+        return False

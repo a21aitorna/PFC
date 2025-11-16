@@ -5,6 +5,7 @@ import { API_BASE } from "../config/api";
 import { useUser } from "../context/userProvider";
 
 export function useLibrary() {
+  
   const { user, loading: userLoading } = useUser();
   
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export function useLibrary() {
     navigate(`/library/${userId}`);
   };
  
-  // ESTADOS BASE
+
   const [libraryName, setLibraryName] = useState("");
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
@@ -21,14 +22,11 @@ export function useLibrary() {
   const [loading, setLoading] = useState(true);
   const [sortOption, setSortOption] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
-
-  const ALLOWED_EXTENSIONS = ["pdf", "epub"];
-
-  // ESTADO DEL BUSCADOR GLOBAL
   const [userQuery, setUserQuery] = useState("");
   const [userResults, setUserResults] = useState([]);
   const [loadingUserSearch, setLoadingUserSearch] = useState(false);
 
+  const ALLOWED_EXTENSIONS = ["pdf", "epub"];
 
   // Buscar usuarios/librerías
   useEffect(() => {
