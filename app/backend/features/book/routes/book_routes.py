@@ -8,7 +8,8 @@ from features.book.controller.book_controller import (
     upload_book_controller,
     get_user_books_controller,
     get_book_cover_controller,
-    delete_book_controller
+    delete_book_controller,
+    download_book_controller
 )
 
 book_routes = Blueprint('book_routes', __name__, url_prefix="/api/books")
@@ -39,4 +40,10 @@ def get_book_cover_route(filename):
 
 @book_routes.delete("/delete/user/<int:user_id>/book/<int:book_id>")
 def delete_book_route(user_id, book_id):
+    """Elimina un libro"""
     return delete_book_controller(user_id, book_id)
+
+@book_routes.get("/download/<int:id_book>")
+def download_book_route(id_book):
+    """Descarga un libro"""
+    return download_book_controller(id_book)

@@ -179,3 +179,7 @@ def delete_book(id_user, id_book):
     except Exception as e:
         db.session.rollback()
         return False
+    
+def get_book_by_id(book_id):
+    """Obtener libro por id"""
+    return Libro.query.filter_by(id_book=book_id).first()
