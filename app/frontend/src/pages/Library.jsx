@@ -25,7 +25,8 @@ export default function Library({ userId }) {
     setUserQuery,
     userResults,
     goToUserLibrary,
-    deleteBook
+    deleteBook,
+    downloadBook
   } = useLibrary(userId);
 
   const { user, logout} = useUser();
@@ -171,7 +172,7 @@ export default function Library({ userId }) {
             {/* Encabezado: Mi Librería + Añadir libro */}
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-800">
-                {libraryName || "ESTA MIERDA NO FUCA"}{" "}<span className="text-sm text-gray-500">
+                {libraryName || "Mi Librería"}{" "}<span className="text-sm text-gray-500">
                 
                   ({filteredBooks.length} libros)
                 </span>
@@ -233,6 +234,7 @@ export default function Library({ userId }) {
                             <button
                               className="flex items-center justify-center p-1 rounded-lg hover:bg-gray-200"
                               title="Descargar"
+                              onClick={() => downloadBook(book.id_book)}
                             >
                               <Download size={18} />
                             </button>

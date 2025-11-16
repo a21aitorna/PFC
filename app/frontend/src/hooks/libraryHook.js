@@ -181,27 +181,31 @@ export function useLibrary() {
   };
 
   const deleteBook = async (bookId) => {
-  if (!user?.id_user) return { error: "Usuario no logueado" };
+    if (!user?.id_user) return { error: "Usuario no logueado" };
 
-  try {
-    const res = await axios.delete(
-      `${API_BASE}/books/delete/user/${user.id_user}/book/${bookId}`
-    );
+    try {
+      const res = await axios.delete(
+        `${API_BASE}/books/delete/user/${user.id_user}/book/${bookId}`
+      );
 
-    if (res.status === 200) { 
-      setBooks(prev => prev.filter(b => b.id_book !== bookId));
-      setFilteredBooks(prev => prev.filter(b => b.id_book !== bookId));
-      return { success: true };
+      if (res.status === 200) { 
+        setBooks(prev => prev.filter(b => b.id_book !== bookId));
+        setFilteredBooks(prev => prev.filter(b => b.id_book !== bookId));
+        return { success: true };
+      }
+
+      return { error: res.data?.msg || "Error eliminando el libro" };
+
+    } catch (err) {
+      console.error("🔥 Error eliminando libro:", err);
+      return { error: "Error eliminando el libro" };
     }
+  };
 
-    return { error: res.data?.msg || "Error eliminando el libro" };
-
-  } catch (err) {
-    console.error("🔥 Error eliminando libro:", err);
-    return { error: "Error eliminando el libro" };
-  }
-};
-
+  const downloadBook = (bookId) => {
+    if (!bookId) return;
+    window.open(`${API_BASE}/books/download/${bookId}`, "_blank");
+  };
 
   return {
     books,
@@ -221,6 +225,7 @@ export function useLibrary() {
     userResults,
     loadingUserSearch,
     goToUserLibrary,
-    deleteBook
+    deleteBook,
+    downloadBook
   };
 }
