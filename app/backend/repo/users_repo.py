@@ -1,5 +1,6 @@
 from dao.persona_dao import Persona
 from database.db import db
+from sqlalchemy import or_
 
 def get_user_by_user_id(id_user):
     """Obtener usuario por su id"""
@@ -49,3 +50,16 @@ def get_user_library_name(username):
     """Obtener el nombre de la librería del usuario"""
     user = get_user_by_username(username)
     return user.library_name
+
+def get_users_or_libraries(searched_text, limit=5):
+    """Busca usuario o nombre de librería"""
+    if not searched_text:
+        return []
+    userSearch = Persona.query.filter(or_(
+        Persona.username.ilike(f"%{searched_text}%"),
+        Persona.library_name.ilike(f"%{searched_text}%")
+        ),
+        Persona.is_erased == False
+    ).limit(limit).all()
+    return userSearch
+    
