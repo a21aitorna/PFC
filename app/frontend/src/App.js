@@ -17,10 +17,11 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/recover-password-verify-user" element={<RecoverPasswordPageOne />} />
           <Route path="/recover-password-enter-new-password" element={<RecoverPasswordPageTwo />} />
-
-          {/* ✅ Rutas protegidas */}
           <Route element={<ProtectedRoute />}>
             <Route path="/library" element={<Library />} />
+          </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/library/:userId" element={<Library />} />
           </Route>
         </Routes>
       </Router>

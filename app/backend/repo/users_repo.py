@@ -46,9 +46,9 @@ def update_user_password(username, hashed_password):
     db.session.commit()
     return user
 
-def get_user_library_name(username):
+def get_user_library_name(id_user):
     """Obtener el nombre de la librería del usuario"""
-    user = get_user_by_username(username)
+    user = get_user_by_user_id(id_user)
     return user.library_name
 
 def get_users_or_libraries(searched_text, limit=5):

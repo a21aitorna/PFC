@@ -38,7 +38,7 @@ with app.app_context():
     BAD_REQUEST_USER_NOT_FOUND_UPLOAD_BOOK = jsonify({"msg": "Bad request. File was not found","code":"4002"}), HTTPStatus.NOT_FOUND
     BAD_REQUEST_INVALID_FILE_UPLOAD_BOOK = jsonify({"msg": "Bad request. Invalid file","code":"4003"}), HTTPStatus.BAD_REQUEST
     BAD_REQUEST_BOOK_NOT_FOUND_DELETE_MSG = jsonify({"msg": "Bad request. Book has not been found","code":"4004"}), HTTPStatus.NOT_FOUND
-    BAD_REQUEST_USER_NOT_FOUND_DELETE_MSG = jsonify({"msg": "Bad request. User has nor been found","code":"4005"}), HTTPStatus.NOT_FOUND
+    BAD_REQUEST_USER_NOT_FOUND_DELETE_MSG = jsonify({"msg": "Bad request. User has not been found","code":"4005"}), HTTPStatus.NOT_FOUND
     BAD_REQUEST_BOOK_COULD_NOT_BE_DELETED_MSG = jsonify({"msg": "Bad request. Book could not be deleted", "code":"4005"}), HTTPStatus.BAD_REQUEST
     BOOK_CORRECT_DELETE_MSG = jsonify({"msg": "Success. The book has been deleted correctly", "code":"4007"}), HTTPStatus.OK
     ERROR_DELETING_BOOK_MSG = jsonify({"msg": "Error al eliminar el libro", "code":"4008"}), HTTPStatus.INTERNAL_SERVER_ERROR
@@ -46,3 +46,4 @@ with app.app_context():
     BAD_REQUEST_BOOK_HAS_NOT_FILE_MSG = jsonify({"msg": "Bad request. Book has not an associated file","code":"4010"}), HTTPStatus.BAD_REQUEST    
     BOOK_FILE_NOT_FOUND_MSG = jsonify({"msg": "Book file has not been found","code":"4011"}), HTTPStatus.NOT_FOUND
     DOWNLOAD_BOOK_ERROR_MSG = jsonify({"msg": "Error while downloading the book", "code":"4012"}), HTTPStatus.INTERNAL_SERVER_ERROR
+    BAD_REQUEST_USER_ID_NOT_FOUND_MSG = jsonify({"msg": "Bad request. There is not id_user","code":"4013"}), HTTPStatus.BAD_REQUEST

@@ -68,5 +68,13 @@
         "passwordAlreayUsed": "La nueva contraseña ya está siendo usada",
         "questionNotObtained": "No se pudo obtener la pregunta de seguridad",
         "returnLoginError": "Error inesperado volviendo al login"
+    },
+
+    "library": {
+        "uploadedBook": "Libro \"{{title}}\" subido correctamente",
+        "confirmDelete": "¿Seguro que quieres eliminarlo? Este cambio será irreversible",
+        "correctDelete": "Libro eliminado correctamente"
     }
+
+
 }

@@ -1,4 +1,5 @@
-import { Search, Plus, Star, Download, Trash2 } from "lucide-react";
+import { Search, Plus, Star, Download, Trash2, Home } from "lucide-react";
+import { useParams } from "react-router-dom";
 import { useLibrary } from "../hooks/libraryHook";
 import { useUser } from "../context/userProvider";
 
@@ -8,8 +9,10 @@ import InputText from "../components/InputText";
 import Footer from "../components/Footer";
 import PanelCard from "../components/PanelCard";
 import { useState, useRef } from "react";
+import es from "../assets/i18n/es.json";
 
-export default function Library({ userId }) {
+export default function Library() {
+  const { userId } = useParams();
   const {
     filteredBooks,
     search,
@@ -26,11 +29,13 @@ export default function Library({ userId }) {
     userResults,
     goToUserLibrary,
     deleteBook,
-    downloadBook
-  } = useLibrary(userId);
+    downloadBook,
+    isOwner,
+    goBackToLibrary,
+    selectLibrary
+  } = useLibrary(userId); 
 
-  const { user, logout} = useUser();
-  console.log("USER:", user);
+  const { user, logout } = useUser();
   const [currentPage, setCurrentPage] = useState(1);
   const booksPerPage = 9;
 
@@ -40,37 +45,37 @@ export default function Library({ userId }) {
   const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
 
   const fileInputRef = useRef(null);
-
-  const handleAddBookClick = () => {
-    fileInputRef.current.click();
-  };
+  const handleAddBookClick = () => fileInputRef.current.click();
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     const result = await uploadBook(file);
-
-    if (result.error) {
-      alert(result.error);
-    } else {
-      alert(`Libro "${result.book.title}" subido correctamente`);
-    }
+    if (result.error) alert(result.error);
+    else alert(es.library.uploadedBook.replace("{{title}}", result.book.title));
   };
 
   const handleDelete = async (book) => {
-    const ok =  window.confirm(`¿Seguro que quieres eliminarlo? Esta acción es irreversible`)
-    if(!ok) return;
+    const ok = window.confirm(es.library.confirmDelete);
+    if (!ok) return;
 
     const result = await deleteBook(book.id_book);
-
-    if (result.error){
+    if (result.error) {
       alert(result.error);
+      return;
     }
-    else {
-      alert("Libro eliminado correctamente");
+
+    // Actualizar página si la actual queda vacía
+    const newFilteredBooks = filteredBooks.filter(b => b.id_book !== book.id_book);
+    const newTotalPages = Math.ceil(newFilteredBooks.length / booksPerPage);
+    
+    if (currentPage > newTotalPages) {
+      setCurrentPage(newTotalPages); // retrocede a la última página válida
     }
+
+    alert(es.library.correctDelete);
   };
+
 
   return (
     <Background>
@@ -82,6 +87,14 @@ export default function Library({ userId }) {
 
       {/* Contenedor principal */}
       <div className="mt-20 mb-16 w-full max-w-7xl mx-auto px-6 flex flex-col space-y-6">
+        {!isOwner && (
+          <button
+            className="mb-4 inline-flex items-center gap-1 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 px-2 py-1 rounded transition text-sm w-fit"
+            onClick={goBackToLibrary}
+          >
+            <Home size={14} /> Mi librería
+          </button>
+        )}
 
         {/* Panel Buscar usuarios/librerías */}
         <PanelCard title="Buscar usuarios o librerías" className="w-full text-left">
@@ -102,13 +115,8 @@ export default function Library({ userId }) {
                 <div
                   key={u.id}
                   className="flex items-center gap-4 p-2 rounded-xl hover:bg-gray-200 cursor-pointer transition"
-                  onClick={() => goToUserLibrary(u.id)}
+                  onClick={() => selectLibrary(u.id)}
                 >
-                  <img
-                    src={u.avatar || "/default-avatar.png"}
-                    alt="avatar"
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
                   <div className="flex flex-col">
                     <p className="font-semibold text-gray-800">{u.username}</p>
                     <p className="text-sm text-gray-500">{u.libraryName}</p>
@@ -178,12 +186,14 @@ export default function Library({ userId }) {
                 </span>
               </h2>
 
-              <button
-                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm"
-                onClick={handleAddBookClick}
-              >
-                <Plus size={16} /> Añadir Libro
-              </button>
+              {isOwner && (
+                <button
+                  className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm"
+                  onClick={handleAddBookClick}
+                >
+                  <Plus size={16} /> Añadir Libro
+                </button>
+              )}
 
               <input
                 type="file"
@@ -239,13 +249,15 @@ export default function Library({ userId }) {
                               <Download size={18} />
                             </button>
 
-                            <button
-                              className="flex items-center justify-center p-1 rounded-lg hover:bg-gray-200"
-                              title="Eliminar"
-                              onClick={() => handleDelete(book)}
-                            >
-                              <Trash2 size={18} />
-                            </button>
+                            {isOwner && (
+                              <button
+                                className="flex items-center justify-center p-1 rounded-lg hover:bg-gray-200"
+                                title="Eliminar"
+                                onClick={() => handleDelete(book)}
+                              >
+                                <Trash2 size={18} />
+                              </button>
+                            )}
                           </div>
 
                           <p className="text-gray-400 text-xs">
@@ -281,10 +293,10 @@ export default function Library({ userId }) {
         </div>
       </div>
 
-      {/* Footer fijo */}
+      {/* Footer fijo
       <div className="fixed bottom-0 left-0 w-full z-50 h-16">
         <Footer />
-      </div>
+      </div> */}
     </Background>
   );
 }

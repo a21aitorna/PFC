@@ -12,7 +12,7 @@ export function useLogin() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { setUser, logout } = useUser(); // ✅ usamos logout del contexto
+  const { setUser, logout } = useUser();
 
   const errorCodeMap = {
     "1001": es.login.requiredFields,
