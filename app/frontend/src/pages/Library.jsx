@@ -292,11 +292,6 @@ export default function Library() {
           </PanelCard>
         </div>
       </div>
-
-      {/* Footer fijo
-      <div className="fixed bottom-0 left-0 w-full z-50 h-16">
-        <Footer />
-      </div> */}
     </Background>
   );
 }
