@@ -73,7 +73,35 @@
     "library": {
         "uploadedBook": "Libro \"{{title}}\" subido correctamente",
         "confirmDelete": "¿Seguro que quieres eliminarlo? Este cambio será irreversible",
-        "correctDelete": "Libro eliminado correctamente"
+        "correctDelete": "Libro eliminado correctamente",
+        "returnLibrary": "Mi Librería",
+        "searchUserLibraryTitle": "Buscar usuarios o librerías",
+        "searchUserLibraryPlaceholder": "Escribe un usuario o el nombre de una librería...",
+        "searchUserLibraryNotFound": "No se encontraron usuarios.",
+        "searchBooks": "Buscar",
+        "searchBooksPlaceholder": "Buscar libros...",
+        "orderBy": "Ordenar por",
+        "select": "--Seleccionar--",
+        "ascOrder": "Ascendente",
+        "descOrder": "Descendente",
+        "defaultLibraryName": "Mi Librería ",
+        "numberBooks": " libros",
+        "addBookButton": "Añadir libro",
+        "loadingBooks": "Cargando libros...",
+        "downloadButtonTitle": "Descargar",
+        "deleteButtonTitle": "Eliminar",
+        "errorWhileSearchingUsers": "Error buscando usuarios",
+        "unknownLibrary": "Librería desconocida",
+        "errorWhileFetchingLibraryName": "Error obteniendo el nombre de la librería",
+        "errorWhileLoadingBooks": "Error cargando libros",
+        "canNotUploadForeignLibraies": "No puedes subir libros a otra biblioteca",
+        "fileNotSelected": "No se seleccionó un archivo",
+        "notLoggedUser": "Usuario no logueado",
+        "formatNotAllowed": "Formato no permitido",
+        "errorWhileUploadingBook": "Error al subir libro",
+        "canNotDeleteBookForeignLibraries": "No puedes borrar libros de otra biblioteca",
+        "errorWhileDeletingBook": "Error eliminando libro"
+        
     }
 
 

@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE } from "../config/api";
 import { useUser } from "../context/userProvider";
+import es from "../assets/i18n/es.json";
 
 export function useLibrary(routeUserId) {
   const { user, loading: userLoading } = useUser();
   const navigate = useNavigate();
 
   const userId = routeUserId || user?.id_user;
-
   const isOwner = user?.id_user === userId;
 
   const goToUserLibrary = (id) => {
@@ -27,25 +27,30 @@ export function useLibrary(routeUserId) {
   const [userResults, setUserResults] = useState([]);
   const [loadingUserSearch, setLoadingUserSearch] = useState(false);
 
-  const ALLOWED_EXTENSIONS = ["pdf", "epub"];
+  // Estados de error separados
+  const [errorBooks, setErrorBooks] = useState("");
+  const [errorUserSearch, setErrorUserSearch] = useState("");
 
+  const ALLOWED_EXTENSIONS = ["pdf", "epub"];
 
   // Buscar usuarios/librerías
   useEffect(() => {
     if (userQuery.trim() === "") {
       setUserResults([]);
+      setErrorUserSearch("");
       return;
     }
 
     const delay = setTimeout(async () => {
       setLoadingUserSearch(true);
+      setErrorUserSearch("");
       try {
         const res = await axios.get(
           `${API_BASE}/users/search?q=${encodeURIComponent(userQuery)}`
         );
         setUserResults(res.data);
-      } catch (err) {
-        console.error("Error buscando usuarios:", err);
+      } catch {
+        setErrorUserSearch(es.library.errorWhileSearchingUsers);
       } finally {
         setLoadingUserSearch(false);
       }
@@ -54,12 +59,12 @@ export function useLibrary(routeUserId) {
     return () => clearTimeout(delay);
   }, [userQuery]);
 
-
   // Fetch nombre librería
   const fetchLibraryName = async (idParam) => {
     const idToFetch = idParam || user?.id_user;
     if (!idToFetch) return;
 
+    setErrorBooks("");
     try {
       const res = await axios.get(
         `${API_BASE}/library-name?id_user=${idToFetch}`
@@ -67,12 +72,11 @@ export function useLibrary(routeUserId) {
       if (res.data?.library_name) {
         setLibraryName(res.data.library_name);
       } else {
-        setLibraryName("Librería desconocida");
+        setLibraryName(es.library.unknownLibrary);
       }
-    } 
-    catch (error) {
-      console.error("Error obteniendo el nombre de la librería");
-      setLibraryName("Librería desconocida");
+    } catch {
+      setErrorBooks(es.library.errorWhileFetchingLibraryName);
+      setLibraryName(es.library.unknownLibrary);
     }
   };
 
@@ -86,12 +90,13 @@ export function useLibrary(routeUserId) {
     }
 
     setLoading(true);
+    setErrorBooks("");
     try {
       const res = await axios.get(`${API_BASE}/books/user/${userId}`);
       setBooks(res.data);
       setFilteredBooks(res.data);
-    } catch (err) {
-      console.error("Error cargando libros:", err);
+    } catch {
+      setErrorBooks(es.library.errorWhileLoadingBooks);
     } finally {
       setLoading(false);
     }
@@ -99,16 +104,13 @@ export function useLibrary(routeUserId) {
 
   useEffect(() => {
     if (!userLoading && userId) {
-      // const usernameParam = isOwner ? undefined : userResults.find(u => u.id === userId)?.username;
       fetchLibraryName(userId);
       fetchBooks(userId);
       setSearch("");
     }
   }, [userId, userLoading]);
 
-  // -------------------------------
   // Filtrado y ordenamiento
-  // -------------------------------
   useEffect(() => {
     let filtered = [...books];
 
@@ -147,11 +149,12 @@ export function useLibrary(routeUserId) {
 
   // Subir libro
   const uploadBook = async (file) => {
-    if (!isOwner) return { error: "No puedes subir libros de otra biblioteca" };
-    if (!file) return { error: "No se seleccionó archivo" };
-    if (!user?.id_user) return { error: "Usuario no logueado" };
-    if (!allowedFile(file.name)) return { error: "Formato no permitido" };
+    if (!isOwner) return { error: `${es.library.canNotUploadForeignLibraies}`};
+    if (!file) return { error: `${es.library.fileNotSelected}` };
+    if (!user?.id_user) return { error: `${es.library.notLoggedUser}` };
+    if (!allowedFile(file.name)) return { error: `${es.library.formatNotAllowed}` };
 
+    setErrorBooks("");
     const formData = new FormData();
     formData.append("file", file);
     formData.append("user_id", user.id_user);
@@ -179,16 +182,18 @@ export function useLibrary(routeUserId) {
 
       return { success: true, book: normalizedBook };
     } catch (err) {
-      console.error("Error subiendo libro:", err);
-      return { error: err.response?.data?.error || "Error al subir libro" };
+      const msg = err.response?.data?.error || `${es.library.errorWhileUploadingBook}`;
+      setErrorBooks(msg);
+      return { error: msg };
     }
   };
 
   // Borrar libro
   const deleteBook = async (bookId) => {
-    if (!isOwner) return { error: "No puedes borrar libros de otra biblioteca" };
-    if (!user?.id_user) return { error: "Usuario no logueado" };
+    if (!isOwner) return { error: `${es.library.canNotDeleteBookForeignLibraries}` };
+    if (!user?.id_user) return { error: `${es.library.notLoggedUser}` };
 
+    setErrorBooks("");
     try {
       const res = await axios.delete(
         `${API_BASE}/books/delete/user/${user.id_user}/book/${bookId}`
@@ -196,23 +201,23 @@ export function useLibrary(routeUserId) {
       if (res.status === 200) {
         setBooks((prev) => prev.filter((b) => b.id_book !== bookId));
         setFilteredBooks((prev) => prev.filter((b) => b.id_book !== bookId));
-        
         return { success: true };
       }
-      return { error: res.data?.msg || "Error eliminando libro" };
-    } catch (err) {
-      console.error(err);
-      return { error: "Error eliminando libro" };
+      const msg = res.data?.msg || `${es.library.errorWhileDeletingBook}`;
+      setErrorBooks(msg);
+      return { error: msg };
+    } catch {
+      const msg = `${es.library.errorWhileDeletingBook}`;
+      setErrorBooks(msg);
+      return { error: msg };
     }
   };
 
-  // Descargar libro
   const downloadBook = (bookId) => {
     if (!bookId) return;
     window.open(`${API_BASE}/books/download/${bookId}`, "_blank");
   };
 
-  // Volver a la librería principal
   const goBackToLibrary = () => {
     if (!user?.id_user) return;
     setUserQuery("");
@@ -224,7 +229,7 @@ export function useLibrary(routeUserId) {
     setUserQuery("");
     setUserResults([]);
     goToUserLibrary(id);
-  }
+  };
 
   return {
     books,
@@ -248,6 +253,8 @@ export function useLibrary(routeUserId) {
     downloadBook,
     isOwner,
     goBackToLibrary,
-    selectLibrary
+    selectLibrary,
+    errorBooks, 
+    errorUserSearch
   };
 }

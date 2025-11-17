@@ -48,6 +48,7 @@ export default function Header() {
 
           {/* Botón logout */}
           <button
+            data-testid="logoutButton"
             onClick={handleLogout}
             className="flex items-center gap-1 text-white hover:text-red-500"
           >

@@ -6,7 +6,6 @@ import { useUser } from "../context/userProvider";
 import Background from "../components/Background";
 import Header from "../components/Header";
 import InputText from "../components/InputText";
-import Footer from "../components/Footer";
 import PanelCard from "../components/PanelCard";
 import { useState, useRef } from "react";
 import es from "../assets/i18n/es.json";
@@ -27,12 +26,13 @@ export default function Library() {
     userQuery,
     setUserQuery,
     userResults,
-    goToUserLibrary,
     deleteBook,
     downloadBook,
     isOwner,
     goBackToLibrary,
-    selectLibrary
+    selectLibrary,
+    errorBooks, 
+    errorUserSearch
   } = useLibrary(userId); 
 
   const { user, logout } = useUser();
@@ -90,17 +90,19 @@ export default function Library() {
         {!isOwner && (
           <button
             className="mb-4 inline-flex items-center gap-1 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 px-2 py-1 rounded transition text-sm w-fit"
+            data-testid="returnToLibraryButton"
             onClick={goBackToLibrary}
           >
-            <Home size={14} /> Mi librería
+            <Home size={14} /> {es.library.returnLibrary}
           </button>
         )}
 
         {/* Panel Buscar usuarios/librerías */}
-        <PanelCard title="Buscar usuarios o librerías" className="w-full text-left">
+        <PanelCard title={es.library.searchUserLibraryTitle} className="w-full text-left">
           <div className="relative mt-4">
             <InputText
-              placeholder="Escribe un usuario o el nombre de una librería..."
+              data-testid="searchUsersLibraries"
+              placeholder={es.library.searchUserLibraryTitle}
               value={userQuery}
               onChange={(e) => setUserQuery(e.target.value)}
               className="pl-10 w-full"
@@ -108,11 +110,16 @@ export default function Library() {
             <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
           </div>
 
+          {errorUserSearch && (
+            <p data-testid="errorSearchingLibraries" className="text-red-500 text-sm mb-2">{errorUserSearch}</p>
+          )}
+
           {/* Resultados */}
           {userResults.length > 0 && (
             <div className="mt-4 bg-gray-50 rounded-xl shadow-inner p-3 space-y-2">
               {userResults.map((u) => (
                 <div
+                  data-testid={`selectLibrary-${user.id_user}`}
                   key={u.id}
                   className="flex items-center gap-4 p-2 rounded-xl hover:bg-gray-200 cursor-pointer transition"
                   onClick={() => selectLibrary(u.id)}
@@ -126,7 +133,7 @@ export default function Library() {
             </div>
           )}
           {userQuery.length > 2 && userResults.length === 0 && (
-            <p className="text-sm text-gray-500 mt-4">No se encontraron usuarios.</p>
+            <p data-testid="notUsersLibrariesMatch" className="text-sm text-gray-500 mt-4">{es.library.searchUserLibraryNotFound}</p>
           )}
         </PanelCard>
 
@@ -137,10 +144,11 @@ export default function Library() {
           <aside className="md:w-1/4 space-y-6 flex-shrink-0">
             {/* Panel Buscar libros */}
             <PanelCard>
-              <p className="text-sm font-medium text-gray-700 mb-2">Buscar</p>
+              <p className="text-sm font-medium text-gray-700 mb-2">{es.library.searchBooks}</p>
               <div className="relative">
                 <InputText
-                  placeholder="Buscar libros..."
+                  data-testid="searchBooksLibrary"
+                  placeholder={es.library.searchBooksPlaceholder}
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="pl-10 w-full"
@@ -151,25 +159,27 @@ export default function Library() {
 
             {/* Panel Ordenar libros */}
             <PanelCard>
-              <p className="text-sm font-medium text-gray-700 mb-2">Ordenar por</p>
+              <p className="text-sm font-medium text-gray-700 mb-2">{es.library.orderBy}</p>
               <select
+                data-testid="selectSortOptionLibrary"
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-2 py-1 mt-1 text-sm"
               >
-                <option value="">-- Seleccionar --</option>
+                <option value="">{es.library.select}</option>
                 <option value="date">Fecha</option>
                 <option value="rating">Puntuación</option>
               </select>
 
               {sortOption && (
                 <select
+                  data-testid="selectOrderSortLibrary"
                   value={sortOrder}
                   onChange={(e) => setSortOrder(e.target.value)}
                   className="w-full border border-gray-300 rounded-lg px-2 py-1 mt-2 text-sm"
                 >
-                  <option value="asc">Ascendente</option>
-                  <option value="desc">Descendente</option>
+                  <option data-testid="ascendingOrder" value="asc">{es.library.ascOrder}</option>
+                  <option data-testid="descendingOrder" value="desc">{es.library.descOrder}</option>
                 </select>
               )}
             </PanelCard>
@@ -179,19 +189,20 @@ export default function Library() {
           <PanelCard className="flex-1 flex flex-col max-h-[calc(100vh-8rem)]">
             {/* Encabezado: Mi Librería + Añadir libro */}
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-800">
-                {libraryName || "Mi Librería"}{" "}<span className="text-sm text-gray-500">
+              <h2 className="text-lg font-semibold text-gray-800" data-testid="usersLibraryName">
+                {libraryName || `${es.library.defaultLibraryName}`}<span className="text-sm text-gray-500">
                 
-                  ({filteredBooks.length} libros)
+                  ({filteredBooks.length} {es.library.numberBooks})
                 </span>
               </h2>
 
               {isOwner && (
                 <button
+                  data-testid="uploadBookLibrary"
                   className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm"
                   onClick={handleAddBookClick}
                 >
-                  <Plus size={16} /> Añadir Libro
+                  <Plus size={16} /> {es.library.addBookButton}
                 </button>
               )}
 
@@ -204,9 +215,13 @@ export default function Library() {
               />
             </div>
 
+            {errorBooks && (
+              <p data-testid="errorBooksLibrary" className="text-red-500 text-sm mb-2">{errorBooks}</p>
+            )}
+
             {/* Grid de libros o carga */}
             {loading ? (
-              <p className="text-center text-gray-500 mt-10">Cargando libros...</p>
+              <p className="text-center text-gray-500 mt-10">{es.library.loadingBooks}</p>
             ) : (
               <>
                 <div className="flex-1 overflow-y-auto pb-4">
@@ -218,6 +233,7 @@ export default function Library() {
                       >
                         {book.cover && (
                           <img
+                            data-testid={`titleBook-${book.id_book}`}
                             src={book.cover}
                             alt={book.title}
                             className="w-20 h-28 object-cover rounded-md flex-shrink-0"
@@ -225,11 +241,11 @@ export default function Library() {
                         )}
 
                         <div className="flex-1 text-sm text-gray-800">
-                          <h3 className="font-semibold">{book.title}</h3>
-                          <p className="text-gray-600">{book.author}</p>
+                          <h3 data-testid={`titleBook-${book.id_book}`} className="font-semibold">{book.title}</h3>
+                          <p data-testid={`authorBook-${book.id_book}`} className="text-gray-600">{book.author}</p>
 
                           {/* Rating */}
-                          <div className="flex items-center space-x-1 text-yellow-500">
+                          <div data-testid={`ratingBook-${book.id_book}`} className="flex items-center space-x-1 text-yellow-500">
                             {[...Array(5)].map((_, i) => (
                               <Star
                                 key={i}
@@ -242,8 +258,9 @@ export default function Library() {
 
                           <div className="flex items-center gap-4 mt-2">
                             <button
+                              data-testid = "downloadBookButton"
                               className="flex items-center justify-center p-1 rounded-lg hover:bg-gray-200"
-                              title="Descargar"
+                              title={es.library.downloadButtonTitle}
                               onClick={() => downloadBook(book.id_book)}
                             >
                               <Download size={18} />
@@ -251,15 +268,16 @@ export default function Library() {
 
                             {isOwner && (
                               <button
+                                data-testid = "deleteBookButton"
                                 className="flex items-center justify-center p-1 rounded-lg hover:bg-gray-200"
-                                title="Eliminar"
+                                title={es.library.deleteButtonTitle}
                                 onClick={() => handleDelete(book)}
                               >
                                 <Trash2 size={18} />
                               </button>
                             )}
                           </div>
-
+                            {/* hacer fetchFecha */}
                           <p className="text-gray-400 text-xs">
                             {book.created_at?.split("T")[0]}
                           </p>
@@ -274,6 +292,7 @@ export default function Library() {
                   <div className="flex justify-center mt-4 space-x-2">
                     {Array.from({ length: totalPages }, (_, i) => (
                       <button
+                        data-testid={`paginationButton-${i+1}`}
                         key={i}
                         className={`px-3 py-1 rounded-lg border ${
                           currentPage === i + 1
