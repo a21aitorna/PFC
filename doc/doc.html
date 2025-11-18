@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>doc.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="proyecto-atenea">Proyecto Atenea</h1>
+<ul>
+<li><a href="#introducci%C3%B3n">Introducción</a>
+<ul>
+<li><a href="#frontend">Frontend</a></li>
+<li><a href="#backend">Backend</a></li>
+<li><a href="#persistencia-de-datos">Persistencia de datos</a></li>
+<li><a href="#testing">Testing</a>
+<ul>
+<li><a href="#frontend-testing">Frontend Testing</a></li>
+<li><a href="#backend-testing">Backend Testing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#estado-de-arte-o-an%C3%A1lisis-del-contexto">Estado de arte o análisis del contexto</a>
+<ul>
+<li><a href="#p%C3%BAblico-objetivo">Público objetivo</a></li>
+<li><a href="#necesidades-que-cubre">Necesidades que cubre</a></li>
+<li><a href="#aplicaciones-existentes">Aplicaciones existentes</a></li>
+</ul>
+</li>
+<li><a href="#prop%C3%B3sito">Propósito</a></li>
+<li><a href="#objetivos">Objetivos</a>
+<ul>
+<li><a href="#objetivos-principales">Objetivos principales</a></li>
+<li><a href="#sistema-de-login">Sistema de Login</a>
+<ul>
+<li><a href="#1login">1.Login</a></li>
+<li><a href="#2registro">2.Registro</a></li>
+<li><a href="#3recuperar-contrase%C3%B1a">3.Recuperar contraseña</a>
+<ul>
+<li><a href="#formulario1-recuperaci%C3%B3n-de-contrase%C3%B1a">Formulario1 recuperación de contraseña</a></li>
+<li><a href="#formulario2-recuperaci%C3%B3n-de-contrase%C3%B1a">Formulario2 recuperación de contraseña</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sistema-de-biblioteca">Sistema de biblioteca</a>
+<ul>
+<li><a href="#1-buscar-otras-librer%C3%ADas">1. Buscar otras librerías</a></li>
+<li><a href="#2-buscar-libros">2. Buscar libros</a></li>
+<li><a href="#3-ordenar-libros">3. Ordenar libros</a></li>
+<li><a href="#4-subir-libros">4. Subir libros</a></li>
+<li><a href="#5-biblioteca">5. Biblioteca</a></li>
+</ul>
+</li>
+<li><a href="#sistema-de-detalle-del-libro">Sistema de detalle del libro</a></li>
+<li><a href="#admin">Admin</a></li>
+</ul>
+</li>
+<li><a href="#alcance">Alcance</a>
+<ul>
+<li><a href="#funcionalidades-implementadas">Funcionalidades implementadas</a></li>
+<li><a href="#usuarios-de-la-aplicaci%C3%B3n">Usuarios de la aplicación</a></li>
+<li><a href="#contexto">Contexto</a></li>
+<li><a href="#l%C3%ADmites">Límites</a></li>
+<li><a href="#planificaci%C3%B3n">Planificación</a></li>
+<li><a href="#gastos">Gastos</a></li>
+<li><a href="#normativa">Normativa</a></li>
+</ul>
+</li>
+<li><a href="#todo-a-partir-de-este-punto-eres-libre-de-organizar-la-documentaci%C3%B3n-como-estimes-pero-debes-desarrollar-el-cuerpo-de-tu-proyecto-con-apartados-y-subapartados-que-completen-tu-documentaci%C3%B3n">TODO: A partir de este punto eres libre de organizar la documentación como estimes pero debes desarrollar el cuerpo de tu proyecto con apartados y subapartados que completen tu documentación</a></li>
+<li><a href="#conclusiones">Conclusiones</a></li>
+<li><a href="#referencias-fuentes-consultadas-y-recursos-externos-webgraf%C3%ADa">Referencias, Fuentes consultadas y Recursos externos: Webgrafía</a></li>
+</ul>
+<h2 id="introducci%C3%B3n">Introducción</h2>
+<p>Proyecto Atenea es una aplicación web orientada a la gestión de bibliotecas personales digitales. Permite a los usuarios almacenar, visualizar, reseñar y compartir libros en distintos formatos (PDF, EPUB).
+Esta se caracteriza por haber sido diseñada y construida mediante el principio de separación por capas, pudieéndose diferenciar cuatro componentes:</p>
+<ul>
+<li>Frontend: interfaz gráfica y lógica de presentación (React)</li>
+<li>Backend: lógica de negocio, controladores y API REST (Flask).</li>
+<li>Persistencia: gestión de datos mediante MySQL y SQLAlchemy.</li>
+<li>Testing: empleo BDD (Cucumber) y Selenium en Java para pruebas automáticas hacia el front y Newman hacia el back.</li>
+</ul>
+<p>Todo esto, viene dockerizado, de manera que sea más sencillo si despligue, mantenimiento y escalabilidad. A mayores, se ha habilitado un entorno de Integración Continua y Entrega Continua (CI/CD) basado en Github Actions de manera que se ejecuten las pruebas automáticas cada x tiempo, garantizando la calidad y estabilidad de la aplicación.</p>
+<h3 id="frontend">Frontend</h3>
+<p>Se ha optado por el uso de React, una biblioteca de JavaScript (aunque se puede considerar como framework) muy usada en la actualidad para el desarrollo front. Entre alguna de las características de esta elección está la existencia de un ecosistema que permite integrarse de manera sencilla con el back y con el testing, además de su fácil integración con Docker.
+Este componente tendrá esta estructura.</p>
+<pre class="hljs"><code><div>frontend/
+├── public/
+│   └── index.html
+├── src/
+│   ├── assets/          # Imágenes, fuentes, íconos, etc.
+│   ├── components/      # Componentes reutilizables (Button, Navbar, etc.)
+│   ├── pages/           # Páginas o vistas principales (Home, Login, etc.)
+│   ├── hooks/           # Custom hooks (useAuth, useFetch, etc.)
+│   ├── context/         # Contextos de React (AuthContext, ThemeContext)
+│   ├── services/        # Llamadas a APIs o lógica de negocio
+│   ├── styles/          # Estilos globales o archivos CSS
+│   ├── utils/           # Funciones auxiliares
+│   ├── App.js           # Componente raíz
+│   └── index.js         # Punto de entrada
+├── .env                 
+├── .gitignore
+├── Dockerfile
+├── package-lock.json
+└── package.json
+</div></code></pre>
+<p>Esta será accesible desde http://localhost:3000</p>
+<h3 id="backend">Backend</h3>
+<p>Se ha decidido usar Python con el framework Flask, debido a su ligereza y flexibilidad, a parte de que está ya habilitado para proyectos más pequeños.
+Además se empleará API REST, la cual será documentada mediante Swagger.
+Este componente tendrá esta arquitectura:</p>
+<pre class="hljs"><code><div>backend/
+    ├── dao/                  # Modelos de base de datos con SQLAlchemy 
+    ├── dao_schema/           # Schemas de Marshmallow 
+    ├── docs/                 # Documentación de la API 
+    ├── exceptions/           # Excepciones personalizadas 
+    ├── features/             # Lógica específica de cada módulo o funcionalidad
+    │   ├── nombre_feature/  
+    │   └── controller/       
+    ├── static/               # imágenes, CSS..
+    ├── utils/                # Funciones auxiliares o helpers reutilizables
+    ├── validations/          # Validaciones
+    ├── .gitignore            
+    ├── Dockerfile            
+    ├── main.py               # Punto de entrada de la aplicación Flask
+    └── requirements.txt      # Dependencias de Python necesarias 
+</div></code></pre>
+<h3 id="persistencia-de-datos">Persistencia de datos</h3>
+<p>Se usa MySQL, conectado a Flask mediante SQLAlchemy (Object-Relational Mapping u ORM) y PyMySQL como driver.
+A contonuación se mostrará el Modelo Entidad Relación (MER) creado para ello.
+<img src="./img/MER.png" alt="Diagrama Entidad-Relación"></p>
+<h3 id="testing">Testing</h3>
+<p>Se diferencian dos partes</p>
+<h4 id="frontend-testing">Frontend Testing</h4>
+<p>Se centra en la validación del comportamiento y la interacción de la interfaz visual.
+Se usan Selenium Java(framework de automatización basada en WebDriver)y Cucumber (se posibilita el uso del denominado Behavior Driven Development, BDD, que permite describir escenarios de prueba mediante un lenguaje natural).
+Tendrá la siguiente estructura, empleando el modelo de Page Object Model (POM).</p>
+<pre class="hljs"><code><div>frontend-testing/
+├── src/
+│   ├── java/                     
+│   │   ├── page/                 # Representan páginas o componentes del frontend
+│   │   └── steps/                # Definición de pasos usados en los escenarios de prueba
+│   └── resources/                
+│       ├── data/                 # Datos que se necesitan (xpath, expresiones regulares...)
+│       └── features/             # Archivos .feature escritos en Gherkin (escenarios de prueba para Cucumber)
+├── target/                       # Carpeta generada automáticamente por Maven con los resultados de compilación y reportes de pruebas
+├── .gitignore                    
+└── pom.xml                       # Archivo de configuración de Maven (dependencias, plugins, configuración del proyecto)
+</div></code></pre>
+<h4 id="backend-testing">Backend Testing</h4>
+<p>Tiene como propósito validar el correcto funcionamiento de la API REST desarrollada en Flask, asegurando que todas las operaciones CRUD, autenticación, manejo de errores y respuestas JSON se comporten de manera consistente. Se empleará Newman (Postman CLI), permiiendo la ejecución automática de las colecciones de endpoints definidas en Postman, validando códigos de estado, estructuras de respuesta y tiempos de ejecución.
+Tendrá la siguiente estructura</p>
+<pre class="hljs"><code><div>backend-testing/
+├── collections/                  # Carpeta con las colecciones de pruebas de API 
+├── environments/                 # Configuraciones de entorno para las pruebas (URLs, tokens, variables)
+├── package-lock.json             # Archivo generado automáticamente por npm
+└── package.json                  # Archivo de configuración del proyecto Node.js (dependencias, scripts de test, metadata)
+</div></code></pre>
+<h2 id="estado-de-arte-o-an%C3%A1lisis-del-contexto">Estado de arte o análisis del contexto</h2>
+<h3 id="p%C3%BAblico-objetivo">Público objetivo</h3>
+<ul>
+<li>Usuarios amantes de la lectura que quieren tener organizada su colección de libros.</li>
+<li>Lectores ocasionales que buscan una lectura relacionada con un tema concreto.</li>
+<li>Clubes de lectura.</li>
+<li>Centros educativos.</li>
+</ul>
+<h3 id="necesidades-que-cubre">Necesidades que cubre</h3>
+<ul>
+<li>Organización y visualización de libros digitales en una estantería virtual.</li>
+<li>Visitar bibliotecas de otros usuarios y descubrir nuevas lecturas, así como ayudar a futuros lectores con reseñas de ese libro.</li>
+</ul>
+<h3 id="aplicaciones-existentes">Aplicaciones existentes</h3>
+<ul>
+<li>Calibre: tiene una función semejante, pero es una aplicación de escritorio, al contrario que Proyecto Atenea.</li>
+<li>Internet archive: está creada con una función más de archivado que social.</li>
+</ul>
+<h2 id="prop%C3%B3sito">Propósito</h2>
+<p>Este proyecto consiste en una librería virtual. En ella cada usuario, tendrá una biblioteca propia donde podrán subir sulibros en formato PDF y EPUB, así como acceder a las biliotecas de otros usuarios y realizar acciones como escribir reseñas sobre ellos, añadirlos a su propia biblioteca o descargarlos.</p>
+<p>El sistema contará con un administrador, que tendrá el control total. Este podrá eliminar reseñas o libros, así como bloquear o dar de baja usuarios, especialmente en casos de incumplimiento de normas (por ejemplo, lenguaje ofensivo en reseñas o subida de libros sujetos a copyright).</p>
+<p>Así mismo, una parte esencial de este proyecto es el después de crear una funcionalidad: ¿esta está funcionando bien? ¿Cumple todos los requisitos? ¿Cómo se que a posteriori no se va a romper? La respuesta a ello es el testing. Para ello, haré tests automáticos,tanto a nivel frontend como backend, junto un flujo de integración y despliegue continui (CI/CD). De este modo, cada actualización del repositorio se validará automáticamente, asegurando que las funcionalidades existentes no se rompan y su estabilidad.</p>
+<h2 id="objetivos">Objetivos</h2>
+<h3 id="objetivos-principales">Objetivos principales</h3>
+<ul>
+<li><input type="checkbox" id="checkbox0"><label for="checkbox0">Creación de Diagrama Entidad Relación de la base de datos.</label></li>
+<li><input type="checkbox" id="checkbox1"><label for="checkbox1">Definición de todas las funcionalidades del proyecto.</label></li>
+<li><input type="checkbox" id="checkbox2"><label for="checkbox2">Construcción de los contenedores docker para Backend, Frontend, Base de datos y Testing.</label></li>
+<li><input type="checkbox" id="checkbox3"><label for="checkbox3">Construcción del sistema de integración CI/CD.</label></li>
+<li><input type="checkbox" id="checkbox4"><label for="checkbox4">Configuración del docker-compose para la aplicación entera.</label></li>
+<li><input type="checkbox" id="checkbox5"><label for="checkbox5">Implementación del sistema de login (Backend).</label></li>
+<li><input type="checkbox" id="checkbox6"><label for="checkbox6">Implementación del sistema de login (Frontend).</label></li>
+<li><input type="checkbox" id="checkbox7"><label for="checkbox7">Implementación de tests para el sistema de login.</label></li>
+<li><input type="checkbox" id="checkbox8"><label for="checkbox8">Implementación del sistema de biblioteca (Backend)</label></li>
+<li><input type="checkbox" id="checkbox9"><label for="checkbox9">Implementación del sistema de biblioteca (Frontend)</label></li>
+<li><input type="checkbox" id="checkbox10"><label for="checkbox10">Implementación de tests para el sistema de biblioteca.</label></li>
+<li><input type="checkbox" id="checkbox11"><label for="checkbox11">Implementación del sistema de detalle de un libro (Backend)</label></li>
+<li><input type="checkbox" id="checkbox12"><label for="checkbox12">Implementación del sistema de detalle de un libro (Frontend)</label></li>
+<li><input type="checkbox" id="checkbox13"><label for="checkbox13">Implementación del sistema de detalle de un libro (Backend)</label></li>
+<li><input type="checkbox" id="checkbox14"><label for="checkbox14">Implementación de test para el sistema de detalle de un libro</label></li>
+<li><input type="checkbox" id="checkbox15"><label for="checkbox15">Levantar la aplicación desarrollada sin errores.</label></li>
+<li><input type="checkbox" id="checkbox16"><label for="checkbox16">Generación de informe de pruebas correctas y falladas.</label></li>
+</ul>
+<h3 id="sistema-de-login">Sistema de Login</h3>
+<p>Se podrán diferencias tres elementos esenciales:</p>
+<h4 id="1login">1.Login</h4>
+<p>El usuario introducirá su nombre de usuario y contraseña, y si existe se logeará. Si no existe, se llevará a un registro. También estará la posibilidad de recuperar la contraseña.
+Todos los campos serán obligatorios.
+<img src="img/BorradoresFront/Login/1.Login.png" alt="Login"></p>
+<h4 id="2registro">2.Registro</h4>
+<p>El usuario para registrarse tendrá que rellenar un formulario en que se pidan los siguientes datos:</p>
+<ul>
+<li>Nombre (50 caracteres máximo)</li>
+<li>Apellidos (60 caracteres máximo)</li>
+<li>Nombre de usuario (30 caracteres máximo)</li>
+<li>Fecha nacimiento</li>
+<li>Nombre biblioteca (100 caracteres máximo)</li>
+<li>Contraseña (100 caracteres máximo)</li>
+<li>Contraseña repetida (debe coincidir)</li>
+<li>Pregunta seguridad (200 caracteres máximo)</li>
+<li>Respuesta (100 caracteres máximo)</li>
+<li>Botón &quot;Registrarse&quot;</li>
+</ul>
+<p>Se verificarán las siguientes acciones:</p>
+<ul>
+<li>Todos los campos son obligatorios, en caso de campo vacío mostrar un mensaje de campo obligatorio.</li>
+<li>El nombre del usuario deber ser único.</li>
+<li>La contraseña debe tener como mínimo 8 caracteres, 1 mayúscula, 1 número y un símbolo.</li>
+<li>La contraseña repetida debe coincidir con la primera.</li>
+<li>La contraseña se tiene que proteger con un Hash previo a su almacenamiento.</li>
+<li>La respuesta se tiene que proteger con un Hash previo a su almacenamiento.</li>
+<li>El usuario debe tener 14 años como mínimo (se calculará a partide la fecha de nacimiento).
+<img src="img/BorradoresFront/Login/2.Registrarse.png" alt="Registro"></li>
+</ul>
+<h4 id="3recuperar-contrase%C3%B1a">3.Recuperar contraseña</h4>
+<p>Tendrá dos formularios.</p>
+<h5 id="formulario1-recuperaci%C3%B3n-de-contrase%C3%B1a">Formulario1 recuperación de contraseña</h5>
+<p>En este formulario se verificará que el usuario existe; si no existe o se deja vacío, se mostrará un error.
+<img src="img/BorradoresFront/Login/3.1RecuperarContraseña.png" alt="Formulario1RecuperarContraseña"></p>
+<h5 id="formulario2-recuperaci%C3%B3n-de-contrase%C3%B1a">Formulario2 recuperación de contraseña</h5>
+<p>Se introducirá la pregunta de seguridad y su respuesta, junto la nueva contraseña, la cual hay que escribir dos veces.
+Se verificará que:</p>
+<ul>
+<li>La respuesta coincida con la introducida.</li>
+<li>La contraseña debe tener como mínimo 8 caracteres, 1 mayúscula, 1 número y un símbolo.</li>
+<li>La contraseña repetida debe coincidir con la primera.
+<img src="img/BorradoresFront/Login/3.2RecuperarContraseña.png" alt="Formulario2RecuperarContraseña"></li>
+</ul>
+<h3 id="sistema-de-biblioteca">Sistema de biblioteca</h3>
+<p>Se mostrará una biblioteca junto un conjunto de acciones que el usuario podrá realizar</p>
+<h4 id="1-buscar-otras-librer%C3%ADas">1. Buscar otras librerías</h4>
+<p>El usuario introducirá el nombre de otro usuario o el nombre de otra librería, mostrando una serie de coincidencias, tras las cuales, se seleccionará la deseada. Esto llevará a la biblioteca de otro usuario, donde podrá ver los libros que tiene y descargarlos, así como acceder al detalle de ellos.</p>
+<h4 id="2-buscar-libros">2. Buscar libros</h4>
+<p>El usuario podrá buscar libros tanto por su título como su autor.</p>
+<h4 id="3-ordenar-libros">3. Ordenar libros</h4>
+<p>Se podrán ordenar libros por su fecha de publicación o su puntuación.(pendiente de desarrollar aún)</p>
+<h4 id="4-subir-libros">4. Subir libros</h4>
+<p>El usuario podrá subir libros que tengan formato PDP o epub, los cuales se guardarán en el sistema, apuntando en la base de datos a su nombre, y en el código el lugar donde se guardan los archivos físicos.</p>
+<h4 id="5-biblioteca">5. Biblioteca</h4>
+<p>El usuario visualizará nueve libros por pantalla, habiendo un sistema de paginación cuando se supere esa cantidad.
+Se verá la portada de cada libro (en caso de los PDF la primera página), así como el título, autor, la puntuación que tienen (esta se calculará en base de las reseñas de los usuarios) y la fecha de subida.
+Así mismo, cada libro tendrá un icono para descargarlo y otro de borrar, en el caso que quieran quitarlo de la librería (se elimina de la base de datos y del repo donde se guardan, así que esta acción será irreversible, por lo que habrá que confirmarlo).</p>
+<p><img src="img/BorradoresFront/Biblioteca/1.Librería.png" alt="Formulario1RecuperarContraseña"></p>
+<h3 id="sistema-de-detalle-del-libro">Sistema de detalle del libro</h3>
+<blockquote>
+<p>Las tengo que redactar bien, sólo tengo un esquema. Así mismo los componentes están sujetos a cambios</p>
+</blockquote>
+<pre class="hljs"><code><div>PANTALLA DETALLE LIBRO
+Dos partes: Información y Reseñas
+
+1º Información del libro
+	* Elementos
+		* Portada del libro (imagen grande)
+		* Título
+		* Autor
+		* Categorías
+		* Puntuación media (1 a 5)
+		* Botón Descargar libro (PDF/EPUB)
+	* Validaciones
+		* El libro debe existir en la base de datos
+	* Respuestas back	
+		* 200 -&gt; Datos del libro devueltos correctamente
+		* 404 -&gt; Libro no encontrado
+		* 500 -&gt; Error del servidor
+
+2º Reseñas
+	*Elementos
+		* Listado de reseñas
+		* Botón Añadir reseña
+		* Botón Editar / Eliminar reseña (si es tu reseña)
+	* Validaciones
+		* Solo un usuario puede escribir 1 reseña por libro
+		* La reseña tiene un límite de 500 caracteres
+	* Respuestas back	
+		* 201 -&gt; Reseña creada correctamente
+		* 200 -&gt; Reseña editada/eliminada con éxito
+		* 400 -&gt; Datos inválidos o reseña duplicada
+		* 403 -&gt; No autorizado (editar/eliminar reseña ajena)
+		* 404 -&gt; Libro o reseña no encontrada
+
+3. Acciones adicionales en libro de estantería propia
+	*Elementos
+		* Botón Editar libro (inhabilitado, en función del tiempo)
+		* Botón Eliminar libro
+		* Botón Editar / Eliminar reseña (si es tu reseña)
+	* Validaciones
+		* Solo el dueño del libro puede editar o borrar
+	* Respuestas back	
+		* 201 -&gt; 200 -&gt; Libro editado/eliminado correctamente
+		* 400 -&gt; Datos inválidos
+		* 403 -&gt; No autorizado
+		* 404 -&gt; Libro no encontrado
+
+4. Acciones adicionales en libro de estantería ajena
+	*Elementos
+		* Botón Añadir a mi biblioteca
+	* Validaciones
+		* No puedes añadir un libro que ya está en tu biblioteca
+	* Respuestas back	
+		* 201 -&gt; Libro añadido a la biblioteca correctamente
+		* 400 -&gt; El libro ya está en tu biblioteca
+		* 403 -&gt; 404 -&gt; Libro no encontrado
+</div></code></pre>
+<h3 id="admin">Admin</h3>
+<blockquote>
+<p>Las tengo que redactar bien, sólo tengo un esquema</p>
+</blockquote>
+<pre class="hljs"><code><div>ADMIN
+1º Gestión de usuarios
+	* Elementos
+		* Listado de usuarios (nombre, email, estado, biblioteca asociada, rol)
+		* Botón Bloquear usuario
+		* Botón Eliminar usuario
+		* Botón Rectificar (dentro de los 3 días en caso bloqueo, 15 días si es eliminar)
+	* Validaciones
+		* No se puede eliminar un usuario ya eliminado definitivamente
+		* El administrador no puede eliminarse a sí mismo
+		* Un usuario bloqueado no puede acceder a la biblioteca.
+		* Un usuario eliminado no puede acceder a la biblioteca.
+	* Respuestas back
+		* 200 -&gt; Acción realizada con éxito	
+		* 400 -&gt; Acción inválida
+		* 403 -&gt; No autorizado
+		* 404 -&gt; Usuario no encontrado
+		* 500 -&gt; Error del servidor
+
+2º Gestión libros/reseñas
+	* Elementos
+		* Listado de libros (título, autor, usuario propietario, estado).
+		* Listado de reseñas (texto, usuario, libro asociado, fecha).
+		* Botón Eliminar libro.
+		* Botón Eliminar reseña.
+	* Validaciones
+		* El administrador puede eliminar cualquier libro o reseña que incumpla normas.
+		* Una reseña eliminada no se puede recuperar.
+		* Un libro eliminado desaparece de todas las bibliotecas donde estaba compartido.
+		* El administrador no puede editar libros/reseñas, solo eliminarlos.
+	* Respuestas back
+		* 200 -&gt; Libro/reseña eliminada con éxito.
+		* 400 -&gt; Acción inválida
+		* 403 -&gt; No autorizado
+		* 404 -&gt; Libro o reseña no encontrada.
+		* 500 -&gt; Error del servidor	
+</div></code></pre>
+<h2 id="alcance">Alcance</h2>
+<h3 id="funcionalidades-implementadas">Funcionalidades implementadas</h3>
+<ul>
+<li>Registro, login y recuperación de contraseña a través de una pregunta de seguridad.</li>
+<li>Gestión de usuarios en función del rol.</li>
+<li>Subida de libros con formato PDP/EPUB.</li>
+<li>Extracción de metadatos de los libros.</li>
+<li>Organización de libros con una representación visual semejante a una librería.</li>
+<li>Búsqueda de otros usuarios y bibliotecas.</li>
+<li>Filtrado y búsqueda de libros dentro de una biblioteca.</li>
+<li>Visualización del detalle de un libro.</li>
+<li>Visualización, creación, edición y eliminación de reseñas.</li>
+<li>Acciones de administrador (bloqueo y eliminación de usuarios, eliminación de cualquier libro y reseña).</li>
+<li>Implementación de pruebas automatizadas de frontend con Selenium (Java+Cucumber).</li>
+<li>Implementación de pruebas automatizada de backend con Newman Postman.</li>
+<li>Integración con Github Actions (Jenkinks si no se permite subir a Github el proyecto).</li>
+<li>Dockerización de toda la aplicación y despliegue a través de un docker-compose.</li>
+</ul>
+<h3 id="usuarios-de-la-aplicaci%C3%B3n">Usuarios de la aplicación</h3>
+<ul>
+<li>La aplicación podrá ser usada por cualquier persona a partir de 14 años (a la hora de registrarse, se implementatará un método de verificación a través de la fecha de nacimiento).</li>
+<li>Tendrá sólo un administrador de momento.</li>
+<li>No habrá perfiles de invitado, será necesario registrarse.</li>
+</ul>
+<h3 id="contexto">Contexto</h3>
+<ul>
+<li>Se trata de un proyecto académico, sin previsiones de que salga a producción, con el objetivo de dar a conocer más el perfil de tester.</li>
+<li>Todos los usuarios serán totalmente ficticios.</li>
+</ul>
+<h3 id="l%C3%ADmites">Límites</h3>
+<ul>
+<li><strong>Recuperación de la contraseña</strong>: lo adecuado sería que la recuperación de la contraseña fuera a través de un enlace con un correo electrónico. Por falta de tiempo, se lleva de una forma más sencilla, totalmente factible, pero que a nivel profesional, no sería lo más adecuado, tanto por vulnerabilidad como por profesionalidad.</li>
+<li><strong>Pruebas de rendimiento</strong>: por posible falta de tiempo, no se abarcarán estas pruebas que servirían para evitar que la aplicación vaya lenta o no funcione ante una alta demanda de usuarios al mismo tiempo, así como serviría para saber qué requisitos son necesarios a la hora de alojarlos en un servidor en caso de que fuera a producción.</li>
+<li><strong>Pruebas unitarias</strong>: por falta de tiempo, no se abordarán estas pruebas. Así mismo, estas son hechas más por desarrolladores, y lo que quiero mostrar es más el rol de tester.</li>
+<li><strong>Edición de medatos del libro</strong>: esto en función del tiempo, podrá ser incorporado.</li>
+<li><strong>Aplicación responsive</strong>: la aplicación sólo se mostrará para web de escritorio  por falta de tiempo.</li>
+</ul>
+<h3 id="planificaci%C3%B3n">Planificación</h3>
+<p>Elaboré un <a href="https://trello.com/b/u07xmNm6/mi-tablero-de-trello">calendario en Trello</a>, definiendo todas lo que hice durante unos rangos basados en las fechas de entregas</p>
+<h3 id="gastos">Gastos</h3>
+<p>Al ser una aplicación cuyo fin es que sirva como proyecto final, y no hay previsión de que salga a producción, los gastos son muy bajos. Al contar con ordenador propio, los únicos gastos que se pueden diferenciar son la electricidad y el internet, lo cuál conllevaría un gasto estimado de 150€ en total.</p>
+<h3 id="normativa">Normativa</h3>
+<p>Al poder todos los usuarios subir libros, estos tendrán que cumplir con la normativa vigente española de propiedad intelectual.
+No se permitirá subir ni compartir obras protegidas por derechos de autor sin el permiso del propietario. Si se detecta contenido que incumpla la normativa, será eliminado de la plataforma, tomando las medidad oportunas contra el usuario infractos.
+En cuanto a los datos personales (como nombre, apellidos y fecha de nacimiento), estos se usan únicamente para la gestión del perfil y se tratan de forma segura y confidencial, conforme al RGPD y la Ley de Protección de Datos española. Nunca se compartirá información con terceros y se garantizará la privacidad de sus usuarios.</p>
+<h2 id="todo-a-partir-de-este-punto-eres-libre-de-organizar-la-documentaci%C3%B3n-como-estimes-pero-debes-desarrollar-el-cuerpo-de-tu-proyecto-con-apartados-y-subapartados-que-completen-tu-documentaci%C3%B3n">TODO: A partir de este punto eres libre de organizar la documentación como estimes pero debes desarrollar el cuerpo de tu proyecto con apartados y subapartados que completen tu documentación</h2>
+<blockquote>
+<p>Hemos elaborado un <a href="checklist.md">checklist</a> de puntos necesarios para tu PFC, para que revises estas recomendaciones/especificaciones.
+Apóyate en tu tutor/a si tienes duda de cómo organizar tu proyecto y estos apartados/subapartado. Cada proyecto y su contexto determinará la mejor forma de estructurarlo. Piensa bien cómo lo vas a hacer.</p>
+</blockquote>
+<h2 id="conclusiones">Conclusiones</h2>
+<blockquote>
+<p>Deja esta apartado para el final. Realiza un resumen de todo lo que ha supuesto la realización de tu proyecto. Debe ser una redacción breve. Un resumen de los hitos conseguidos más importantes y de lo aprendido durante el proceso.
+Puede ser un buen punto de partida para organizar tu presentación y ajustarla al tiempo que tienes.</p>
+</blockquote>
+<h2 id="referencias-fuentes-consultadas-y-recursos-externos-webgraf%C3%ADa">Referencias, Fuentes consultadas y Recursos externos: Webgrafía</h2>
+<blockquote>
+<p><em>TODO</em>: Enlaces externos y descipciones de estos enlaces que creas conveniente indicar aquí. Generalmente ya van a estar integrados con tu documentación, pero si requieres realizar un listado de ellos, este es el lugar.</p>
+</blockquote>
+
+</body>
+</html>

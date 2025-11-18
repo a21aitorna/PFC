@@ -1,36 +1,41 @@
 # Proyecto Atenea
 
 - [Introducción](#introducción)
-  - [Frontend](#frontend)
-  - [Backend](#backend)
-  - [Persistencia de datos](#persistencia-de-datos)
-  - [Testing](#testing)
-    - [Frontend Testing](#frontend-testing)
-    - [Backend Testing](#backend-testing)
+	- [Frontend](#frontend)
+	- [Backend](#backend)
+	- [Persistencia de datos](#persistencia-de-datos)
+	- [Testing](#testing)
+		- [Frontend Testing](#frontend-testing)
+		- [Backend Testing](#backend-testing)
 - [Estado de arte o análisis del contexto](#estado-de-arte-o-análisis-del-contexto)
-  - [Público objetivo](#público-objetivo)
-  - [Necesidades que cubre](#necesidades-que-cubre)
-  - [Aplicaciones existentes](#aplicaciones-existentes)
+	- [Público objetivo](#público-objetivo)
+	- [Necesidades que cubre](#necesidades-que-cubre)
+	- [Aplicaciones existentes](#aplicaciones-existentes)
 - [Propósito](#propósito)
 - [Objetivos](#objetivos)
-  - [Objetivos principales](#objetivos-principales)
-  - [Sistema de Login](#sistema-de-login)
-    - [1.Login](#1login)
-    - [2.Registro](#2registro)
-    - [3.Recuperar contraseña](#3recuperar-contraseña)
-      - [Formulario1 recuperación de contraseña](#formulario1-recuperación-de-contraseña)
-      - [Formulario2 recuperación de contraseña](#formulario2-recuperación-de-contraseña)
-  - [Sistema de biblioteca](#sistema-de-biblioteca)
-  - [Sistema de detalle del libro](#sistema-de-detalle-del-libro)
-  - [Admin](#admin)
+	- [Objetivos principales](#objetivos-principales)
+	- [Sistema de Login](#sistema-de-login)
+		- [1.Login](#1login)
+		- [2.Registro](#2registro)
+		- [3.Recuperar contraseña](#3recuperar-contraseña)
+			- [Formulario1 recuperación de contraseña](#formulario1-recuperación-de-contraseña)
+			- [Formulario2 recuperación de contraseña](#formulario2-recuperación-de-contraseña)
+	- [Sistema de biblioteca](#sistema-de-biblioteca)
+		- [1. Buscar otras librerías](#1-buscar-otras-librerías)
+		- [2. Buscar libros](#2-buscar-libros)
+		- [3. Ordenar libros](#3-ordenar-libros)
+		- [4. Subir libros](#4-subir-libros)
+		- [5. Biblioteca](#5-biblioteca)
+	- [Sistema de detalle del libro](#sistema-de-detalle-del-libro)
+	- [Admin](#admin)
 - [Alcance](#alcance)
-  - [Funcionalidades implementadas](#funcionalidades-implementadas)
-  - [Usuarios de la aplicación](#usuarios-de-la-aplicación)
-  - [Contexto](#contexto)
-  - [Límites](#límites)
-  - [Planificación](#planificación)
-  - [Gastos](#gastos)
-  - [Normativa](#normativa)
+	- [Funcionalidades implementadas](#funcionalidades-implementadas)
+	- [Usuarios de la aplicación](#usuarios-de-la-aplicación)
+	- [Contexto](#contexto)
+	- [Límites](#límites)
+	- [Planificación](#planificación)
+	- [Gastos](#gastos)
+	- [Normativa](#normativa)
 - [TODO: A partir de este punto eres libre de organizar la documentación como estimes pero debes desarrollar el cuerpo de tu proyecto con apartados y subapartados que completen tu documentación](#todo-a-partir-de-este-punto-eres-libre-de-organizar-la-documentación-como-estimes-pero-debes-desarrollar-el-cuerpo-de-tu-proyecto-con-apartados-y-subapartados-que-completen-tu-documentación)
 - [Conclusiones](#conclusiones)
 - [Referencias, Fuentes consultadas y Recursos externos: Webgrafía](#referencias-fuentes-consultadas-y-recursos-externos-webgrafía)
@@ -222,67 +227,26 @@ Se verificará que:
 ![Formulario2RecuperarContraseña](img/BorradoresFront/Login/3.2RecuperarContraseña.png)
 
 ### Sistema de biblioteca
-> Las tengo que redactar bien, sólo tengo un esquema. Así mismo los componentes están sujetos a cambios
-~~~
-PANTALLA BIBLIOTECA
-Tres partes: Header, Estantería y Menú hamburguesa
+Se mostrará una biblioteca junto un conjunto de acciones que el usuario podrá realizar
+#### 1. Buscar otras librerías
+El usuario introducirá el nombre de otro usuario o el nombre de otra librería, mostrando una serie de coincidencias, tras las cuales, se seleccionará la deseada. Esto llevará a la biblioteca de otro usuario, donde podrá ver los libros que tiene y descargarlos, así como acceder al detalle de ellos.
 
-1º HEADER
-	* Elementos
-		* Barra superior fija
-		* Campo búsqueda (usuario/biblioteca)
-		* Botón logout
-	* Validaciones
-		* No se puede hacer una búsqueda vacía.
-		* Al deslogearse, redirige a la página de login.
-		* Se elimina el token de sesión.
-	* Respuestas back
-		* 200 -> todo OK
-		* 404 -> No existe la biblioteca/usario buscado.
-		* 500 -> error servidor
+#### 2. Buscar libros
+El usuario podrá buscar libros tanto por su título como su autor.
 
-2º Estantería
-	* Elementos
-		* Representación de 3 o 4 libros por fila (9 o 12 en total)
-		* Cada libro muestra sólo la portada
-		* Paginación si hay más de (9 o 12) libros.
-	* Validaciones
-		* Si hay menos libros de la capacidad máxima, no hay paginación
-	* Respuestas back
-		* 200 -> Lista portadas devuelta correctamente
-		* 204 -> Estantería sin libros
-		* 500 -> error servidor
+#### 3. Ordenar libros
+Se podrán ordenar libros por su fecha de publicación o su puntuación.(pendiente de desarrollar aún)
 
-3.1º Menú hamburguesa en biblioteca propia
-	* Elementos
-		* Subir libro (seleccionar archivo PDF/EPUB)
-		* Buscar libro en mi biblioteca por título/autor
-		* Filtrar por fecha de subida
-		* Filtrar por puntuación.
-	* Validaciones
-		* El archivo subido debe ser PDF o EPUB.
-		* El archivo no puede superar un tamaño límite
-		* Al filtrar o buscar, debe haber coincidencias exactas (por ejemplo, si buscas Harry te aparecerán 
-		  todos los libros que cuyo autor tenga Harry o que el título lleve Harry).
-	* Respuestas back
-		* 201 -> Libros subido correctamente
-		* 400 -> Formato de archivo no válido
-		* 404 -> No se encuentra ningún libro con ese criterio de búsqueda.
+#### 4. Subir libros
+El usuario podrá subir libros que tengan formato PDP o epub, los cuales se guardarán en el sistema, apuntando en la base de datos a su nombre, y en el código el lugar donde se guardan los archivos físicos.
 
-3.1º Menú hamburguesa en biblioteca ajena
-	* Elementos
-		* Buscar libro en mi biblioteca por título/autor
-		* Filtrar por fecha de subida
-		* Filtrar por puntuación.
-	* Validaciones
-		* El archivo subido debe ser PDF o EPUB.
-		* El archivo no puede superar un tamaño límite
-		* Al filtrar o buscar, debe haber coincidencias exactas (por ejemplo, si buscas Harry te aparecerán 
-		  todos los libros que cuyo autor tenga Harry o que el título lleve Harry).
-	* Respuestas back
-		* 400 -> Formato de archivo no válido
-		* 404 -> No se encuentra ningún libro con ese criterio de búsqueda.
-~~~
+#### 5. Biblioteca
+El usuario visualizará nueve libros por pantalla, habiendo un sistema de paginación cuando se supere esa cantidad.
+Se verá la portada de cada libro (en caso de los PDF la primera página), así como el título, autor, la puntuación que tienen (esta se calculará en base de las reseñas de los usuarios) y la fecha de subida.
+Así mismo, cada libro tendrá un icono para descargarlo y otro de borrar, en el caso que quieran quitarlo de la librería (se elimina de la base de datos y del repo donde se guardan, así que esta acción será irreversible, por lo que habrá que confirmarlo).
+
+![Formulario1RecuperarContraseña](img/BorradoresFront/Biblioteca/1.Librería.png)
+
 ### Sistema de detalle del libro
 > Las tengo que redactar bien, sólo tengo un esquema. Así mismo los componentes están sujetos a cambios
 
