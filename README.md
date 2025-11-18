@@ -1,16 +1,36 @@
-# Tu título del Proyecto fin de ciclo
-
-> *TODO*: Este documento será la "*página de aterrizaje*" de tu proyecto. Será lo primero que vean los que se interesen por él. Cúida su redacción con todo tu mimo. Elimina posteriormente todas las lineas "*TODO*" cuando creas finalizada su redacción.
-> Puedes acompañar a la redacción de este fichero con imágenes o gifs, pero no abuses de ellos.
+# Proyecto Atenea
+Proyecto Atenea, es un proyecto que realizo como PFC del Grado Superior de Desarrollo de Apliciones Web, en la que se combina tanto un perfil tanto fullstack como QA, cuya idea surgió de mi pasión por la lectura así como a la hora de intentar visibilizar el perfil de tester, un aspecto que no se vio mucho durante el ciclo, y que considero que tiene tanta importancia como el desarrollo propio.
 
 ## Descripción
+Proyecto Atenea es una aplicación web que permite a cada usuario crear y gestionar su propia biblioteca digital personal.
+El proyecto busca ofrecer un espacio en el que los usuarios puedan tener sus propias bibliotecas y subir libros en formato PDF o EPUB, así como acceder a las bibliotecas de otros usuarios y compartir reseñas y valoraciones. De esta manera, se busca un fomento de la lectura, así como el descubrimiento y adquisición de nuevos libros.
 
-> *TODO*: Realiza una breve descripción del proyecto. No menos de 100 palabras y no más de 300. Resalta lo fundamental **con tus propias palabras**. Utiliza un lenguaje correcto, **pero natural**, que lo entienda todo el mundo, incluso y en especial, las personas que no tengan un conocimiento técnico avanzado. Puede ser un estracto o resumen de apartados que ya contemples en otros ficheros.
+Contará con un administrador, el cual a través de un panel, podrá gestionar usuarios, eliminar libros o reseñas inadecuadas y bloquear cuentas en caso de incumplimiento de normas.
+
+El sistema está desarrollado en un entorno full-stack: cuenta con autenticación segura, un entorno completamente dockerizado y una integración continua (CI/CD) que garantiza el correcto funcionamiento de todas sus partes mediante pruebas automáticas.
 
 ## Instalación / Puesta en marcha
+El proyecto está preparado para ser ejecutado mediante Docker, de manera que se inicien todos los servicios (backend, frontend y base de datos) a través de un sólo comando. A mayores, con la integración continua, se podrán ver los reportes de los tests automáticos, pero a efectos de demo, estos se podrán lanzar manualmente con comandos.
 
-> *TODO*: En este apartado describe con toda precisión y a poder ser con la mayor simplicidad/facilidad posible, cómo poner en marcha tu aplicación para probarla (en un ambiente local). Se valorará muy positivamente que este proceso sea lo más fácil posible, con una simple instrucción (p. e. un script de instalación). Docker es ideal para esto.
-
+1. **Clonar el repositorio:**
+    ~~~
+    git clone https://github.com/a21aitorna/FCT.git
+    cd app
+    ~~~
+2. **Construir e iniciar los contenedores::**
+    ~~~
+    docker-compose up --build
+    ~~~
+3. **Una vez iniciado, acceder a:**
+    ~~~
+    - Frontend: http://localhost:3000
+    - Backend (API/Swagger): http://localhost:5000
+    ~~~
+4. **Comandos tests**
+    ~~~
+    cd app/tests
+    > Los tengo que retocar aún
+    ~~~
 ## Uso
 
 > *TODO*: Es este apartado describe brevemente cómo se usará este software. Plantea un uso básico (como un *quickstart*) Si tiene una interfaz de terminal, puedes describir aquí su sintaxis. Si tiene una interfaz gráfica de usuario, describe aquí **sólo el uso** (a modo de sumario) **de los aspectos más relevantes de su funcionamiento** (máxima brevedad, como si fuese un anuncio reclamo o comercial).
