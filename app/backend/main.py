@@ -17,6 +17,7 @@ from database.db import init_app
 
 from features.user.routes.login_routes import register_login_routes
 from features.user.routes.user_routes import register_user_routes
+from features.book.routes.book_routes import register_book_routes
 
 from seed import seed_roles
 
@@ -35,6 +36,7 @@ jwt = JWTManager(app)
 
 register_login_routes(app)
 register_user_routes(app)
+register_book_routes(app)
 
 @app.route('/')
 def index():

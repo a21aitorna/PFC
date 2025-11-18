@@ -3,12 +3,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from validations.password_validation import validate_password
 from validations.age_validation import age_validation
-from repo.users_repo import (get_user_by_username, save_user, get_security_question_by_username, get_answer_by_username, get_password_by_username, update_user_password)
+from repo.users_repo import (get_user_by_user_id, get_user_by_username, save_user, get_security_question_by_username, get_answer_by_username, get_password_by_username, update_user_password, get_user_library_name, get_users_or_libraries)
 from dao.persona_dao import Persona
 from exceptions.http_status import (USER_NOT_FOUND_MSG, INTERNAL_SERVER_ERROR_MSG, BAD_REQUEST_EMPTY_REGISTER_MSG, BAD_REQUEST_PASSWORD_MISMATCH_REGISTER_MSG, 
                                     BAD_REQUEST_INVALID_PASSWORD_REGISTER_MSG, BAD_REQUEST_INVALID_DATE_REGISTER_MSG, BAD_REQUEST_UNDERAGE_REGISTER_MSG, BAD_REQUEST_USERNAME_ALREADY_EXISTS_REGISTER_MSG, 
                                     USER_CORRECT_REGISTER_MSG, BAD_REQUEST_EMPTY_RECOVER_PASSWORD_MSG, USER_FOUND_RECOVER_PASSWORD_MSG, BAD_REQUEST_ANSWER_MISMATCH_RECOVER_PASSWORD_MSG,
-                                    BAD_REQUEST_PASSWORD_MISMATCH_RECOVER_PASSWORD_MSG, BAD_REQUEST_INVALID_PASSWORD_RECOVER_PASSWORD_MSG, USER_PASSWORD_UPDATED_MSG, BAD_REQUEST_USERNAME_NOT_FOUND_MSG, BAD_REQUEST_SAME_PASSWORD_RECOVER_PASSWORD_MSG)
+                                    BAD_REQUEST_PASSWORD_MISMATCH_RECOVER_PASSWORD_MSG, BAD_REQUEST_INVALID_PASSWORD_RECOVER_PASSWORD_MSG, USER_PASSWORD_UPDATED_MSG, BAD_REQUEST_USERNAME_NOT_FOUND_MSG, BAD_REQUEST_SAME_PASSWORD_RECOVER_PASSWORD_MSG,
+                                    BAD_REQUEST_USER_ID_NOT_FOUND_MSG, SEARCH_USER_ERROR_MSG)
 
 def register_user():
     """Registrar un usuario nuevo"""
@@ -154,3 +155,40 @@ def update_new_password():
     
     except Exception as e:
         return INTERNAL_SERVER_ERROR_MSG
+    
+def get_user_library_name_controller():
+    """Devuelve el nombre de la librería del usuario"""
+    try:
+        user_id = request.args.get("id_user")
+        #Valida si existe el nomnbre de usuario
+        if not user_id:
+            return BAD_REQUEST_USER_ID_NOT_FOUND_MSG
+        
+        user = get_user_by_user_id(user_id)
+        #Valida si existe el usuario
+        if not user:
+            return USER_NOT_FOUND_MSG
+        
+        library_name = get_user_library_name(user_id)
+        return jsonify({"library_name": library_name}), 200
+    
+    except Exception as e:
+        print(f"Error al intentar obtener el nombre de la librería: {e}")
+        
+def search_users_controller(searched_text):
+    """Busca el usuario o nombre de librería coincida con lo que se pase"""
+    try:
+        searched_users = get_users_or_libraries(searched_text)
+        
+        result = [
+            {
+                'id': searched_user.id_user,
+                'username': searched_user.username,
+                'libraryName': searched_user.library_name,
+            }
+            for searched_user in searched_users
+        ]
+        return jsonify(result), 200
+    except Exception as e:
+        print(f"Error buscando usuarios: {e}")
+        return SEARCH_USER_ERROR_MSG

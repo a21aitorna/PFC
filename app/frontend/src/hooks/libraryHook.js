@@ -1,0 +1,260 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { API_BASE } from "../config/api";
+import { useUser } from "../context/userProvider";
+import es from "../assets/i18n/es.json";
+
+export function useLibrary(routeUserId) {
+  const { user, loading: userLoading } = useUser();
+  const navigate = useNavigate();
+
+  const userId = routeUserId || user?.id_user;
+  const isOwner = user?.id_user === userId;
+
+  const goToUserLibrary = (id) => {
+    navigate(`/library/${id}`);
+  };
+
+  const [libraryName, setLibraryName] = useState("");
+  const [books, setBooks] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState([]);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [sortOption, setSortOption] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [userQuery, setUserQuery] = useState("");
+  const [userResults, setUserResults] = useState([]);
+  const [loadingUserSearch, setLoadingUserSearch] = useState(false);
+
+  // Estados de error separados
+  const [errorBooks, setErrorBooks] = useState("");
+  const [errorUserSearch, setErrorUserSearch] = useState("");
+
+  const ALLOWED_EXTENSIONS = ["pdf", "epub"];
+
+  // Buscar usuarios/librerías
+  useEffect(() => {
+    if (userQuery.trim() === "") {
+      setUserResults([]);
+      setErrorUserSearch("");
+      return;
+    }
+
+    const delay = setTimeout(async () => {
+      setLoadingUserSearch(true);
+      setErrorUserSearch("");
+      try {
+        const res = await axios.get(
+          `${API_BASE}/users/search?q=${encodeURIComponent(userQuery)}`
+        );
+        setUserResults(res.data);
+      } catch {
+        setErrorUserSearch(es.library.errorWhileSearchingUsers);
+      } finally {
+        setLoadingUserSearch(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(delay);
+  }, [userQuery]);
+
+  // Fetch nombre librería
+  const fetchLibraryName = async (idParam) => {
+    const idToFetch = idParam || user?.id_user;
+    if (!idToFetch) return;
+
+    setErrorBooks("");
+    try {
+      const res = await axios.get(
+        `${API_BASE}/library-name?id_user=${idToFetch}`
+      );
+      if (res.data?.library_name) {
+        setLibraryName(res.data.library_name);
+      } else {
+        setLibraryName(es.library.unknownLibrary);
+      }
+    } catch {
+      setErrorBooks(es.library.errorWhileFetchingLibraryName);
+      setLibraryName(es.library.unknownLibrary);
+    }
+  };
+
+  // Fetch libros
+  const fetchBooks = async () => {
+    if (!userId) {
+      setBooks([]);
+      setFilteredBooks([]);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    setErrorBooks("");
+    try {
+      const res = await axios.get(`${API_BASE}/books/user/${userId}`);
+      setBooks(res.data);
+      setFilteredBooks(res.data);
+    } catch {
+      setErrorBooks(es.library.errorWhileLoadingBooks);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!userLoading && userId) {
+      fetchLibraryName(userId);
+      fetchBooks(userId);
+      setSearch("");
+    }
+  }, [userId, userLoading]);
+
+  // Filtrado y ordenamiento
+  useEffect(() => {
+    let filtered = [...books];
+
+    if (search) {
+      filtered = filtered.filter(
+        (book) =>
+          book.title.toLowerCase().includes(search.toLowerCase()) ||
+          book.author.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    if (sortOption) {
+      filtered.sort((a, b) => {
+        if (sortOption === "date") {
+          return sortOrder === "asc"
+            ? new Date(a.created_at) - new Date(b.created_at)
+            : new Date(b.created_at) - new Date(a.created_at);
+        } else if (sortOption === "rating") {
+          return sortOrder === "asc"
+            ? (a.rating || 0) - (b.rating || 0)
+            : (b.rating || 0) - (a.rating || 0);
+        }
+        return 0;
+      });
+    }
+
+    setFilteredBooks(filtered);
+  }, [books, search, sortOption, sortOrder]);
+
+  // Archivos permitidos
+  const allowedFile = (filename) => {
+    if (!filename || typeof filename !== "string") return false;
+    const ext = filename.split(".").pop().toLowerCase();
+    return ALLOWED_EXTENSIONS.includes(ext);
+  };
+
+  // Subir libro
+  const uploadBook = async (file) => {
+    if (!isOwner) return { error: `${es.library.canNotUploadForeignLibraies}`};
+    if (!file) return { error: `${es.library.fileNotSelected}` };
+    if (!user?.id_user) return { error: `${es.library.notLoggedUser}` };
+    if (!allowedFile(file.name)) return { error: `${es.library.formatNotAllowed}` };
+
+    setErrorBooks("");
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("user_id", user.id_user);
+
+    try {
+      const res = await axios.post(`${API_BASE}/books/upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      const uploaded = res.data.book;
+
+      let normalizedCover = null;
+      if (uploaded.cover) {
+        const coverFileName = uploaded.cover.split("/").pop();
+        normalizedCover = `${API_BASE}/books/cover/${coverFileName}`;
+      }
+
+      const normalizedBook = {
+        ...uploaded,
+        cover: normalizedCover,
+      };
+
+      setBooks((prev) => [normalizedBook, ...prev]);
+      setFilteredBooks((prev) => [normalizedBook, ...prev]);
+
+      return { success: true, book: normalizedBook };
+    } catch (err) {
+      const msg = err.response?.data?.error || `${es.library.errorWhileUploadingBook}`;
+      setErrorBooks(msg);
+      return { error: msg };
+    }
+  };
+
+  // Borrar libro
+  const deleteBook = async (bookId) => {
+    if (!isOwner) return { error: `${es.library.canNotDeleteBookForeignLibraries}` };
+    if (!user?.id_user) return { error: `${es.library.notLoggedUser}` };
+
+    setErrorBooks("");
+    try {
+      const res = await axios.delete(
+        `${API_BASE}/books/delete/user/${user.id_user}/book/${bookId}`
+      );
+      if (res.status === 200) {
+        setBooks((prev) => prev.filter((b) => b.id_book !== bookId));
+        setFilteredBooks((prev) => prev.filter((b) => b.id_book !== bookId));
+        return { success: true };
+      }
+      const msg = res.data?.msg || `${es.library.errorWhileDeletingBook}`;
+      setErrorBooks(msg);
+      return { error: msg };
+    } catch {
+      const msg = `${es.library.errorWhileDeletingBook}`;
+      setErrorBooks(msg);
+      return { error: msg };
+    }
+  };
+
+  const downloadBook = (bookId) => {
+    if (!bookId) return;
+    window.open(`${API_BASE}/books/download/${bookId}`, "_blank");
+  };
+
+  const goBackToLibrary = () => {
+    if (!user?.id_user) return;
+    setUserQuery("");
+    setSearch("");
+    navigate("/library");
+  };
+
+  const selectLibrary = (id) => {
+    setUserQuery("");
+    setUserResults([]);
+    goToUserLibrary(id);
+  };
+
+  return {
+    books,
+    filteredBooks,
+    loading,
+    search,
+    setSearch,
+    sortOption,
+    setSortOption,
+    sortOrder,
+    setSortOrder,
+    libraryName,
+    uploadBook,
+    fetchBooks,
+    userQuery,
+    setUserQuery,
+    userResults,
+    loadingUserSearch,
+    goToUserLibrary,
+    deleteBook,
+    downloadBook,
+    isOwner,
+    goBackToLibrary,
+    selectLibrary,
+    errorBooks, 
+    errorUserSearch
+  };
+}

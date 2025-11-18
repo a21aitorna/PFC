@@ -2,7 +2,7 @@ from database.db import db
 from datetime import datetime, timezone
 
 class LibroSubido(db.Model):
-    __tablename = 'uploaded_book'
+    __tablename__ = 'uploaded_book'
     
     id_uploaded_book = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)
