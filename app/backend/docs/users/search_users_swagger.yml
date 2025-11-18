@@ -9,10 +9,9 @@ produces:
 
 parameters:
   - in: query
-    name: q
+    name: text
     required: false
     type: string
-    description: Text to search by username or library name.
     example: "user1"
 
 responses:

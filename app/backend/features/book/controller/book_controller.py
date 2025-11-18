@@ -1,6 +1,6 @@
 import logging
 import os
-from flask import request, jsonify, abort,send_from_directory
+from flask import request, jsonify, make_response, abort,send_from_directory
 from werkzeug.utils import secure_filename
 from repo.books_repo import save_book_file, save_book, get_user_books, delete_book, get_book_by_id
 from repo.users_repo import get_user_by_user_id
@@ -17,7 +17,8 @@ from exceptions.http_status import (
     BOOK_NOT_FOUND_DOWNLOAD_MSG,
     BAD_REQUEST_BOOK_HAS_NOT_FILE_MSG,
     BOOK_FILE_NOT_FOUND_MSG,
-    DOWNLOAD_BOOK_ERROR_MSG
+    DOWNLOAD_BOOK_ERROR_MSG,
+    COVER_NOT_FOUND_MSG
 )
 
 logging.basicConfig(level=logging.DEBUG)
@@ -106,7 +107,8 @@ def get_book_cover_controller(filename):
     file_path = os.path.join(base_folder, filename)
 
     if not os.path.exists(file_path):
-        abort(404)
+        response = make_response(*COVER_NOT_FOUND_MSG)
+        abort(response)
 
     return send_from_directory(base_folder, filename)
 
@@ -136,7 +138,7 @@ def delete_book_controller(user_id, book_id):
         return BOOK_CORRECT_DELETE_MSG
         
     except Exception as e:
-        logging.exception(f"Exception en delete_book_controller: {e}")
+        print(f"Exception en delete_book_controller: {e}")
         return ERROR_DELETING_BOOK_MSG
     
 
