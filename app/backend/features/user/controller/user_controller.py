@@ -9,7 +9,7 @@ from exceptions.http_status import (USER_NOT_FOUND_MSG, INTERNAL_SERVER_ERROR_MS
                                     BAD_REQUEST_INVALID_PASSWORD_REGISTER_MSG, BAD_REQUEST_INVALID_DATE_REGISTER_MSG, BAD_REQUEST_UNDERAGE_REGISTER_MSG, BAD_REQUEST_USERNAME_ALREADY_EXISTS_REGISTER_MSG, 
                                     USER_CORRECT_REGISTER_MSG, BAD_REQUEST_EMPTY_RECOVER_PASSWORD_MSG, USER_FOUND_RECOVER_PASSWORD_MSG, BAD_REQUEST_ANSWER_MISMATCH_RECOVER_PASSWORD_MSG,
                                     BAD_REQUEST_PASSWORD_MISMATCH_RECOVER_PASSWORD_MSG, BAD_REQUEST_INVALID_PASSWORD_RECOVER_PASSWORD_MSG, USER_PASSWORD_UPDATED_MSG, BAD_REQUEST_USERNAME_NOT_FOUND_MSG, BAD_REQUEST_SAME_PASSWORD_RECOVER_PASSWORD_MSG,
-                                    BAD_REQUEST_USER_ID_NOT_FOUND_MSG)
+                                    BAD_REQUEST_USER_ID_NOT_FOUND_MSG, SEARCH_USER_ERROR_MSG)
 
 def register_user():
     """Registrar un usuario nuevo"""
@@ -191,4 +191,4 @@ def search_users_controller(searched_text):
         return jsonify(result), 200
     except Exception as e:
         print(f"Error buscando usuarios: {e}")
-        return jsonify({'error': 'Error en la búsqueda'}), 500
+        return SEARCH_USER_ERROR_MSG

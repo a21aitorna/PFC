@@ -8,6 +8,8 @@ register_swagger_path = '/app/backend/docs/users/register_swagger.yml'
 recover_password_verify_user_path = '/app/backend/docs/users/recover_password_verify_user_swagger.yml'
 recover_password_get_question_path = '/app/backend/docs/users/recover_password_get_question_swagger.yml'
 recover_password_update_password_path = '/app/backend/docs/users/recover_password_update_password_swagger.yml'
+get_library_name_path = '/app/backend/docs/users/get_library_name_swagger.yml'
+search_users_swagger_path = '/app/backend/docs/users/search_users_swagger.yml'
 
 def register_user_routes(app):
     app.register_blueprint(user_routes)
@@ -33,10 +35,12 @@ def update_new_password_route():
     return update_new_password()
 
 @user_routes.get('/library-name')
+@swag_from(get_library_name_path)
 def get_library_name():
     return get_user_library_name_controller()
 
 @user_routes.get("/users/search")
+@swag_from(search_users_swagger_path)
 def search_users_route():
     searched_text = request.args.get('q', '').strip()
     return search_users_controller(searched_text)

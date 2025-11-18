@@ -47,3 +47,4 @@ with app.app_context():
     BOOK_FILE_NOT_FOUND_MSG = jsonify({"msg": "Book file has not been found","code":"4011"}), HTTPStatus.NOT_FOUND
     DOWNLOAD_BOOK_ERROR_MSG = jsonify({"msg": "Error while downloading the book", "code":"4012"}), HTTPStatus.INTERNAL_SERVER_ERROR
     BAD_REQUEST_USER_ID_NOT_FOUND_MSG = jsonify({"msg": "Bad request. There is not id_user","code":"4013"}), HTTPStatus.BAD_REQUEST
+    SEARCH_USER_ERROR_MSG = jsonify({"msg": "Error in the search", "code":"4014"}), HTTPStatus.INTERNAL_SERVER_ERROR
