@@ -27,7 +27,7 @@
 		- [4. Subir libros](#4-subir-libros)
 		- [5. Biblioteca](#5-biblioteca)
 	- [Sistema de detalle del libro](#sistema-de-detalle-del-libro)
-	- [Admin](#admin)
+	- [Sistema de admin](#sistema-de-admin)
 - [Alcance](#alcance)
 	- [Funcionalidades implementadas](#funcionalidades-implementadas)
 	- [Usuarios de la aplicación](#usuarios-de-la-aplicación)
@@ -245,7 +245,7 @@ El usuario visualizará nueve libros por pantalla, habiendo un sistema de pagina
 Se verá la portada de cada libro (en caso de los PDF la primera página), así como el título, autor, la puntuación que tienen (esta se calculará en base de las reseñas de los usuarios) y la fecha de subida.
 Así mismo, cada libro tendrá un icono para descargarlo y otro de borrar, en el caso que quieran quitarlo de la librería (se elimina de la base de datos y del repo donde se guardan, así que esta acción será irreversible, por lo que habrá que confirmarlo).
 
-![Formulario1RecuperarContraseña](img/BorradoresFront/Biblioteca/1.Librería.png)
+![BorradorBiblioteca](img/BorradoresFront/Biblioteca/1.Librería.png)
 
 ### Sistema de detalle del libro
 > Las tengo que redactar bien, sólo tengo un esquema. Así mismo los componentes están sujetos a cambios
@@ -308,47 +308,11 @@ Dos partes: Información y Reseñas
 		* 403 -> 404 -> Libro no encontrado
 ~~~
 
-### Admin
-> Las tengo que redactar bien, sólo tengo un esquema
-~~~
-ADMIN
-1º Gestión de usuarios
-	* Elementos
-		* Listado de usuarios (nombre, email, estado, biblioteca asociada, rol)
-		* Botón Bloquear usuario
-		* Botón Eliminar usuario
-		* Botón Rectificar (dentro de los 3 días en caso bloqueo, 15 días si es eliminar)
-	* Validaciones
-		* No se puede eliminar un usuario ya eliminado definitivamente
-		* El administrador no puede eliminarse a sí mismo
-		* Un usuario bloqueado no puede acceder a la biblioteca.
-		* Un usuario eliminado no puede acceder a la biblioteca.
-	* Respuestas back
-		* 200 -> Acción realizada con éxito	
-		* 400 -> Acción inválida
-		* 403 -> No autorizado
-		* 404 -> Usuario no encontrado
-		* 500 -> Error del servidor
+### Sistema de admin
+El administrador visualizará en una tabla todos los usuarios y sus bibliotecas que hay en la aplicación, visualizando su estado. Tendrá la opción de bloquear al usuario o eliminarlo, pudiendo rectificar dentro de los 3 o 15 días posteriores a la respectiva acción.
+El administrador, podrá acceder a la biblioteca de cualquier usuario, pudiendo eliminar libros, así como si entra en el detalle de estos, puede eliminar reseñas.
 
-2º Gestión libros/reseñas
-	* Elementos
-		* Listado de libros (título, autor, usuario propietario, estado).
-		* Listado de reseñas (texto, usuario, libro asociado, fecha).
-		* Botón Eliminar libro.
-		* Botón Eliminar reseña.
-	* Validaciones
-		* El administrador puede eliminar cualquier libro o reseña que incumpla normas.
-		* Una reseña eliminada no se puede recuperar.
-		* Un libro eliminado desaparece de todas las bibliotecas donde estaba compartido.
-		* El administrador no puede editar libros/reseñas, solo eliminarlos.
-	* Respuestas back
-		* 200 -> Libro/reseña eliminada con éxito.
-		* 400 -> Acción inválida
-		* 403 -> No autorizado
-		* 404 -> Libro o reseña no encontrada.
-		* 500 -> Error del servidor	
-~~~
-
+![BorradorPanelAdmin](img/BorradoresFront/PanelAdmin/1.%20PanelAdmin.png)
 ## Alcance
 
 ### Funcionalidades implementadas
