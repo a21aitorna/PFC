@@ -8,7 +8,21 @@ export default function Header() {
   const { user, logout } = useUser();
  
   const handleReturnHome = () => {
-    navigate("/");
+    if(!user){
+      navigate("/");
+      return
+    }
+
+    switch(user.id_role) {
+      case 1:
+        navigate("/admin-panel")
+        break;
+      case 2:
+        navigate("/library");
+        break;
+      default: navigate("/");
+      break;
+    }
   };
 
   const handleLogout = () => {

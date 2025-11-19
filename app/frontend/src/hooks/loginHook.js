@@ -22,7 +22,7 @@ export function useLogin() {
 
   // Mapeo de id_role a rutas y nombres de rol
   const roleMap = {
-    1: { name: "admin", path: "/admin" },
+    1: { name: "admin", path: "/admin-panel" },
     2: { name: "usuario", path: "/library" }
   };
 
@@ -55,6 +55,7 @@ export function useLogin() {
       const roleInfo = roleMap[data.user.id_role];
       if (roleInfo) {
         navigate(roleInfo.path);
+        console.log("Usuario recibido tras login:", data.user);
       } else {
         navigate("/");
       }

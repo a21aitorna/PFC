@@ -24,7 +24,9 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/library/:userId" element={<Library />} />
           </Route>
-          <Route path="admin-panel" element={<AdminPanel />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="admin-panel" element={<AdminPanel />} />
+          </Route>
         </Routes>
       </Router>
     </UserProvider>
