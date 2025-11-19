@@ -9,6 +9,24 @@ def seed_roles():
     create_role("Admin")
     create_role("User")
     
+def seed_test_user():
+    """Crea un usuario para tests"""
+    existing_user = get_user_by_username("Test-user")
+    if existing_user:
+        raise Exception("El usuario 'Test-user' ya existe en la base de datos.")
+    user = Persona(
+        id_role=2,
+        name="Test",
+        surname="User",
+        username = "Test-user",
+        password = generate_password_hash("TestUser123.."),
+        born_date=date(1999,9,3),
+        library_name="Test Library",
+        security_question="Test question",
+        answer = generate_password_hash("test_answer")
+    )
+    save_user(user)
+        
 def seed_admin_user():
     """Crea un usuario admin"""
     admin_role = get_role_by_name("Admin")
