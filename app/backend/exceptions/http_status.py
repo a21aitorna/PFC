@@ -16,6 +16,8 @@ with app.app_context():
     BAD_REQUEST_PASSWORD_LOGIN_MSG = jsonify({"msg": "Bad request. Password is a mandatory field", "code": "1003"}), HTTPStatus.BAD_REQUEST
     USER_NOT_FOUND_MSG = jsonify({"msg": "The user is not found", "code":"1004"}), HTTPStatus.NOT_FOUND
     UNAUTHORIZED_LOGIN_MSG = jsonify({"msg": "Unauthorized. The credentials are wrong", "code":"1005"}), HTTPStatus.UNAUTHORIZED
+    UNAUTHORIZED_NOT_ADMIN_MSG = jsonify({"msg": "Unauthorized. JWT missing or invalid", "code":"1006"}), HTTPStatus.UNAUTHORIZED
+    FORBIDDEN_ACTION_NOT_ADMIN_MSG = jsonify({"msg": "Forbidden. You do not have admin permissions", "code":"1007"}), HTTPStatus.FORBIDDEN
     
     BAD_REQUEST_EMPTY_REGISTER_MSG = jsonify({"msg": "Bad request. All the fields are mandatory","code":"2001"}), HTTPStatus.BAD_REQUEST
     BAD_REQUEST_PASSWORD_MISMATCH_REGISTER_MSG = jsonify({"msg": "Bad request. Passwords do not match", "code":"2002"}), HTTPStatus.BAD_REQUEST

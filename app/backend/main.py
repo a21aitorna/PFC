@@ -20,6 +20,7 @@ from features.user.routes.user_routes import register_user_routes
 from features.book.routes.book_routes import register_book_routes
 from features.admin.routes.admin_routes import register_admin_routes
 from seed import seed_roles, seed_admin_user
+from utils.jwt_decorator import register_jwt_callbacks
 
 app = Flask(__name__)
 app.config.from_object(config['dev'])
@@ -34,6 +35,8 @@ with app.app_context():
     
 swagger = Swagger(app)
 jwt = JWTManager(app)
+
+register_jwt_callbacks(jwt)
 
 register_login_routes(app)
 register_user_routes(app)
