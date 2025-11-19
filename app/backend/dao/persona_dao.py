@@ -42,7 +42,7 @@ class Persona(db.Model):
         return {
             'id_user': self.id_user,
             'user_role_id': self.id_role,
-            'user_role_name': self.role.name if self.role else None,
+            'user_role_name': self.role.role_name if self.role else None,
             'name': self.name,
             'surname': self.surname,
             'username': self.username,
