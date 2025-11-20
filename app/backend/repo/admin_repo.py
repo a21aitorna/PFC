@@ -13,7 +13,7 @@ def block_user(id_user):
     """Bloquea un usuario"""
     user = Persona.query.get(id_user)
     
-    if not user:
+    if not user or user.id_role == 1:
         return None
     
     user.is_blocked = True
@@ -45,4 +45,26 @@ def auto_unblock_user(user):
             db.session.commit()
     return user        
     
-        
+def delete_user(id_user):
+    """Elimina el usuario"""
+    user = Persona.query.get(id_user)
+    
+    if not user:
+        return None
+    user.is_erased =  True
+    user.delete_date = datetime.now().date()
+    
+    db.session.commit()
+    return user
+
+def rectify_delete_user(id_user):
+    """Rectifica la eliminación del usuario dentro de los 15 días"""
+    user = Persona.query.get(id_user)
+    
+    if not user:
+        return None
+    user.is_erased = False
+    user.delete_date = None
+    
+    db.session.commit()
+    return user

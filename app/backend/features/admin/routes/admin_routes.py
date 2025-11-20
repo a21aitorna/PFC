@@ -2,7 +2,9 @@ from flask import Blueprint
 from flasgger import swag_from
 from features.admin.controller.admin_controller import (get_not_admin_users_controller,
                                                         block_user_controller,
-                                                        unblock_user_controller)
+                                                        unblock_user_controller,
+                                                        delete_user_controller,
+                                                        rectify_delete_user_controller)
 from utils.jwt_decorator import admin_required
 
 admin_routes = Blueprint('admin_routes', __name__, url_prefix="/api/admin")
@@ -34,3 +36,15 @@ def block_user_route(id_user):
 def unblock_user_route(id_user):
     """Rectifica el desbloqueo del usuario seleccionado"""
     return unblock_user_controller(id_user)
+
+@admin_routes.post('/delete/<int:id_user>')
+@admin_required
+def delete_user_route(id_user):
+    """Selecciona un usuario a eliminar"""
+    return delete_user_controller(id_user)
+
+@admin_routes.post('rectify-delete/<int:id_user>')
+@admin_required
+def rectify_delete_user_route(id_user):
+    """Rectifica la eliminación de un usuario"""
+    return rectify_delete_user_controller(id_user)

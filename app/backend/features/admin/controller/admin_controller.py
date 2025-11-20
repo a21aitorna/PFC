@@ -1,8 +1,14 @@
 from flask import jsonify
-from exceptions.http_status import (USER_NOT_FOUND_MSG)
+from exceptions.http_status import (USER_NOT_FOUND_MSG,
+                                    SUCCESS_UNBLOCK_USER_MSG,
+                                    SUCCESS_RECTIFY_DELETE_USER_MSG,
+                                    CAN_NOT_BLOCK_AN_ADMIN,
+                                    CAN_NOT_DELETE_AN_ADMIN)
 from repo.admin_repo import (get_all_not_admin_users, 
                              block_user, unblock_user, 
-                             auto_unblock_user)
+                             delete_user,
+                             rectify_delete_user)
+
 
 def get_not_admin_users_controller():
     """Controlador para recuperar todos los usuarios que no son admin"""
@@ -13,8 +19,13 @@ def block_user_controller(id_user):
     """Controlador para bloquear un usuario"""
     user = block_user(id_user)
     
+    #Verificar si existe usuario
     if not user:
         return USER_NOT_FOUND_MSG
+    
+    #Verificar si el id_role es 1 (admin)
+    if user.id_role == 1:
+        return CAN_NOT_BLOCK_AN_ADMIN
     
     return jsonify({
         "message": "User blocked for 3 days",
@@ -22,10 +33,36 @@ def block_user_controller(id_user):
     })
     
 def unblock_user_controller(id_user):
-    """Controlador para desbloqeuar un usuario"""
+    """Controlador para desbloquear un usuario"""
     user = unblock_user(id_user)
     
     if not user:
         return USER_NOT_FOUND_MSG
     
-    return jsonify({"message": "User has been unblocked"})
+    return SUCCESS_UNBLOCK_USER_MSG
+
+def delete_user_controller(id_user):
+    """Controlador para eliminar un usuario"""
+    user = delete_user(id_user)
+    
+    #Verificar si existe usuario
+    if not user:
+        return USER_NOT_FOUND_MSG
+    
+    #Verificar si el id_role es 1 (admin)
+    if not user.id_role:
+        return CAN_NOT_DELETE_AN_ADMIN
+        
+    return jsonify({
+        "message":"User is going to be deleted in 15 days",
+        "delete_date": user.delete_date
+    })
+    
+def rectify_delete_user_controller(id_user):
+    """Controlador para rectificar la eliminación de un usuario"""
+    user = rectify_delete_user(id_user)
+    
+    if not user:
+        return USER_NOT_FOUND_MSG
+    
+    return SUCCESS_RECTIFY_DELETE_USER_MSG
