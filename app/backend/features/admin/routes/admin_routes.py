@@ -12,6 +12,8 @@ admin_routes = Blueprint('admin_routes', __name__, url_prefix="/api/admin")
 get_not_admin_users_swagger_path = '/app/backend/docs/admin/get_not_admin_users_swagger.yml'
 block_user_swagger_path = '/app/backend/docs/admin/block_user_swagger.yml'
 unblock_user_swagger_path = '/app/backend/docs/admin/unblock_user_swagger.yml'
+delete_user_swagger_path = '/app/backend/docs/admin/delete_user_swagger.yml'
+rectify_delete_user_swagger_path = '/app/backend/docs/admin/rectify_delete_user_swagger.yml'
 
 def register_admin_routes(app):
     app.register_blueprint(admin_routes)
@@ -38,12 +40,14 @@ def unblock_user_route(id_user):
     return unblock_user_controller(id_user)
 
 @admin_routes.post('/delete/<int:id_user>')
+@swag_from(delete_user_swagger_path)
 @admin_required
 def delete_user_route(id_user):
     """Selecciona un usuario a eliminar"""
     return delete_user_controller(id_user)
 
 @admin_routes.post('rectify-delete/<int:id_user>')
+@swag_from(rectify_delete_user_swagger_path)
 @admin_required
 def rectify_delete_user_route(id_user):
     """Rectifica la eliminación de un usuario"""

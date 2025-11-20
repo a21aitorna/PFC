@@ -1,7 +1,7 @@
 tags:
   - Admin
-summary: Block a user for 3 days
-description: Allows an admin to block a user for 3 days. Can be rectified (unblocked) within this period.
+summary: Delete a user (it is kept for 15 days)
+description: Allows an admin to delete a user (it is kept for 15 days). Can be rectified within this period.
 parameters:
   - name: Authorization
     in: header
@@ -16,20 +16,20 @@ parameters:
     example: 2
 responses:
   200:
-    description: User blocked successfully
+    description: User delete successfully
     schema:
       type: object
       properties:
         message:
           type: string
-          example: "User block for 3 days"
+          example: "User delete for 15 days"
         block_date:
           type: string
           format: date
           example: "2025-11-20"
     examples:
       application/json:
-        message: "User block for 3 days"
+        message: "User delete for 15 days"
         block_date: "2025-11-20"
 
   401:
@@ -59,7 +59,7 @@ responses:
       application/json:
         possible_errors:
           - { msg: "Forbidden. You do not have admin permissions", code: "1007" }
-          - { msg: "Forbidden. Admin can not block itself", code: "1011" }
+          - { msg: "Forbidden. Admin can not delete itself", code: "1012 "}
 
   404:
     description: The user is not found
@@ -76,7 +76,7 @@ responses:
         code: "1004"
 
   500:
-    description: Internal server error while blocking user
+    description: Internal server error while deleting user
     schema:
       type: object
       properties:

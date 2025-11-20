@@ -1,7 +1,7 @@
 tags:
   - Admin
-summary: Block a user for 3 days
-description: Allows an admin to block a user for 3 days. Can be rectified (unblocked) within this period.
+summary: Unblock a user (rectify)
+description: Allows an admin to rectify the erased from a user. Only accessible by admin users.
 parameters:
   - name: Authorization
     in: header
@@ -16,21 +16,16 @@ parameters:
     example: 2
 responses:
   200:
-    description: User blocked successfully
+    description: User rectified successfully
     schema:
       type: object
       properties:
         message:
           type: string
-          example: "User block for 3 days"
-        block_date:
-          type: string
-          format: date
-          example: "2025-11-20"
+          example: "Rectified delete"
     examples:
       application/json:
-        message: "User block for 3 days"
-        block_date: "2025-11-20"
+        message: "Rectified delete"
 
   401:
     description: Unauthorized. JWT missing or invalid
@@ -57,9 +52,8 @@ responses:
           type: string
     examples:
       application/json:
-        possible_errors:
-          - { msg: "Forbidden. You do not have admin permissions", code: "1007" }
-          - { msg: "Forbidden. Admin can not block itself", code: "1011" }
+        msg: "Forbidden. You do not have admin permissions"
+        code: "1007"
 
   404:
     description: The user is not found
@@ -72,19 +66,8 @@ responses:
           type: string
     examples:
       application/json:
-        msg: "Usuario no encontrado"
+        msg: "The user is not found"
         code: "1004"
 
   500:
-    description: Internal server error while blocking user
-    schema:
-      type: object
-      properties:
-        msg:
-          type: string
-        code:
-          type: string
-    examples:
-      application/json:
-        msg: "Internal server error"
-        code: "5000"
+    description: Internal server error while unblocking user
