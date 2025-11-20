@@ -1,5 +1,5 @@
 // import React from "react";
-import { useAdminPanel } from "../hooks/AdminPanelHook";
+import { useAdminPanel } from "../hooks/adminPanelHook";
 import Background from "../components/Background";
 import Header from "../components/Header";
 import PanelCard from "../components/PanelCard";
@@ -19,7 +19,6 @@ export default function AdminPanel() {
             <thead className="bg-gray-200 sticky top-0 z-10">
               <tr>
                 <th className="p-3 text-left">Usuario</th>
-                <th className="p-3 text-left">Email</th>
                 <th className="p-3 text-left">Biblioteca</th>
                 <th className="p-3 text-left">Rol</th>
                 <th className="p-3 text-left">Estado</th>
@@ -36,7 +35,6 @@ export default function AdminPanel() {
                   }`}
                 >
                   <td className="p-3 break-words">{user.username}</td>
-                  <td className="p-3 break-words">{user.email}</td>
                   <td className="p-3 break-words">{user.library}</td>
                   <td className="p-3 capitalize break-words">{user.role}</td>
 
