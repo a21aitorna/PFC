@@ -18,15 +18,19 @@ def register_admin_routes(app):
 @swag_from(get_not_admin_users_swagger_path)
 @admin_required
 def get_not_admin_users_route():
-    """"Devuelve los usuario que no son admin"""
+    """"Devuelve los usuarios que no son admin"""
     return get_not_admin_users_controller()
 
 @admin_routes.post('/block/<int:id_user>')
+@swag_from(block_user_swagger_path)
 @admin_required
 def block_user_route(id_user):
+    """Bloquea el usuario seleccionado"""
     return block_user_controller(id_user)
 
 @admin_routes.post('/unblock/<int:id_user>')
+@swag_from(unblock_user_swagger_path)
 @admin_required
 def unblock_user_route(id_user):
+    """Rectifica el desbloqueo del usuario seleccionado"""
     return unblock_user_controller(id_user)
