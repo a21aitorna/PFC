@@ -50,7 +50,7 @@ def delete_user_controller(id_user):
         return USER_NOT_FOUND_MSG
     
     #Verificar si el id_role es 1 (admin)
-    if not user.id_role:
+    if user.id_role == 1:
         return CAN_NOT_DELETE_AN_ADMIN
         
     return jsonify({

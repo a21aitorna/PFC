@@ -13,7 +13,7 @@ def block_user(id_user):
     """Bloquea un usuario"""
     user = Persona.query.get(id_user)
     
-    if not user or user.id_role == 1:
+    if not user:
         return None
     
     user.is_blocked = True
