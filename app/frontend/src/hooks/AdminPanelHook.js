@@ -1,53 +1,114 @@
-import { useState } from "react";
-
-const initialUsers = [
-  { id: 1, username: "admin", library: "Biblioteca Central", role: "admin", status: "activo" },
-  { id: 2, username: "usuario1", library: "Biblioteca Norte", role: "usuario", status: "activo" },
-  { id: 3, username: "test", library: "Biblioteca Sur", role: "usuario", status: "activo" },
-  { id: 4, username: "juan", library: "Biblioteca Este", role: "usuario", status: "activo" },
-  { id: 5, username: "maria",library: "Biblioteca Oeste", role: "usuario", status: "bloqueado", blockedDate: "2/11/2024" },
-  { id: 6, username: "admin",library: "Biblioteca Central", role: "admin", status: "activo" },
-  { id: 7, username: "usuario1", library: "Biblioteca Norte", role: "usuario", status: "activo" },
-  { id: 8, username: "test", library: "Biblioteca Sur", role: "usuario", status: "activo" },
-  { id: 9, username: "juan", library: "Biblioteca Este", role: "usuario", status: "activo" },
-  { id: 10, username: "maria", library: "Biblioteca Oeste", role: "usuario", status: "bloqueado", blockedDate: "2/11/2024" },
-  { id: 11, username: "admin", library: "Biblioteca Central", role: "admin", status: "activo" },
-  { id: 12, username: "usuario1", library: "Biblioteca Norte", role: "usuario", status: "activo" },
-  { id: 13, username: "test", library: "Biblioteca Sur", role: "usuario", status: "activo" },
-  { id: 14, username: "juan", library: "Biblioteca Este", role: "usuario", status: "activo" },
-  { id: 15, username: "maria", library: "Biblioteca Oeste", role: "usuario", status: "bloqueado", blockedDate: "2/11/2024" },
-  { id: 16, username: "admin", library: "Biblioteca Central", role: "admin", status: "activo" },
-  { id: 17, username: "usuario1", library: "Biblioteca Norte", role: "usuario", status: "activo" },
-  { id: 18, username: "test", library: "Biblioteca Sur", role: "usuario", status: "activo" },
-  { id: 19, username: "juan", library: "Biblioteca Este", role: "usuario", status: "activo" },
-  { id: 20, username: "maria", library: "Biblioteca Oeste", role: "usuario", status: "bloqueado", blockedDate: "2/11/2024" },
-];
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { API_BASE } from "../config/api";
+import { useUser } from "../context/userProvider";
 
 export function useAdminPanel() {
-  const [users, setUsers] = useState(initialUsers);
+  const [users, setUsers] = useState([]);
+  const token = localStorage.getItem("token"); // <-- Aquí sí está tu token
 
-  const blockUser = (id) => {
-    setUsers(users.map(u =>
-      u.id === id
-        ? { ...u, status: "bloqueado", blockedDate: new Date().toLocaleDateString() }
-        : u
-    ));
+  //Token y axios
+  useEffect(() => {
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
+  }, [token]);
+
+  // ---- Obtener usuarios NO admin ----
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/admin/not-admin-users`);
+        const users = res.data.map(u => ({
+          id: u.id_user,
+          username: u.username,
+          library: u.library_name,
+          is_blocked: u.is_blocked,
+          block_date: u.block_date,
+          is_erased: u.is_erased,
+          delete_date: u.delete_date,
+          status: !u.is_blocked && !u.is_erased ? "activo" : u.is_blocked ? "bloqueado" : "borrado",
+        }));
+        setUsers(users);
+      } catch (error) {
+        console.error("Error cargando usuarios:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  //Bloquear usuario
+  const blockUser = async (id) => {
+    try {
+      await axios.post(`${API_BASE}/admin/block/${id}`);
+
+      setUsers((prev) =>
+        prev.map((u) =>
+          u.id === id
+            ? { ...u, is_blocked: true, block_date: new Date().toISOString() }
+            : u
+        )
+      );
+    } catch (error) {
+      console.error("Error bloqueando usuario:", error);
+    }
   };
 
-  const unblockUser = (id) => {
-    setUsers(users.map(u =>
-      u.id === id ? { ...u, status: "activo", blockedDate: null } : u
-    ));
+  //Desbloquear usuario
+  const unblockUser = async (id) => {
+    try {
+      await axios.post(`${API_BASE}/admin/unblock/${id}`);
+
+      setUsers((prev) =>
+        prev.map((u) =>
+          u.id === id
+            ? { ...u, is_blocked: false, block_date: null }
+            : u
+        )
+      );
+    } catch (error) {
+      console.error("Error desbloqueando usuario:", error);
+    }
   };
 
-  const deleteUser = (id) => {
-    setUsers(users.filter(u => u.id !== id));
+  // Eliminar usuario
+  const deleteUser = async (id) => {
+    try {
+      await axios.post(`${API_BASE}/admin/delete/${id}`);
+      setUsers(prev =>
+        prev.map(u =>
+          u.id === id
+            ? { ...u, is_erased: true, delete_date: new Date().toISOString() }
+            : u
+        )
+      );
+    } catch (error) {
+      console.error("Error eliminando usuario:", error);
+    }
+  };
+
+  const rectifyDeleteUser = async (id) => {
+    try {
+      await axios.post(`${API_BASE}/admin/rectify-delete/${id}`);
+      setUsers(prev =>
+        prev.map(u =>
+          u.id === id
+            ? { ...u, is_erased: false, delete_date: null }
+            : u
+        )
+      );
+    } catch (error) {
+      console.error("Error rectificando usuario:", error);
+    }
   };
 
   return {
     users,
     blockUser,
     unblockUser,
-    deleteUser
+    deleteUser,
+    rectifyDeleteUser
   };
 }
