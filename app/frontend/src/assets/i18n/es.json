@@ -110,7 +110,7 @@
         "columnStatus": "Estado",
         "columnActions": "Acciones",
         "deletedStatus": "Borrado",
-        "blockedStatus": "Bloquedo",
+        "blockedStatus": "Bloqueado",
         "activeStatus": "Activo",
         "date": "Fecha: ",
         "rectifyButton": "Rectificar",
