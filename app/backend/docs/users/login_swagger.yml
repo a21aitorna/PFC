@@ -57,6 +57,22 @@ responses:
         code:
           type: string
           example: "1005"
+
+    403:
+    description: Forbidden
+    schema:
+      type: object
+      properties:
+        msg:
+          type: string
+        code:
+          type: string
+    examples:
+      application/json:
+        possible_errors:
+          - { msg: "Forbidden. User blocked can not login", "code":"1013" }
+          - { msg: "Forbidden. User deleted can not login","code":"1014" }
+
   404:
     description: User not found
     schema:

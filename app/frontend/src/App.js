@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import RecoverPasswordPageOne from "./pages/RecoverPasswordPageOne";
 import RecoverPasswordPageTwo from "./pages/RecoverPasswordPageTwo";
 import Library from "./pages/Library";
+import AdminPanel from "./pages/AdminPanel";
 import { UserProvider } from "./context/userProvider"; 
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
@@ -22,6 +23,9 @@ function App() {
           </Route>
           <Route element={<ProtectedRoute />}>
             <Route path="/library/:userId" element={<Library />} />
+          </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path="admin-panel" element={<AdminPanel />} />
           </Route>
         </Routes>
       </Router>

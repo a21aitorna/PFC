@@ -17,12 +17,14 @@ export function useLogin() {
   const errorCodeMap = {
     "1001": es.login.requiredFields,
     "1002": es.login.requiredUsername,
-    "1003": es.login.requiredPassword
+    "1003": es.login.requiredPassword,
+    "1013": es.login.blockedUserLogin,
+    "1014": es.login.deletedUserLogin
   };
 
   // Mapeo de id_role a rutas y nombres de rol
   const roleMap = {
-    1: { name: "admin", path: "/admin" },
+    1: { name: "admin", path: "/admin-panel" },
     2: { name: "usuario", path: "/library" }
   };
 
@@ -55,6 +57,7 @@ export function useLogin() {
       const roleInfo = roleMap[data.user.id_role];
       if (roleInfo) {
         navigate(roleInfo.path);
+        console.log("Usuario recibido tras login:", data.user);
       } else {
         navigate("/");
       }

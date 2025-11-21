@@ -16,6 +16,14 @@ with app.app_context():
     BAD_REQUEST_PASSWORD_LOGIN_MSG = jsonify({"msg": "Bad request. Password is a mandatory field", "code": "1003"}), HTTPStatus.BAD_REQUEST
     USER_NOT_FOUND_MSG = jsonify({"msg": "The user is not found", "code":"1004"}), HTTPStatus.NOT_FOUND
     UNAUTHORIZED_LOGIN_MSG = jsonify({"msg": "Unauthorized. The credentials are wrong", "code":"1005"}), HTTPStatus.UNAUTHORIZED
+    UNAUTHORIZED_NOT_ADMIN_MSG = jsonify({"msg": "Unauthorized. JWT missing or invalid", "code":"1006"}), HTTPStatus.UNAUTHORIZED
+    FORBIDDEN_ACTION_NOT_ADMIN_MSG = jsonify({"msg": "Forbidden. You do not have admin permissions", "code":"1007"}), HTTPStatus.FORBIDDEN
+    SUCCESS_UNBLOCK_USER_MSG = jsonify({"msg":"User has been unblocked", "code":"1009"}), HTTPStatus.OK
+    SUCCESS_RECTIFY_DELETE_USER_MSG = jsonify({"msg":"User delete has been rectified", "code":"1010"}), HTTPStatus.OK
+    CAN_NOT_BLOCK_AN_ADMIN = jsonify({"msg":"Admin can not be blocked", "code":"1011"}), HTTPStatus.FORBIDDEN
+    CAN_NOT_DELETE_AN_ADMIN = jsonify({"msg":"Admin can not be deletd", "code":"1012"}), HTTPStatus.FORBIDDEN
+    BLOCKED_USER_CAN_NOT_LOGIN_MSG = jsonify({"msg":"Forbidden. User blocked can not login", "code":"1013"}), HTTPStatus.FORBIDDEN
+    DELETED_USER_CAN_NOT_LOGIN_MSG = jsonify({"msg":"Forbidden. User deleted can not login","code":"1014"}), HTTPStatus.FORBIDDEN
     
     BAD_REQUEST_EMPTY_REGISTER_MSG = jsonify({"msg": "Bad request. All the fields are mandatory","code":"2001"}), HTTPStatus.BAD_REQUEST
     BAD_REQUEST_PASSWORD_MISMATCH_REGISTER_MSG = jsonify({"msg": "Bad request. Passwords do not match", "code":"2002"}), HTTPStatus.BAD_REQUEST

@@ -15,7 +15,9 @@
         "requiredFields": "Todos los campos son obligatorios",
         "requiredUsername": "El campo usuario es obligatorio",
         "requiredPassword": "El campo contraseña es obligatorio",
-        "loginError": "Error en el inicio de sesión"
+        "loginError": "Error en el inicio de sesión",
+        "blockedUserLogin": "El usuario está bloqueado. No puede iniciar sesión",
+        "deletedUserLogin": "El usuario está en proceso de borrado. No puede iniciar sesión"
     },
     
     "register":{
@@ -101,8 +103,23 @@
         "errorWhileUploadingBook": "Error al subir libro",
         "canNotDeleteBookForeignLibraries": "No puedes borrar libros de otra biblioteca",
         "errorWhileDeletingBook": "Error eliminando libro"
-        
+    },
+
+    "adminPanel": {
+        "titlePage": "Panel de Administración",
+        "columnUser": "Usuario",
+        "columnName": "Biblioteca",
+        "columnStatus": "Estado",
+        "columnActions": "Acciones",
+        "deletedStatus": "Borrado",
+        "blockedStatus": "Bloqueado",
+        "activeStatus": "Activo",
+        "date": "Fecha: ",
+        "rectifyButton": "Rectificar",
+        "deleteButton": "Eliminar",
+        "blockButton": "Bloquear"
     }
+    
 
 
 }
