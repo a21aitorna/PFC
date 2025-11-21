@@ -101,8 +101,23 @@
         "errorWhileUploadingBook": "Error al subir libro",
         "canNotDeleteBookForeignLibraries": "No puedes borrar libros de otra biblioteca",
         "errorWhileDeletingBook": "Error eliminando libro"
-        
+    },
+
+    "adminPanel": {
+        "titlePage": "Panel de Administración",
+        "columnUser": "Usuario",
+        "columnName": "Biblioteca",
+        "columnStatus": "Estado",
+        "columnActions": "Acciones",
+        "deletedStatus": "Borrado",
+        "blockedStatus": "Bloquedo",
+        "activeStatus": "Activo",
+        "date": "Fecha: ",
+        "rectifyButton": "Rectificar",
+        "deleteButton": "Eliminar",
+        "blockButton": "Bloquear"
     }
+    
 
 
 }

@@ -47,7 +47,7 @@ export function useAdminPanel() {
       setUsers((prev) =>
         prev.map((u) =>
           u.id === id
-            ? { ...u, is_blocked: true, block_date: new Date().toISOString() }
+            ? { ...u, is_blocked: true, block_date: new Date().toISOString().split("T")[0]}
             : u
         )
       );
@@ -80,7 +80,7 @@ export function useAdminPanel() {
       setUsers(prev =>
         prev.map(u =>
           u.id === id
-            ? { ...u, is_erased: true, delete_date: new Date().toISOString() }
+            ? { ...u, is_erased: true, delete_date: new Date().toISOString().split("T")[0]}
             : u
         )
       );
