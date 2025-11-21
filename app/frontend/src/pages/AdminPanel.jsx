@@ -51,7 +51,7 @@ export default function AdminPanel() {
                         {es.adminPanel.deletedStatus}
                         {user.delete_date && (
                           <span className="text-black text-xs block">
-                            {`${es.adminPanel.date}${user.delete_date}`}
+                            {`${es.adminPanel.date}${new Date(user.delete_date).toISOString().split("T")[0]}`}
                           </span>
                         )}
                       </div>
@@ -60,7 +60,7 @@ export default function AdminPanel() {
                         {es.adminPanel.blockedStatus}
                         {user.block_date && (
                           <span className="text-black text-xs block">
-                            {`${es.adminPanel.date}${user.block_date}`}
+                            {`${es.adminPanel.date}${new Date(user.block_date).toISOString().split("T")[0]}`}
                           </span>
                         )}
                       </div>
