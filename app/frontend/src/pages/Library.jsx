@@ -66,16 +66,13 @@ export default function Library() {
     }
 
     // Actualizar página si la actual queda vacía
-    const newFilteredBooks = filteredBooks.filter(b => b.id_book !== book.id_book);
-    const newTotalPages = Math.ceil(newFilteredBooks.length / booksPerPage);
-    
+    const newTotalPages = Math.ceil((filteredBooks.length - 1) / booksPerPage);
     if (currentPage > newTotalPages) {
-      setCurrentPage(newTotalPages); // retrocede a la última página válida
+      setCurrentPage(newTotalPages || 1); // si no hay páginas, ir a 1
     }
 
     alert(es.library.correctDelete);
   };
-
 
   return (
     <Background>

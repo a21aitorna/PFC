@@ -190,34 +190,35 @@ export function useLibrary(routeUserId) {
 
   // Borrar libro
   const deleteBook = async (bookId) => {
-    if (!isOwner) return { error: `${es.library.canNotDeleteBookForeignLibraries}` };
-    if (!user?.id_user) return { error: `${es.library.notLoggedUser}` };
+    if (!isOwner) return { error: es.library.canNotDeleteBookForeignLibraries };
+    if (!user?.id_user) return { error: es.library.notLoggedUser };
 
     setErrorBooks("");
     try {
-      const res = await axios.delete(
-        `${API_BASE}/books/delete/user/${user.id_user}/book/${bookId}`
-      );
+      const res = await axios.delete(`${API_BASE}/books/delete/user/${user.id_user}/book/${bookId}`);
       if (res.status === 200) {
+        // Actualizar estados
         setBooks((prev) => prev.filter((b) => b.id_book !== bookId));
         setFilteredBooks((prev) => prev.filter((b) => b.id_book !== bookId));
         return { success: true };
       }
-      const msg = res.data?.msg || `${es.library.errorWhileDeletingBook}`;
+      const msg = res.data?.msg || es.library.errorWhileDeletingBook;
       setErrorBooks(msg);
       return { error: msg };
     } catch {
-      const msg = `${es.library.errorWhileDeletingBook}`;
+      const msg = es.library.errorWhileDeletingBook;
       setErrorBooks(msg);
       return { error: msg };
     }
   };
 
+  // Descargar libro
   const downloadBook = (bookId) => {
     if (!bookId) return;
     window.open(`${API_BASE}/books/download/${bookId}`, "_blank");
   };
 
+  //Regresar a la librería
   const goBackToLibrary = () => {
     if (!user?.id_user) return;
     setUserQuery("");
@@ -225,6 +226,7 @@ export function useLibrary(routeUserId) {
     navigate("/library");
   };
 
+  // Seleccionar librería
   const selectLibrary = (id) => {
     setUserQuery("");
     setUserResults([]);
