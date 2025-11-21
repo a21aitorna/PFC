@@ -15,7 +15,7 @@ export function useAdminPanel() {
     }
   }, [token]);
 
-  // ---- Obtener usuarios NO admin ----
+  // Obtener usuarios no admin
   useEffect(() => {
     const fetchUsers = async () => {
       try {
