@@ -17,7 +17,9 @@ export function useLogin() {
   const errorCodeMap = {
     "1001": es.login.requiredFields,
     "1002": es.login.requiredUsername,
-    "1003": es.login.requiredPassword
+    "1003": es.login.requiredPassword,
+    "1013": es.login.blockedUserLogin,
+    "1014": es.login.deletedUserLogin
   };
 
   // Mapeo de id_role a rutas y nombres de rol

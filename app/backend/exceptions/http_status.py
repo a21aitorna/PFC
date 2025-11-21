@@ -22,6 +22,8 @@ with app.app_context():
     SUCCESS_RECTIFY_DELETE_USER_MSG = jsonify({"msg":"User delete has been rectified", "code":"1010"}), HTTPStatus.OK
     CAN_NOT_BLOCK_AN_ADMIN = jsonify({"msg":"Admin can not be blocked", "code":"1011"}), HTTPStatus.FORBIDDEN
     CAN_NOT_DELETE_AN_ADMIN = jsonify({"msg":"Admin can not be deletd", "code":"1012"}), HTTPStatus.FORBIDDEN
+    BLOCKED_USER_CAN_NOT_LOGIN_MSG = jsonify({"msg":"Forbidden. User blocked can not login", "code":"1013"}), HTTPStatus.FORBIDDEN
+    DELETED_USER_CAN_NOT_LOGIN_MSG = jsonify({"msg":"Forbidden. User deleted can not login","code":"1014"}), HTTPStatus.FORBIDDEN
     
     BAD_REQUEST_EMPTY_REGISTER_MSG = jsonify({"msg": "Bad request. All the fields are mandatory","code":"2001"}), HTTPStatus.BAD_REQUEST
     BAD_REQUEST_PASSWORD_MISMATCH_REGISTER_MSG = jsonify({"msg": "Bad request. Passwords do not match", "code":"2002"}), HTTPStatus.BAD_REQUEST
