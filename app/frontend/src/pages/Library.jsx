@@ -87,7 +87,7 @@ export default function Library() {
       <div className="mt-20 mb-16 w-full max-w-7xl mx-auto px-6 flex flex-col space-y-6">
         {!isOwner && (
           <button
-            className="mb-4 inline-flex items-center gap-1 text-indigo-600 hover:text-white hover:bg-indigo-600 border border-indigo-600 px-2 py-1 rounded transition text-sm w-fit"
+            className="mb-4 inline-flex items-center gap-1 text-indigo-600 bg-white border border-indigo-600 px-2 py-1 rounded transition text-sm w-fit hover:text-white hover:bg-indigo-600"
             data-testid="returnToLibraryButton"
             onClick={goBackToLibrary}
           >
