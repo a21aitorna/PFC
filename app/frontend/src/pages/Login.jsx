@@ -25,11 +25,12 @@ export default function Login() {
         </div>
       )}
 
-      <div className="flex flex-col items-center justify-center w-full min-h-screen pt-24 pb-16 px-4">
+     <div className="flex flex-col items-center justify-center w-full min-h-screen pt-24 pb-16 px-4">
         <Card
           icon={Lock}
           title={es.login.title}
           subtitle={es.login.subtitle}
+          className="relative z-10 bg-white rounded-2xl shadow-xl p-6 sm:p-8 w-[90%] sm:w-[80%] md:w-[60%] lg:w-[50%] xl:w-[40%] max-w-3xl text-center "
         >
           <form className="space-y-4 text-left" onSubmit={handleSubmit}>
             {/* Input usuario */}

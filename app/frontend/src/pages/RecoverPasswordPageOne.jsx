@@ -26,7 +26,7 @@ export default function RecoverPasswordPageOne() {
       <Card
         icon={User}
         title={es.recoverPassword.title}
-        className="text-center"
+        className="relative z-10 bg-white rounded-2xl shadow-xl p-6 sm:p-8 w-[90%] sm:w-[80%] md:w-[60%] lg:w-[50%] xl:w-[40%] max-w-3xl text-center text-center"
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="text-left">

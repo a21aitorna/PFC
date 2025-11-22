@@ -32,7 +32,8 @@ export default function Register() {
       </div>
 
       <div className="flex items-center justify-center h-[calc(100vh-128px)] px-4">
-        <Card title={es.register.title}>
+        <Card title={es.register.title}
+              className="bg-white rounded-2xl">
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Nombre y Apellidos */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

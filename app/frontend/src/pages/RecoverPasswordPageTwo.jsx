@@ -40,7 +40,7 @@ export default function RecoverPasswordPageTwo() {
           `${es.recoverPassword.subtitle2} ${username}` ||
           `${es.recoverPassword.subtitle2Error}`
         }
-        className="mt-20"
+        className="relative z-10 bg-white rounded-2xl shadow-xl p-6 sm:p-8 w-[90%] sm:w-[80%] md:w-[60%] lg:w-[50%] xl:w-[40%] max-w-3xl text-center mt-20"
       >
         {/* Volver al inicio */}
         <button
