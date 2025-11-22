@@ -28,12 +28,27 @@ export default function BookDetail() {
 
   return (
     <Background>
-      <Header />
+      <div className="fixed top-0 left-0 w-full z-50">
+        <Header />
+      </div>
 
-      <Card className="mt-20 bg-transparent shadow-none w-full max-w-6xl mx-auto px-4">
+      {/* BOTÓN: Margen superior reducido de mt-6/mt-10 a mt-4/mt-6 */}
+      <div className="w-full max-w-6xl mx-auto px-4 mt-4 md:mt-6 relative">
+        <button
+          onClick={() => navigate("/libreria")}
+          className="px-4 py-2 bg-white text-gray-700 border border-gray-300 
+                     rounded-lg shadow-sm hover:bg-gray-100 transition 
+                     relative z-10"
+        >
+          ← Volver a la librería
+        </button>
+      </div>
+
+      {/* CARD PRINCIPAL: Margen superior reducido de mt-4 a mt-2 */}
+      <Card className="mt-2 bg-transparent shadow-none w-full max-w-6xl mx-auto px-4">
         
         <div className="flex flex-col md:flex-row gap-6 items-start">
-
+          
           {/* --- COLUMNA IZQUIERDA --- */}
           <Card className="w-full md:w-80 p-6 flex flex-col items-center gap-4 rounded-xl shadow-md flex-shrink-0 bg-white">
             <div className="w-full aspect-[3/4] bg-orange-500 rounded-lg flex items-center justify-center mb-2 shadow-inner">
