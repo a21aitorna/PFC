@@ -233,6 +233,10 @@ export function useLibrary(routeUserId) {
     goToUserLibrary(id);
   };
 
+  const navigateDetailBook = (idBook) =>{
+    navigate(`/book/${idBook}`)
+  };
+
   return {
     books,
     filteredBooks,
@@ -257,6 +261,7 @@ export function useLibrary(routeUserId) {
     goBackToLibrary,
     selectLibrary,
     errorBooks, 
-    errorUserSearch
+    errorUserSearch,
+    navigateDetailBook
   };
 }

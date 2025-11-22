@@ -32,7 +32,8 @@ export default function Library() {
     goBackToLibrary,
     selectLibrary,
     errorBooks, 
-    errorUserSearch
+    errorUserSearch,
+    navigateDetailBook
   } = useLibrary(userId); 
 
   const { user, logout } = useUser();
@@ -227,6 +228,8 @@ export default function Library() {
                       <div
                         key={index}
                         className="rounded-xl shadow-md p-4 bg-white/60 backdrop-blur-sm border border-white/20 flex space-x-4 items-start"
+                        onClick={() => navigateDetailBook(book.id_book)}
+                        data-testid={`book${book.id_book}`}
                       >
                         {book.cover && (
                           <img

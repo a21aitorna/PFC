@@ -5,6 +5,7 @@ import RecoverPasswordPageOne from "./pages/RecoverPasswordPageOne";
 import RecoverPasswordPageTwo from "./pages/RecoverPasswordPageTwo";
 import Library from "./pages/Library";
 import AdminPanel from "./pages/AdminPanel";
+import BookDetail from "./pages/BookDetail";
 import { UserProvider } from "./context/userProvider"; 
 import { ProtectedRoute } from "./components/ProtectedRoute";
 
@@ -27,6 +28,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="admin-panel" element={<AdminPanel />} />
           </Route>
+           <Route path="/book/:bookId" element={<BookDetail />} />
         </Routes>
       </Router>
     </UserProvider>
