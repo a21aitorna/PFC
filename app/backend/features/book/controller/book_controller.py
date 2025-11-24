@@ -83,7 +83,7 @@ def get_user_books_controller(user_id):
     libros = get_user_books(user_id)
     result = []
 
-    for libro in libros:
+    for libro, subida  in libros:
         result.append({
             "id_book": libro.id_book,
             "title": libro.title,
@@ -94,6 +94,8 @@ def get_user_books_controller(user_id):
 
             "file": f"http://localhost:5000/api/books/file/{libro.file}"
                     if libro.file else None,
+            "created_at": subida.upload_date.isoformat() if subida.upload_date else None,
+        # "rating": subida.rating or 0
         })
 
     return jsonify(result)

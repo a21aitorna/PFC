@@ -134,7 +134,7 @@ def save_book(file_path: str, filename: str, user_id: int) -> Tuple[Optional[Lib
 def get_user_books(user_id):
     """Obtiene todos los libros de un usuario"""
     return (
-        db.session.query(Libro)
+        db.session.query(Libro, LibroSubido)
         .join(LibroSubido, Libro.id_book == LibroSubido.book_id)
         .filter(LibroSubido.user_id == user_id)
         .all()
