@@ -7,7 +7,8 @@ from repo.books_repo import (save_book_file,
                              get_user_books, 
                              delete_book, 
                              get_book_by_id,
-                             get_detail_updated_books,)
+                             get_detail_updated_books,
+                             post_review_book)
 from repo.users_repo import get_user_by_user_id
 from exceptions.http_status import (
     USER_NOT_FOUND_MSG,
@@ -25,7 +26,7 @@ from exceptions.http_status import (
     DOWNLOAD_BOOK_ERROR_MSG,
     COVER_NOT_FOUND_MSG,
     BOOK_NOT_FOUND_MSG,
-    GET_DETAIL_BOOK_ERROR_MSG
+    NOT_FULL_DATA_CREATE_REVIEW_MSG
 )
 
 logging.basicConfig(level=logging.DEBUG)
@@ -202,3 +203,25 @@ def get_detail_uploaded_book_controller(id_book):
         print(f"Error obteniendo el detalle del libro: {e}")
         return GET_DETAIL_BOOK_ERROR_MSG
         
+def post_review_book_controller(id_book):
+    """Crear reseña"""
+    data = request.json
+    user_id = data.get("user_id")
+    book_id = id_book
+    review_text = data.get("review_text")
+    stars_rating = data.get("rating")
+    
+    if not all([user_id, book_id, review_text, stars_rating is not None]):
+        return  NOT_FULL_DATA_CREATE_REVIEW_MSG
+    
+    libro = get_book_by_id(book_id)
+    if not libro:
+        return BOOK_NOT_FOUND_MSG
+    
+    book_rating = int(stars_rating*2)
+    
+    response, status_code = post_review_book(user_id,book_id, review_text, book_rating)
+    
+    return response, status_code
+    
+    

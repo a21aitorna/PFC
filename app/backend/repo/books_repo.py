@@ -1,5 +1,6 @@
 import os
 import shutil
+from flask import jsonify
 from werkzeug.utils import secure_filename
 import uuid
 from typing import Tuple, Optional
@@ -9,6 +10,7 @@ from dao.libro_dao import Libro
 from dao.libro_subido_dao import LibroSubido
 from dao.categoria_dao import Categoria
 from dao.libro_categoria_dao import LibroCategoria
+from dao.reseña_dao import Reseña
 
 # Rutas de carpetas
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # backend/repo
@@ -20,7 +22,6 @@ def ensure_directories():
     """Asegura que existan los directorios necesarios"""
     os.makedirs(BOOKS_FOLDER, exist_ok=True)
     os.makedirs(COVERS_FOLDER, exist_ok=True)
-
 
 def save_book_file(file_storage) -> Tuple[str, str]:
     """
@@ -37,7 +38,6 @@ def save_book_file(file_storage) -> Tuple[str, str]:
     print(f"Archivo guardado en: {os.path.abspath(file_path)}")
 
     return file_path, unique_filename
-
 
 def save_cover(cover_path) -> Optional[str]:
     """
@@ -66,7 +66,6 @@ def save_cover(cover_path) -> Optional[str]:
         print(f"Error guardando portada: {e}")
         return None
 
-
 def get_or_create_category(cat_name):
     """Busca una categoría por nombre o la crea si no existe"""
     category = Categoria.query.filter_by(category_name=cat_name).first()
@@ -76,7 +75,6 @@ def get_or_create_category(cat_name):
         db.session.flush()
     return category
 
-
 def save_book_categories(libro, categories):
     """Asocia categorías a un libro"""
     for cat_name in categories:
@@ -84,7 +82,6 @@ def save_book_categories(libro, categories):
             category = get_or_create_category(cat_name.strip())
             libro_categoria = LibroCategoria(book_id=libro.id_book, category_id=category.id_category)
             db.session.add(libro_categoria)
-
 
 def save_book(file_path: str, filename: str, user_id: int) -> Tuple[Optional[Libro], Optional[str]]:
     """Guarda el libro, su portada y metadatos en BD."""
@@ -192,3 +189,22 @@ def get_detail_updated_books(id_book):
         .filter(Libro.id_book == id_book)
         .first()
     )
+    
+def post_review_book(user_id, book_id, review_text, book_rating):
+    """Publicar una reseña"""
+    try:
+        review = Reseña(
+            user_id=user_id,
+            book_id=book_id,
+            review_text=review_text,
+            book_rating=book_rating
+        )
+        
+        db.session.add(review)
+        db.session.commit()
+        return jsonify({"message": "Reseña creada correctamente", "review": review.as_dict()}), 201
+
+    except Exception as e:
+        print(f"Error al crear la reseña: {e}")
+        db.session.rollback()
+        

@@ -59,3 +59,4 @@ with app.app_context():
     COVER_NOT_FOUND_MSG = jsonify({"msg": "Book cover was not found", "code":"4015"}), HTTPStatus.NOT_FOUND
     BOOK_NOT_FOUND_MSG = jsonify({"msg": "Book not found ", "code":"4016"}), HTTPStatus.NOT_FOUND
     GET_DETAIL_BOOK_ERROR_MSG = jsonify({"msg": "Error getting the book detail", "code":"4017"}), HTTPStatus.INTERNAL_SERVER_ERROR
+    NOT_FULL_DATA_CREATE_REVIEW_MSG = jsonify({"msg": "Some data is not filled", "code":"4018"}), HTTPStatus.NOT_FOUND
