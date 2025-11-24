@@ -8,7 +8,8 @@ from repo.books_repo import (save_book_file,
                              delete_book, 
                              get_book_by_id,
                              get_detail_updated_books,
-                             post_review_book)
+                             post_review_book,
+                             get_reviews_by_id)
 from repo.users_repo import get_user_by_user_id
 from exceptions.http_status import (
     USER_NOT_FOUND_MSG,
@@ -26,7 +27,8 @@ from exceptions.http_status import (
     DOWNLOAD_BOOK_ERROR_MSG,
     COVER_NOT_FOUND_MSG,
     BOOK_NOT_FOUND_MSG,
-    NOT_FULL_DATA_CREATE_REVIEW_MSG
+    NOT_FULL_DATA_CREATE_REVIEW_MSG,
+    NO_BOOK_REVIEWS_MSG
 )
 
 logging.basicConfig(level=logging.DEBUG)
@@ -38,7 +40,6 @@ BOOKS_FOLDER = os.path.join(os.getcwd(), "uploads", "books")
 def allowed_file(filename):
     """Revisa los formatos permitidos."""
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 def upload_book_controller():
     """Subir libro y devolver rutas de libro y portada para el front."""
@@ -79,7 +80,6 @@ def upload_book_controller():
         'uploaded_by_user': user_id
     })
 
-
 def get_user_books_controller(user_id):
     """Devuelve todos los libros de un usuario."""
     
@@ -107,7 +107,6 @@ def get_user_books_controller(user_id):
 
     return jsonify(result)
 
-
 def get_book_cover_controller(filename):
     """Devuelve una portada desde uploads/covers."""
     filename = secure_filename(filename)
@@ -120,7 +119,6 @@ def get_book_cover_controller(filename):
         abort(response)
 
     return send_from_directory(base_folder, filename)
-
 
 def delete_book_controller(user_id, book_id):
     """Eliminar un libro de la librería de un usuario, incluyendo archivos físicos"""
@@ -150,7 +148,6 @@ def delete_book_controller(user_id, book_id):
         print(f"Exception en delete_book_controller: {e}")
         return ERROR_DELETING_BOOK_MSG
     
-
 def download_book_controller(id_book):
     """Descargar un libro"""
     try:
@@ -224,4 +221,16 @@ def post_review_book_controller(id_book):
     
     return response, status_code
     
+def get_reviews_by_id_controller(id_book):
+    """Obtiene todas las reseñas de un libro"""
+    reviews = get_reviews_by_id(id_book)
     
+    if reviews is None:
+        return BOOK_NOT_FOUND_MSG
+    
+    if len(reviews) == 0:
+        return NO_BOOK_REVIEWS_MSG
+    
+    reviews_list = [review.as_dict() for review in reviews]
+    
+    return {"reviews": reviews_list},200

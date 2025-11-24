@@ -208,3 +208,6 @@ def post_review_book(user_id, book_id, review_text, book_rating):
         print(f"Error al crear la reseña: {e}")
         db.session.rollback()
         
+def get_reviews_by_id(id_book):
+    """"Obtiene todas las reseñas de un libro por fecha de creación"""
+    return db.session.query(Reseña).filter(Reseña.book_id==id_book).order_by(Reseña.creation_date.desc()).all()
