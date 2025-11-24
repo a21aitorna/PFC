@@ -10,7 +10,8 @@ from features.book.controller.book_controller import (
     download_book_controller,
     get_detail_uploaded_book_controller,
     post_review_book_controller,
-    get_reviews_by_id_controller
+    get_reviews_by_id_controller,
+    delete_review_by_id_controller
 )
 
 book_routes = Blueprint('book_routes', __name__, url_prefix="/api/books")
@@ -69,3 +70,8 @@ def post_review_book_route(id_book):
 def get_reviews_book_route(id_book):
     """Obtiene reseñas de un libro"""
     return get_reviews_by_id_controller(id_book)
+
+@book_routes.delete("/review/<int:id_review>")
+def delete_review_by_id_route(id_review):
+    """Elimina reseña"""
+    return delete_review_by_id_controller(id_review)

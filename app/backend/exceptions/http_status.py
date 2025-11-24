@@ -61,3 +61,5 @@ with app.app_context():
     GET_DETAIL_BOOK_ERROR_MSG = jsonify({"msg": "Error getting the book detail", "code":"4017"}), HTTPStatus.INTERNAL_SERVER_ERROR
     NOT_FULL_DATA_CREATE_REVIEW_MSG = jsonify({"msg": "Some data is not filled", "code":"4018"}), HTTPStatus.NOT_FOUND
     NO_BOOK_REVIEWS_MSG = jsonify({"msg": "There are not reviews for this book", "code":"4019"}), HTTPStatus.OK
+    REVIEW_NOT_FOUND_MSG = jsonify({"msg": "Review not found", "code":"4020"}), HTTPStatus.NOT_FOUND
+    REVIEW_DELETED_MSG = jsonify({"msg": "Review deleted correctly", "code":"4021"}), HTTPStatus.OK

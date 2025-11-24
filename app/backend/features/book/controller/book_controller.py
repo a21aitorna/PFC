@@ -9,7 +9,8 @@ from repo.books_repo import (save_book_file,
                              get_book_by_id,
                              get_detail_updated_books,
                              post_review_book,
-                             get_reviews_by_id)
+                             get_reviews_by_id,
+                             delete_review_by_id)
 from repo.users_repo import get_user_by_user_id
 from exceptions.http_status import (
     USER_NOT_FOUND_MSG,
@@ -29,7 +30,9 @@ from exceptions.http_status import (
     BOOK_NOT_FOUND_MSG,
     GET_DETAIL_BOOK_ERROR_MSG,
     NOT_FULL_DATA_CREATE_REVIEW_MSG,
-    NO_BOOK_REVIEWS_MSG
+    NO_BOOK_REVIEWS_MSG,
+    REVIEW_NOT_FOUND_MSG,
+    REVIEW_DELETED_MSG
 )
 
 logging.basicConfig(level=logging.DEBUG)
@@ -235,3 +238,12 @@ def get_reviews_by_id_controller(id_book):
     reviews_list = [review.as_dict() for review in reviews]
     
     return {"reviews": reviews_list},200
+
+def delete_review_by_id_controller(id_review):
+    """Elimina reseña"""
+    success = delete_review_by_id(id_review)
+    
+    if not success:
+        return REVIEW_NOT_FOUND_MSG
+    
+    return REVIEW_DELETED_MSG
