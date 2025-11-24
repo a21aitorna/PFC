@@ -1,7 +1,7 @@
-import logging
 import os
 from flask import request, jsonify, make_response, abort,send_from_directory
 from werkzeug.utils import secure_filename
+from utils.update_book_rating import update_uploaded_book_rating
 from repo.books_repo import (save_book_file, 
                              save_book, 
                              get_user_books, 
@@ -10,6 +10,7 @@ from repo.books_repo import (save_book_file,
                              get_detail_updated_books,
                              post_review_book,
                              get_reviews_by_id,
+                             get_review_by_id,
                              delete_review_by_id)
 from repo.users_repo import get_user_by_user_id
 from exceptions.http_status import (
@@ -32,10 +33,9 @@ from exceptions.http_status import (
     NOT_FULL_DATA_CREATE_REVIEW_MSG,
     NO_BOOK_REVIEWS_MSG,
     REVIEW_NOT_FOUND_MSG,
-    REVIEW_DELETED_MSG
+    REVIEW_DELETED_MSG,
+    REVIEW_DELETED_ERROR_MSG
 )
-
-logging.basicConfig(level=logging.DEBUG)
 
 ALLOWED_EXTENSIONS = {'pdf', 'epub'}
 
@@ -106,7 +106,7 @@ def get_user_books_controller(user_id):
             "file": f"http://localhost:5000/api/books/file/{libro.file}"
                     if libro.file else None,
             "upload_date": subida.upload_date.isoformat() if subida.upload_date else None,
-        # "rating": subida.rating or 0
+            "rating": subida.rating or 0
         })
 
     return jsonify(result)
@@ -223,6 +223,9 @@ def post_review_book_controller(id_book):
     
     response, status_code = post_review_book(user_id,book_id, review_text, book_rating)
     
+    #Actualizar media
+    update_uploaded_book_rating(id_book, user_id)
+    
     return response, status_code
     
 def get_reviews_by_id_controller(id_book):
@@ -241,9 +244,18 @@ def get_reviews_by_id_controller(id_book):
 
 def delete_review_by_id_controller(id_review):
     """Elimina reseña"""
-    success = delete_review_by_id(id_review)
-    
-    if not success:
+    review = get_review_by_id(id_review)
+    if not review:
         return REVIEW_NOT_FOUND_MSG
+    
+    book_id = review.book_id
+    user_id = review.user_id
+    
+    success = delete_review_by_id(id_review)
+
+    if not success:
+        return REVIEW_DELETED_ERROR_MSG
+    
+    update_uploaded_book_rating(book_id, user_id)
     
     return REVIEW_DELETED_MSG

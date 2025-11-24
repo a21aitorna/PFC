@@ -212,12 +212,15 @@ def get_reviews_by_id(id_book):
     """"Obtiene todas las reseñas de un libro por fecha de creación"""
     return db.session.query(Reseña).filter(Reseña.book_id==id_book).order_by(Reseña.creation_date.desc()).all()
 
+def get_review_by_id(id_review):
+    """Obtiene una reseña en concreto"""
+    return Reseña.query.get(id_review)
+
 def delete_review_by_id(id_review):
     """Eimina una reseña por id"""
-    review = Reseña.query.get(id_review)
+    review = get_review_by_id(id_review)
     if not review:
         return False
-    
     try:
         db.session.delete(review)
         db.session.commit()

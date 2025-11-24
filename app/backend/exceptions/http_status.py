@@ -63,3 +63,4 @@ with app.app_context():
     NO_BOOK_REVIEWS_MSG = jsonify({"msg": "There are not reviews for this book", "code":"4019"}), HTTPStatus.OK
     REVIEW_NOT_FOUND_MSG = jsonify({"msg": "Review not found", "code":"4020"}), HTTPStatus.NOT_FOUND
     REVIEW_DELETED_MSG = jsonify({"msg": "Review deleted correctly", "code":"4021"}), HTTPStatus.OK
+    REVIEW_DELETED_ERROR_MSG = jsonify({"msg": "Error deleting the review", "code":"4022"}), HTTPStatus.INTERNAL_SERVER_ERROR
