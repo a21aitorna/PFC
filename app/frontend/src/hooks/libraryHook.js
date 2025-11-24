@@ -126,8 +126,8 @@ export function useLibrary(routeUserId) {
       filtered.sort((a, b) => {
         if (sortOption === "date") {
           return sortOrder === "asc"
-            ? new Date(a.created_at) - new Date(b.created_at)
-            : new Date(b.created_at) - new Date(a.created_at);
+            ? new Date(a.upload_date) - new Date(b.upload_date)
+            : new Date(b.upload_date) - new Date(a.upload_date);
         } else if (sortOption === "rating") {
           return sortOrder === "asc"
             ? (a.rating || 0) - (b.rating || 0)

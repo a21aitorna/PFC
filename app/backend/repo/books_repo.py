@@ -183,3 +183,12 @@ def delete_book(id_user, id_book):
 def get_book_by_id(book_id):
     """Obtener libro por id"""
     return Libro.query.filter_by(id_book=book_id).first()
+
+def get_detail_updated_books(id_book):
+    """Obtener el detalle de un libro subido"""
+    return (
+        db.session.query(Libro, LibroSubido)
+        .join(LibroSubido, Libro.id_book == LibroSubido.book_id)
+        .filter(Libro.id_book == id_book)
+        .first()
+    )

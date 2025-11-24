@@ -2,7 +2,12 @@ import logging
 import os
 from flask import request, jsonify, make_response, abort,send_from_directory
 from werkzeug.utils import secure_filename
-from repo.books_repo import save_book_file, save_book, get_user_books, delete_book, get_book_by_id
+from repo.books_repo import (save_book_file, 
+                             save_book, 
+                             get_user_books, 
+                             delete_book, 
+                             get_book_by_id,
+                             get_detail_updated_books,)
 from repo.users_repo import get_user_by_user_id
 from exceptions.http_status import (
     USER_NOT_FOUND_MSG,
@@ -18,7 +23,9 @@ from exceptions.http_status import (
     BAD_REQUEST_BOOK_HAS_NOT_FILE_MSG,
     BOOK_FILE_NOT_FOUND_MSG,
     DOWNLOAD_BOOK_ERROR_MSG,
-    COVER_NOT_FOUND_MSG
+    COVER_NOT_FOUND_MSG,
+    BOOK_NOT_FOUND_MSG,
+    GET_DETAIL_BOOK_ERROR_MSG
 )
 
 logging.basicConfig(level=logging.DEBUG)
@@ -72,7 +79,6 @@ def upload_book_controller():
     })
 
 
-
 def get_user_books_controller(user_id):
     """Devuelve todos los libros de un usuario."""
     
@@ -94,7 +100,7 @@ def get_user_books_controller(user_id):
 
             "file": f"http://localhost:5000/api/books/file/{libro.file}"
                     if libro.file else None,
-            "created_at": subida.upload_date.isoformat() if subida.upload_date else None,
+            "upload_date": subida.upload_date.isoformat() if subida.upload_date else None,
         # "rating": subida.rating or 0
         })
 
@@ -163,3 +169,36 @@ def download_book_controller(id_book):
     except Exception as e:
         print(f"Error descargando el libro: {e}")
         return DOWNLOAD_BOOK_ERROR_MSG
+    
+def get_detail_uploaded_book_controller(id_book):
+    """Obtener detalle de un libro"""
+    try:
+        result = get_detail_updated_books(id_book)
+        
+        #Comprueba si hay resultado
+        if not result:
+            return BOOK_NOT_FOUND_MSG
+        
+        book, uploaded_book = result
+        
+        #Pasar de 10 a 5 para puntuación con estrellas
+        rating_by_five = round((uploaded_book.rating or 0) / 2, 1)
+        
+        response = {
+            "id_book": book.id_book,
+            "title": book.title,
+            "author": book.author,
+            "cover": f"http://localhost:5000/api/books/cover/{book.cover}"
+                     if book.cover else None,
+            "file": f"http://localhost:5000/api/books/file/{book.file}"
+                    if book.file else None,
+            "upload_date": uploaded_book.upload_date.isoformat() if uploaded_book.upload_date else None,
+            "rating": rating_by_five
+        }
+        
+        return jsonify(response)
+    
+    except Exception as e:
+        print(f"Error obteniendo el detalle del libro: {e}")
+        return GET_DETAIL_BOOK_ERROR_MSG
+        

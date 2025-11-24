@@ -279,7 +279,7 @@ export default function Library() {
                           </div>
                             {/* hacer fetchFecha */}
                           <p className="text-gray-400 text-xs">
-                            {book.created_at?.split("T")[0]}
+                            {book.upload_date?.split("T")[0]}
                           </p>
                         </div>
                       </div>
