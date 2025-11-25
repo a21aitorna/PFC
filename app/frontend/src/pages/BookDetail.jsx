@@ -68,7 +68,7 @@ export default function BookDetail() {
               Puntuación Promedio
             </p>
 
-            <StarRating rating={averageRating} readonly size={24}/>
+            <StarRating rating={averageRating} readonly size={28}/>
 
             <button
               onClick={() => {}}
@@ -144,7 +144,7 @@ export default function BookDetail() {
                         </button>
                       </div>
 
-                      <StarRating rating={review.rating} readonly size={24}/>
+                      <StarRating rating={review.rating} readonly size={28}/>
 
                       <p className="text-gray-700 text-sm leading-relaxed mt-1">{review.text}</p>
                     </div>
