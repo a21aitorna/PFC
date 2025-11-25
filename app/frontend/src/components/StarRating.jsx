@@ -1,8 +1,11 @@
 import { Star } from "lucide-react";
 
-export default function StarRating({ rating, setRating, size = 28 }) {
+export default function StarRating({ rating = 0, setRating, size = 28, readonly = false }) {
+  // handleClick solo se define si no es readonly
   const handleClick = (value) => {
-    setRating(value);
+    if (!readonly && setRating) {
+      setRating(value);
+    }
   };
 
   return (
@@ -12,19 +15,25 @@ export default function StarRating({ rating, setRating, size = 28 }) {
         const half = rating >= star - 0.5 && rating < star;
 
         return (
-          <div key={star} className="relative w-6 h-6 cursor-pointer">
-            
+          <div
+            key={star}
+            className={`relative w-6 h-6 ${readonly ? "" : "cursor-pointer"}`}
+          >
             {/* MITAD IZQUIERDA */}
-            <div
-              className="absolute inset-y-0 left-0 w-1/2"
-              onClick={() => handleClick(star - 0.5)}
-            ></div>
+            {!readonly && (
+              <div
+                className="absolute inset-y-0 left-0 w-1/2 z-10"
+                onClick={() => handleClick(star - 0.5)}
+              />
+            )}
 
             {/* MITAD DERECHA */}
-            <div
-              className="absolute inset-y-0 right-0 w-1/2"
-              onClick={() => handleClick(star)}
-            ></div>
+            {!readonly && (
+              <div
+                className="absolute inset-y-0 right-0 w-1/2 z-10"
+                onClick={() => handleClick(star)}
+              />
+            )}
 
             {/* ICONO VISUAL */}
             <Star

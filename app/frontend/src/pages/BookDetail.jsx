@@ -39,13 +39,13 @@ export default function BookDetail() {
         <Header />
       </div>
 
-      <div className="w-full max-w-6xl mx-auto px-4 mt-4 md:mt-6 relative">
+      <div className="w-full max-w-6xl mx-auto px-4 mt-20 relative">
         <button
-          onClick={() => navigate("/libreria")}
+          onClick={() => navigate("/library")}
           className="px-4 py-2 bg-white text-gray-700 border border-gray-300 
-                     rounded-lg shadow-sm hover:bg-gray-100 transition relative z-10"
+                    rounded-lg shadow-sm hover:bg-gray-100 transition relative z-10"
         >
-          ← Volver a la librería
+          Volver a la librería
         </button>
       </div>
 
@@ -68,7 +68,7 @@ export default function BookDetail() {
               Puntuación Promedio
             </p>
 
-            <StarRating rating={averageRating} readonly />
+            <StarRating rating={averageRating} readonly size={24}/>
 
             <button
               onClick={() => {}}
@@ -103,7 +103,7 @@ export default function BookDetail() {
               </p>
 
               <div className="mb-4">
-                <StarRating rating={rating} setRating={setRating} />
+                <StarRating rating={rating} setRating={setRating} size={28}/>
               </div>
 
               <InputText
@@ -144,7 +144,7 @@ export default function BookDetail() {
                         </button>
                       </div>
 
-                      <StarRating rating={review.rating} readonly />
+                      <StarRating rating={review.rating} readonly size={24}/>
 
                       <p className="text-gray-700 text-sm leading-relaxed mt-1">{review.text}</p>
                     </div>
