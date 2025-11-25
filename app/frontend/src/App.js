@@ -28,7 +28,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="admin-panel" element={<AdminPanel />} />
           </Route>
-           <Route path="/book/:bookId" element={<BookDetail />} />
+           <Route path="/book/:id_book" element={<BookDetail />} />
         </Routes>
       </Router>
     </UserProvider>

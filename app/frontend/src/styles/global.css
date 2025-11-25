@@ -13,3 +13,7 @@
   font-family: 'GelioRetsina', serif;
   letter-spacing: 0.04em;
 }
+
+.clip-half-star {
+  clip-path: inset(0 50% 0 0);
+}

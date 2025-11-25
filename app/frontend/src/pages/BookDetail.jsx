@@ -1,30 +1,37 @@
+import { useNavigate, useParams } from "react-router-dom";
 import { Star, User } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import Background from "../components/Background";
 import Card from "../components/Card";
 import Header from "../components/Header";
-import { useBookDetail } from "../hooks/detailBookHook";
 import InputText from "../components/InputText";
 import SendButton from "../components/SendButton";
+import StarRating from "../components/StarRating"; // Componente para medias estrellas
+import { useBookDetail } from "../hooks/detailBookHook";
 
 export default function BookDetail() {
   const navigate = useNavigate();
+  const { id_book } = useParams(); // Tomamos el id de la ruta
   const {
     book,
+    reviews,
     reviewText,
     setReviewText,
-    reviews,
     rating,
     setRating,
-    addReview
-  } = useBookDetail({
-    title: "El Principito",
-    author: "Antoine de Saint-Exupéry",
-  });
+    addReview,
+    deleteReview,
+    loading,
+  } = useBookDetail(id_book);
 
-  const averageRating = reviews.length > 0 
-    ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length)
-    : 0;
+  const averageRating = book?.rating || 0;
+
+  if (loading || !book) {
+    return (
+      <Background>
+        <div className="text-center py-20 text-gray-500">Cargando libro...</div>
+      </Background>
+    );
+  }
 
   return (
     <Background>
@@ -32,48 +39,37 @@ export default function BookDetail() {
         <Header />
       </div>
 
-      {/* BOTÓN: Margen superior reducido de mt-6/mt-10 a mt-4/mt-6 */}
       <div className="w-full max-w-6xl mx-auto px-4 mt-4 md:mt-6 relative">
         <button
           onClick={() => navigate("/libreria")}
           className="px-4 py-2 bg-white text-gray-700 border border-gray-300 
-                     rounded-lg shadow-sm hover:bg-gray-100 transition 
-                     relative z-10"
+                     rounded-lg shadow-sm hover:bg-gray-100 transition relative z-10"
         >
           ← Volver a la librería
         </button>
       </div>
 
-      {/* CARD PRINCIPAL: Margen superior reducido de mt-4 a mt-2 */}
       <Card className="mt-2 bg-transparent shadow-none w-full max-w-6xl mx-auto px-4">
-        
         <div className="flex flex-col md:flex-row gap-6 items-start">
           
           {/* --- COLUMNA IZQUIERDA --- */}
           <Card className="w-full md:w-80 p-6 flex flex-col items-center gap-4 rounded-xl shadow-md flex-shrink-0 bg-white">
-            <div className="w-full aspect-[3/4] bg-orange-500 rounded-lg flex items-center justify-center mb-2 shadow-inner">
-              <span className="text-white text-6xl">📖</span>
-            </div>
+            <img
+              src={book.cover}
+              alt={book.title}
+              className="w-full aspect-[3/4] rounded-lg shadow-inner object-cover mb-2"
+            />
             <h2 className="text-xl font-bold text-center w-full">{book.title}</h2>
             <p className="text-gray-600 text-center w-full">{book.author}</p>
-            
+
             <div className="w-full border-t border-gray-100 my-2"></div>
-            
+
             <p className="font-semibold text-center w-full text-sm text-gray-500 uppercase">
               Puntuación Promedio
             </p>
-            
-            <div className="flex items-center justify-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={24} fill={i < averageRating ? "#fbbf24" : "none"} stroke="#fbbf24" />
-              ))}
-              {averageRating > 0 && (
-                <span className="text-lg font-semibold ml-2 text-gray-700">
-                  {averageRating.toFixed(1)} / 5.0
-                </span>
-              )}
-            </div>
-            
+
+            <StarRating rating={averageRating} readonly />
+
             <button
               onClick={() => {}}
               className="mt-4 w-full px-4 py-2 bg-pink-600 text-white font-semibold rounded-lg hover:bg-pink-700 transition duration-150 shadow-md"
@@ -83,8 +79,7 @@ export default function BookDetail() {
           </Card>
 
           <div className="flex flex-col flex-1 w-full gap-4 min-w-0 max-h-[80vh]">
-
-            {/* 1. CARD CUENTA RESEÑAS */}
+            {/* CARD 1: Cuenta reseñas */}
             <Card className="w-full p-6 bg-white rounded-lg shadow-md">
               <div className="flex flex-col items-start justify-center gap-2">
                 <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
@@ -100,7 +95,7 @@ export default function BookDetail() {
               </div>
             </Card>
 
-            {/* 2. CARD AGREGAR RESEÑA */}
+            {/* CARD 2: Agregar reseña */}
             <Card className="w-full p-6 bg-white rounded-lg shadow-md">
               <h3 className="text-lg font-bold mb-2">Escribe tu reseña</h3>
               <p className="text-gray-500 mb-6 text-sm">
@@ -108,18 +103,7 @@ export default function BookDetail() {
               </p>
 
               <div className="mb-4">
-                <div className="flex gap-2">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      size={28}
-                      className={`cursor-pointer transition-colors ${
-                        i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-200"
-                      }`}
-                      onClick={() => setRating(i + 1)}
-                    />
-                  ))}
-                </div>
+                <StarRating rating={rating} setRating={setRating} />
               </div>
 
               <InputText
@@ -137,13 +121,11 @@ export default function BookDetail() {
               </div>
             </Card>
 
-            {/* 3. LISTA DE RESEÑAS */}
+            {/* CARD 3: Lista de reseñas */}
             <div className="w-full flex flex-col gap-4 max-h-[500px] overflow-y-auto pr-2">
-              
-              {reviews.map((review, index) => (
-                <Card key={index} className="w-full p-6 bg-white rounded-lg shadow-sm border border-gray-100">
+              {Array.isArray(reviews) && reviews.map((review) => (
+                <Card key={review.id_review} className="w-full p-6 bg-white rounded-lg shadow-sm border border-gray-100">
                   <div className="flex items-start gap-4">
-                    
                     <div className="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0 text-white">
                       <User size={24} />
                     </div>
@@ -154,36 +136,28 @@ export default function BookDetail() {
                           <h4 className="font-bold text-gray-900">{review.user || "usuario"}</h4>
                           <span className="text-xs text-gray-400">{review.date}</span>
                         </div>
+                        <button
+                          onClick={() => deleteReview(review.id_review)}
+                          className="text-red-500 text-xs"
+                        >
+                          Eliminar
+                        </button>
                       </div>
 
-                      <div className="flex items-center gap-1 my-2">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            size={16}
-                            className={`${i < review.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-200"}`}
-                          />
-                        ))}
-                        <span className="text-xs font-bold text-gray-500 ml-2">
-                          {review.rating.toFixed(1)} / 5.0
-                        </span>
-                      </div>
+                      <StarRating rating={review.rating} readonly />
 
-                      <p className="text-gray-700 text-sm leading-relaxed">
-                        {review.text}
-                      </p>
+                      <p className="text-gray-700 text-sm leading-relaxed mt-1">{review.text}</p>
                     </div>
                   </div>
                 </Card>
               ))}
-              
-              {reviews.length === 0 && (
+
+              {(!reviews || reviews.length === 0) && (
                 <div className="text-center py-10 text-gray-400">
                   No hay opiniones todavía. ¡Sé el primero en dejar una reseña!
                 </div>
               )}
             </div>
-
           </div>
         </div>
       </Card>
