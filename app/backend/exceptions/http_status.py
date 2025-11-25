@@ -59,8 +59,9 @@ with app.app_context():
     COVER_NOT_FOUND_MSG = jsonify({"msg": "Book cover was not found", "code":"4015"}), HTTPStatus.NOT_FOUND
     BOOK_NOT_FOUND_MSG = jsonify({"msg": "Book not found ", "code":"4016"}), HTTPStatus.NOT_FOUND
     GET_DETAIL_BOOK_ERROR_MSG = jsonify({"msg": "Error getting the book detail", "code":"4017"}), HTTPStatus.INTERNAL_SERVER_ERROR
-    NOT_FULL_DATA_CREATE_REVIEW_MSG = jsonify({"msg": "Some data is not filled", "code":"4018"}), HTTPStatus.NOT_FOUND
+    NOT_FULL_DATA_CREATE_REVIEW_MSG = jsonify({"msg": "Bad request. Some data is missing", "code":"4018"}), HTTPStatus.BAD_REQUEST
     NO_BOOK_REVIEWS_MSG = jsonify({"msg": "There are not reviews for this book", "code":"4019"}), HTTPStatus.OK
     REVIEW_NOT_FOUND_MSG = jsonify({"msg": "Review not found", "code":"4020"}), HTTPStatus.NOT_FOUND
     REVIEW_DELETED_MSG = jsonify({"msg": "Review deleted correctly", "code":"4021"}), HTTPStatus.OK
     REVIEW_DELETED_ERROR_MSG = jsonify({"msg": "Error deleting the review", "code":"4022"}), HTTPStatus.INTERNAL_SERVER_ERROR
+    BAD_REQUEST_INVALID_RATING_MSG = jsonify({"msg": "Bad request. The rating is invalid (it must be 5 in the body as maximum)", "code":"4023"}), HTTPStatus.BAD_REQUEST

@@ -11,7 +11,8 @@ from repo.books_repo import (save_book_file,
                              post_review_book,
                              get_reviews_by_id,
                              get_review_by_id,
-                             delete_review_by_id)
+                             delete_review_by_id,
+                             )
 from repo.users_repo import get_user_by_user_id
 from exceptions.http_status import (
     USER_NOT_FOUND_MSG,
@@ -34,7 +35,9 @@ from exceptions.http_status import (
     NO_BOOK_REVIEWS_MSG,
     REVIEW_NOT_FOUND_MSG,
     REVIEW_DELETED_MSG,
-    REVIEW_DELETED_ERROR_MSG
+    REVIEW_DELETED_ERROR_MSG,
+    BAD_REQUEST_INVALID_RATING_MSG
+    
 )
 
 ALLOWED_EXTENSIONS = {'pdf', 'epub'}
@@ -220,11 +223,13 @@ def post_review_book_controller(id_book):
         return BOOK_NOT_FOUND_MSG
     
     book_rating = int(stars_rating*2)
+    if book_rating<0 or book_rating>10:
+        return BAD_REQUEST_INVALID_RATING_MSG
     
     response, status_code = post_review_book(user_id,book_id, review_text, book_rating)
     
     #Actualizar media
-    update_uploaded_book_rating(id_book, user_id)
+    update_uploaded_book_rating(id_book)
     
     return response, status_code
     
@@ -249,13 +254,12 @@ def delete_review_by_id_controller(id_review):
         return REVIEW_NOT_FOUND_MSG
     
     book_id = review.book_id
-    user_id = review.user_id
     
     success = delete_review_by_id(id_review)
 
     if not success:
         return REVIEW_DELETED_ERROR_MSG
     
-    update_uploaded_book_rating(book_id, user_id)
+    update_uploaded_book_rating(book_id)
     
     return REVIEW_DELETED_MSG

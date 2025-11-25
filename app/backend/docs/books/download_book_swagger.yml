@@ -42,11 +42,10 @@ responses:
           type: string
     examples:
       application/json:
-        - msg: "Book not found"
-          code: "4004"
-        - msg: "The book file could not be found"
-          code: "4010"
-
+        possible_errors:
+          - { msg: "Book not found", code: "4004"}
+          - { msg: "The book file could not be found", code: "4010" }
+ 
   500:
     description: Internal server error while downloading the book
     schema:
