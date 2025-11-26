@@ -118,6 +118,22 @@
         "rectifyButton": "Rectificar",
         "deleteButton": "Eliminar",
         "blockButton": "Bloquear"
+    },
+    
+    "detailLibrary": {
+        "loadingBooks": "Cargando libros...",
+        "returnLibray": "Volver a la librería", 
+        "bookRate": "Puntuación promedio",
+        "readBook": "Leer libro",
+        "reviews": "Reseñas",
+        "shareOpinionBook": "Comparte tu opinión sobre este libro",
+        "writeReview": "Escribe tu reseña",
+        "helpReview": "Tu experiencia ayuda a otros lectores",
+        "reviewPlaceholder": "Escribe aquí tu opinión...",
+        "postReview": "Publicar reseña",
+        "defaultUser": "Usuario",
+        "deleteReview": "Eliminar",
+        "defaultTextReview": "No hay opiniones todavía. ¡Sé el primero en dejar una reseña!"
     }
     
 

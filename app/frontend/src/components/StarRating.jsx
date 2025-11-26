@@ -1,7 +1,7 @@
 import { Star } from "lucide-react";
 
 export default function StarRating({ rating = 0, setRating, size = 28, readonly = false }) {
-  // handleClick solo se define si no es readonly
+
   const handleClick = (value) => {
     if (!readonly && setRating) {
       setRating(value);
@@ -16,6 +16,7 @@ export default function StarRating({ rating = 0, setRating, size = 28, readonly 
 
         return (
           <div
+            data-testid="bookRating"
             key={star}
             className={`relative w-6 h-6 ${readonly ? "" : "cursor-pointer"}`}
           >
