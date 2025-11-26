@@ -140,6 +140,9 @@ def get_user_books(user_id):
 def delete_book(id_user, id_book):
     """Elimina un libro y la relación con el usuario, así como los archivos físicos relacionados a ellos"""
 
+    # Obtener reseñas del libro
+    reseñas = Reseña.query.filter_by(book_id=id_book).all()
+    
     # Obtener relación libro-usuario
     libro_subido = LibroSubido.query.filter_by(user_id=id_user, book_id=id_book).first()
     if not libro_subido:
@@ -165,7 +168,8 @@ def delete_book(id_user, id_book):
 
     # Eliminar de la base de datos
     try:
-        
+        for reseña in reseñas:
+            db.session.delete(reseña)
         db.session.delete(libro_subido)
         for lc in libro_categorias:
             db.session.delete(lc)
