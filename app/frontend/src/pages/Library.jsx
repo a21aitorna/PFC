@@ -261,7 +261,10 @@ export default function Library() {
                               data-testid = "downloadBookButton"
                               className="flex items-center justify-center p-1 rounded-lg hover:bg-gray-200"
                               title={es.library.downloadButtonTitle}
-                              onClick={() => downloadBook(book.id_book)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                downloadBook(book.id_book);
+                              }}
                             >
                               <Download size={18} />
                             </button>
@@ -271,7 +274,10 @@ export default function Library() {
                                 data-testid = "deleteBookButton"
                                 className="flex items-center justify-center p-1 rounded-lg hover:bg-gray-200"
                                 title={es.library.deleteButtonTitle}
-                                onClick={() => handleDelete(book)}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDelete(book);
+                                }}
                               >
                                 <Trash2 size={18} />
                               </button>
