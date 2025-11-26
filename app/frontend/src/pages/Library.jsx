@@ -1,14 +1,15 @@
 import { Search, Plus, Star, Download, Trash2, Home } from "lucide-react";
+import es from "../assets/i18n/es.json";
 import { useParams } from "react-router-dom";
 import { useLibrary } from "../hooks/libraryHook";
 import { useUser } from "../context/userProvider";
+import { useState, useRef } from "react";
 
 import Background from "../components/Background";
 import Header from "../components/Header";
 import InputText from "../components/InputText";
 import PanelCard from "../components/PanelCard";
-import { useState, useRef } from "react";
-import es from "../assets/i18n/es.json";
+import StarRating from "../components/StarRating";
 
 export default function Library() {
   const { userId } = useParams();
@@ -246,14 +247,7 @@ export default function Library() {
 
                           {/* Rating */}
                           <div data-testid={`ratingBook-${book.id_book}`} className="flex items-center space-x-1 text-yellow-500">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                size={14}
-                                fill={i < (book.rating || 0) ? "currentColor" : "none"}
-                                stroke="currentColor"
-                              />
-                            ))}
+                            <StarRating rating={book.rating/2} readonly size={14} />
                           </div>
 
                           <div className="flex items-center gap-4 mt-2">
