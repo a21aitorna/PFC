@@ -5,12 +5,12 @@ import Card from "../components/Card";
 import Header from "../components/Header";
 import InputText from "../components/InputText";
 import SendButton from "../components/SendButton";
-import StarRating from "../components/StarRating"; // Componente para medias estrellas
+import StarRating from "../components/StarRating";
 import { useBookDetail } from "../hooks/detailBookHook";
 
 export default function BookDetail() {
   const navigate = useNavigate();
-  const { id_book } = useParams(); // Tomamos el id de la ruta
+  const { id_book } = useParams();
   const {
     book,
     reviews,
@@ -21,6 +21,7 @@ export default function BookDetail() {
     addReview,
     deleteReview,
     loading,
+    loggedUser,
   } = useBookDetail(id_book);
 
   const averageRating = book?.rating || 0;
@@ -42,8 +43,7 @@ export default function BookDetail() {
       <div className="w-full max-w-6xl mx-auto px-4 mt-20 relative">
         <button
           onClick={() => navigate("/library")}
-          className="px-4 py-2 bg-white text-gray-700 border border-gray-300 
-                    rounded-lg shadow-sm hover:bg-gray-100 transition relative z-10"
+          className="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 transition relative z-10"
         >
           Volver a la librería
         </button>
@@ -51,7 +51,7 @@ export default function BookDetail() {
 
       <Card className="mt-2 bg-transparent shadow-none w-full max-w-6xl mx-auto px-4">
         <div className="flex flex-col md:flex-row gap-6 items-start">
-          
+
           {/* --- COLUMNA IZQUIERDA --- */}
           <Card className="w-full md:w-80 p-6 flex flex-col items-center gap-4 rounded-xl shadow-md flex-shrink-0 bg-white">
             <img
@@ -68,7 +68,7 @@ export default function BookDetail() {
               Puntuación Promedio
             </p>
 
-            <StarRating rating={averageRating} readonly size={28}/>
+            <StarRating rating={averageRating} readonly size={28} />
 
             <button
               onClick={() => {}}
@@ -103,7 +103,7 @@ export default function BookDetail() {
               </p>
 
               <div className="mb-4">
-                <StarRating rating={rating} setRating={setRating} size={28}/>
+                <StarRating rating={rating} setRating={setRating} size={28} />
               </div>
 
               <InputText
@@ -136,15 +136,18 @@ export default function BookDetail() {
                           <h4 className="font-bold text-gray-900">{review.user || "usuario"}</h4>
                           <span className="text-xs text-gray-400">{review.date}</span>
                         </div>
-                        <button
-                          onClick={() => deleteReview(review.id_review)}
-                          className="text-red-500 text-xs"
-                        >
-                          Eliminar
-                        </button>
+
+                        {(review.user_id === loggedUser?.id_user || loggedUser?.id_role === 1) && (
+                          <button
+                            onClick={() => deleteReview(review.id_review)}
+                            className="text-red-500 text-xs"
+                          >
+                            Eliminar
+                          </button>
+                        )}
                       </div>
 
-                      <StarRating rating={review.rating} readonly size={28}/>
+                      <StarRating rating={review.rating} readonly size={28} />
 
                       <p className="text-gray-700 text-sm leading-relaxed mt-1">{review.text}</p>
                     </div>

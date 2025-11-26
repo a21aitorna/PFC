@@ -3,6 +3,9 @@ import axios from "axios";
 import { API_BASE } from "../config/api";
 
 export function useBookDetail(id_book) {
+  // Usuario logueado desde localStorage
+  const loggedUser = JSON.parse(localStorage.getItem("user")) || null;
+
   const [book, setBook] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [reviewText, setReviewText] = useState("");
@@ -30,8 +33,9 @@ export function useBookDetail(id_book) {
         id_review: r.id_review,
         text: r.review_text,
         user: r.review_user_username,
-        rating: r.book_rating / 2, // convertir de 0-10 a 0-5
-        date: new Date(r.creation_date).toLocaleDateString(),
+        user_id: r.review_user_id,
+        rating: r.book_rating / 2,
+        date: new Date(r.creation_date).toISOString().split("T")[0],
       }));
 
       setReviews(formattedReviews);
@@ -41,20 +45,20 @@ export function useBookDetail(id_book) {
     }
   };
 
-  // Agregar una nueva reseña
+  // Agregar reseña
   const addReview = async () => {
-    if (!reviewText || rating === 0) return;
+    if (!reviewText || rating === 0 || !loggedUser) return;
 
     try {
       await axios.post(`${API_BASE}/books/book/${id_book}/review`, {
-        user_id: 1, // Cambiar según usuario logueado
+        user_id: loggedUser.id_user,
         review_text: reviewText,
         rating: rating 
       });
 
       setReviewText("");
-      await fetchReviews(); // refrescar lista
-      await fetchBookDetail(); // refrescar rating promedio
+      await fetchReviews();
+      await fetchBookDetail();
     } catch (error) {
       console.error("Error agregando reseña: ", error);
     }
@@ -64,8 +68,8 @@ export function useBookDetail(id_book) {
   const deleteReview = async (id_review) => {
     try {
       await axios.delete(`${API_BASE}/books/review/${id_review}`);
-      await fetchReviews(); // refrescar lista
-      await fetchBookDetail(); // refrescar rating promedio
+      await fetchReviews();
+      await fetchBookDetail();
     } catch (error) {
       console.error("Error eliminando reseña: ", error);
     }
@@ -87,5 +91,6 @@ export function useBookDetail(id_book) {
     addReview,
     deleteReview,
     loading,
+    loggedUser
   };
 }

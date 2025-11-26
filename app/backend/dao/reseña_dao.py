@@ -24,6 +24,7 @@ class Reseña(db.Model):
     def as_dict(self):
         return{
             'id_review': self.id_review,
+            'review_user_id': self.user_id,
             'review_user_username': self.user.username if self.user else None,
             'review_text': self.review_text,
             'book_rating': self.book_rating,
