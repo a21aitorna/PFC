@@ -11,6 +11,7 @@ export default function AdminPanel() {
     unblockUser,
     deleteUser,
     rectifyDeleteUser,
+    navigateLibraryUser
   } = useAdminPanel();
 
   return (
@@ -42,7 +43,11 @@ export default function AdminPanel() {
                   }`}
                 >
                   <td className="p-3 break-words">{user.username}</td>
-                  <td className="p-3 break-words">{user.library}</td>
+                  <td className="p-3 break-words">
+                    <span className="cursor-pointer" onClick={() => navigateLibraryUser(user.id)}>
+                      {user.library}
+                    </span>
+                  </td>
 
                   {/* Estado */}
                   <td className="p-3">

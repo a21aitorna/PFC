@@ -6,7 +6,8 @@ import { useUser } from "../context/userProvider";
 
 export function useAdminPanel() {
   const [users, setUsers] = useState([]);
-  const token = localStorage.getItem("token"); // <-- Aquí sí está tu token
+  const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   //Token y axios
   useEffect(() => {
@@ -89,6 +90,7 @@ export function useAdminPanel() {
     }
   };
 
+  // Rectificar borrado usuario
   const rectifyDeleteUser = async (id) => {
     try {
       await axios.post(`${API_BASE}/admin/rectify-delete/${id}`);
@@ -104,11 +106,17 @@ export function useAdminPanel() {
     }
   };
 
+  // Navegar a la librería del usuario
+  const navigateLibraryUser = async (id_user) => {
+    navigate(`/library/${id_user}`)
+  };
+  
   return {
     users,
     blockUser,
     unblockUser,
     deleteUser,
-    rectifyDeleteUser
+    rectifyDeleteUser,
+    navigateLibraryUser
   };
 }
