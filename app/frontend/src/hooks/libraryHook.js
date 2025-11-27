@@ -46,7 +46,10 @@ export function useLibrary(routeUserId) {
         const res = await axios.get(
           `${API_BASE}/users/search?q=${encodeURIComponent(userQuery)}`
         );
-        setUserResults(res.data);
+        
+        const filteredResults = res.data.filter(u => u.id !== user?.id_user);
+
+        setUserResults(filteredResults );
       } catch {
         setErrorUserSearch(es.library.errorWhileSearchingUsers);
       } finally {
@@ -55,7 +58,7 @@ export function useLibrary(routeUserId) {
     }, 300);
 
     return () => clearTimeout(delay);
-  }, [userQuery]);
+  }, [userQuery, user?.id_user]);
 
   // Fetch nombre librería
   const fetchLibraryName = async (idParam) => {
@@ -228,7 +231,7 @@ export function useLibrary(routeUserId) {
     if (isAdmin){
       navigate("/admin-panel")
     }
-    else if (isOwner) {
+    else {
       navigate("/library")
     }
   };
