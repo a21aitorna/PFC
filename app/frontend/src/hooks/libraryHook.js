@@ -219,12 +219,18 @@ export function useLibrary(routeUserId) {
     window.open(`${API_BASE}/books/download/${bookId}`, "_blank");
   };
 
-  //Regresar a la librería
-  const goBackToLibrary = () => {
+  //Regresar a la librería en caso de rol usuario, panel en caso de admin
+  const goBackToMainPage = () => {
     if (!user?.id_user) return;
     setUserQuery("");
     setSearch("");
-    navigate("/library");
+    
+    if (isAdmin){
+      navigate("/admin-panel")
+    }
+    else if (isOwner) {
+      navigate("/library")
+    }
   };
 
   // Seleccionar librería
@@ -260,7 +266,7 @@ export function useLibrary(routeUserId) {
     downloadBook,
     isOwner,
     isAdmin,
-    goBackToLibrary,
+    goBackToMainPage,
     selectLibrary,
     errorBooks,
     errorUserSearch,

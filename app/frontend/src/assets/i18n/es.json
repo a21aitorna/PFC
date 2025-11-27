@@ -77,6 +77,7 @@
         "confirmDelete": "¿Seguro que quieres eliminarlo? Este cambio será irreversible",
         "correctDelete": "Libro eliminado correctamente",
         "returnLibrary": "Mi Librería",
+        "returnPanelAdmin": "Panel Admin",
         "searchUserLibraryTitle": "Buscar usuarios o librerías",
         "searchUserLibraryPlaceholder": "Escribe un usuario o el nombre de una librería...",
         "searchUserLibraryNotFound": "No se encontraron usuarios.",

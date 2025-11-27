@@ -31,7 +31,7 @@ export default function Library() {
     downloadBook,
     isOwner,
     isAdmin,
-    goBackToLibrary,
+    goBackToMainPage,
     selectLibrary,
     errorBooks, 
     errorUserSearch,
@@ -91,9 +91,9 @@ export default function Library() {
           <button
             className="mb-4 inline-flex items-center gap-1 text-indigo-600 bg-white border border-indigo-600 px-2 py-1 rounded transition text-sm w-fit hover:text-white hover:bg-indigo-600"
             data-testid="returnToLibraryButton"
-            onClick={goBackToLibrary}
+            onClick={goBackToMainPage}
           >
-            <Home size={14} /> {es.library.returnLibrary}
+            <Home size={14} /> {isAdmin? es.library.returnPanelAdmin : es.library.returnLibrary}
           </button>
         )}
 
