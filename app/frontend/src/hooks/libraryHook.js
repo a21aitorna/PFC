@@ -9,7 +9,8 @@ export function useLibrary(routeUserId) {
   const { user, loading: userLoading } = useUser();
   const navigate = useNavigate();
 
-  const userId = routeUserId || user?.id_user;
+  const parsedRouteUserId = routeUserId ? Number(routeUserId) : null;
+  const userId = parsedRouteUserId || user?.id_user;
   const isOwner = user?.id_user === userId;
   const isAdmin = user?.id_role === 1;
 
@@ -232,7 +233,7 @@ export function useLibrary(routeUserId) {
       navigate("/admin-panel")
     }
     else {
-      navigate("/library")
+      navigate(`/library/${user.id_user}`)
     }
   };
 

@@ -48,7 +48,6 @@ export default function BookDetail() {
     } else {
       navigate(`/library/${loggedUser.id_user}`);
     }
-      
   };
 
   return (
