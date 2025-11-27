@@ -12,6 +12,7 @@ from repo.books_repo import (save_book_file,
                              get_reviews_by_id,
                              get_review_by_id,
                              delete_review_by_id,
+                             get_upload_date_book
                              )
 from repo.users_repo import get_user_by_user_id
 from exceptions.http_status import (
@@ -71,6 +72,9 @@ def upload_book_controller():
     if error:
         return jsonify({'error': error}), 500
 
+    # Obtener fecha
+    upload_date = get_upload_date_book(libro.id_book, user_id)
+    
     # Generar URLs
     book_file_url = f"/api/books/file/{libro.file}" if libro.file else None
     cover_file_url = f"/api/books/cover/{libro.cover}" if libro.cover else None
@@ -82,7 +86,8 @@ def upload_book_controller():
             'title': libro.title,
             'author': libro.author,
             'file': book_file_url,
-            'cover': cover_file_url
+            'cover': cover_file_url,
+            'uploaded_date': upload_date 
         },
         'uploaded_by_user': user_id
     })

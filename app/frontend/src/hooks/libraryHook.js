@@ -175,6 +175,7 @@ export function useLibrary(routeUserId) {
       const normalizedBook = {
         ...uploaded,
         cover: normalizedCover,
+        upload_date: new Date(uploaded.uploaded_date).toISOString().split("T")[0],
       };
 
       setBooks((prev) => [normalizedBook, ...prev]);

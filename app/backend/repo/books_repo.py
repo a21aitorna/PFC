@@ -128,6 +128,11 @@ def save_book(file_path: str, filename: str, user_id: int) -> Tuple[Optional[Lib
 
         return None, f"Error en base de datos: {str(e)}"
 
+def get_upload_date_book(book_id, user_id):
+    """Conseguir la fecha de subida de un libro"""
+    register = LibroSubido.query.filter_by(book_id=book_id, user_id=user_id).first()
+    return register.upload_date
+    
 def get_user_books(user_id):
     """Obtiene todos los libros de un usuario"""
     return (
