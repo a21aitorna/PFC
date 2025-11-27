@@ -244,7 +244,7 @@ export function useLibrary(routeUserId) {
   };
 
   const navigateDetailBook = (idBook) => {
-    navigate(`/book/${idBook}`);
+    navigate(`/book/${idBook}`, { state: { userId } });
   };
 
   return {

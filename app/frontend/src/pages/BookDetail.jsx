@@ -1,5 +1,5 @@
 import es from "../assets/i18n/es.json"
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { Star, User } from "lucide-react";
 import { useBookDetail } from "../hooks/detailBookHook";
 
@@ -26,6 +26,9 @@ export default function BookDetail() {
     loggedUser,
   } = useBookDetail(id_book);
 
+  const location = useLocation();
+  const userId = location.state?.userId;
+
   const averageRating = book?.rating || 0;
 
   if (loading || !book) {
@@ -36,6 +39,18 @@ export default function BookDetail() {
     );
   }
 
+  // Volver a la librería en función de si es la biblioteca del prppio usuario u otra resultante de búsqueda
+  const handleGoBack = () => {
+    if (!loggedUser) return;
+
+    if (userId && userId !== loggedUser.id_user.toString()) {
+      navigate(`/library/${userId}`);
+    } else {
+      navigate(`/library/${loggedUser.id_user}`);
+    }
+      
+  };
+
   return (
     <Background>
       <div className="fixed top-0 left-0 w-full z-50">
@@ -44,7 +59,7 @@ export default function BookDetail() {
 
       <div className="w-full max-w-6xl mx-auto px-4 mt-20 relative">
         <button
-          onClick={() => navigate("/library")}
+          onClick={handleGoBack}
           className="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 transition relative z-10"
         >
           {es.detailLibrary.returnLibray}

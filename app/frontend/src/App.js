@@ -20,13 +20,13 @@ function App() {
           <Route path="/recover-password-verify-user" element={<RecoverPasswordPageOne />} />
           <Route path="/recover-password-enter-new-password" element={<RecoverPasswordPageTwo />} />
           <Route element={<ProtectedRoute />}>
-            <Route path="/library" element={<Library />} />
+            <Route path="/library/:userId" element={<Library />} />
           </Route>
           <Route element={<ProtectedRoute />}>
             <Route path="/library/:userId" element={<Library />} />
           </Route>
           <Route element={<ProtectedRoute />}>
-            <Route path="admin-panel" element={<AdminPanel />} />
+            <Route path="/admin-panel" element={<AdminPanel />} />
           </Route>
           <Route element={<ProtectedRoute />}>
            <Route path="/book/:id_book" element={<BookDetail />} />

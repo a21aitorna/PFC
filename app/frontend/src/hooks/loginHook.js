@@ -25,7 +25,7 @@ export function useLogin() {
   // Mapeo de id_role a rutas y nombres de rol
   const roleMap = {
     1: { name: "admin", path: "/admin-panel" },
-    2: { name: "usuario", path: "/library" }
+    2: { name: "usuario", path: (userId) => `/library/${userId}` } // ruta dinámica con userId
   };
 
   const handleSubmit = async (e) => {
@@ -56,7 +56,13 @@ export function useLogin() {
 
       const roleInfo = roleMap[data.user.id_role];
       if (roleInfo) {
-        navigate(roleInfo.path);
+        if (data.user.id_role === 2) {
+          // Usuario normal → ruta dinámica con su id
+          navigate(roleInfo.path(data.user.id_user));
+        } else {
+          // Admin → ruta estática
+          navigate(roleInfo.path);
+        }
         console.log("Usuario recibido tras login:", data.user);
       } else {
         navigate("/");
