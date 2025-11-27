@@ -180,13 +180,15 @@ def search_users_controller(searched_text):
     try:
         searched_users = get_users_or_libraries(searched_text)
         
+        searched_users = [u for u in searched_users if u.id_role != 1]
+        
         result = [
             {
                 'id': searched_user.id_user,
                 'username': searched_user.username,
                 'libraryName': searched_user.library_name,
             }
-            for searched_user in searched_users
+            for searched_user in searched_users 
         ]
         return jsonify(result), 200
     except Exception as e:
