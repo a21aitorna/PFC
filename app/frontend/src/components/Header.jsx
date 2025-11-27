@@ -18,7 +18,7 @@ export default function Header() {
         navigate("/admin-panel")
         break;
       case 2:
-        navigate("/library");
+        navigate(`/library/${user.id_user}`);
         break;
       default: navigate("/");
       break;
