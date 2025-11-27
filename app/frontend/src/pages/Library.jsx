@@ -30,6 +30,7 @@ export default function Library() {
     deleteBook,
     downloadBook,
     isOwner,
+    isAdmin,
     goBackToLibrary,
     selectLibrary,
     errorBooks, 
@@ -61,7 +62,7 @@ export default function Library() {
     const ok = window.confirm(es.library.confirmDelete);
     if (!ok) return;
 
-    const result = await deleteBook(book.id_book);
+    const result = await deleteBook(book.id_book, book.user_id);
     if (result.error) {
       alert(result.error);
       return;
@@ -263,7 +264,7 @@ export default function Library() {
                               <Download size={18} />
                             </button>
 
-                            {isOwner && (
+                            {(isOwner || isAdmin) && (
                               <button
                                 data-testid = "deleteBookButton"
                                 className="flex items-center justify-center p-1 rounded-lg hover:bg-gray-200"

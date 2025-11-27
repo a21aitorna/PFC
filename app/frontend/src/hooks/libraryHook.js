@@ -11,10 +11,9 @@ export function useLibrary(routeUserId) {
 
   const userId = routeUserId || user?.id_user;
   const isOwner = user?.id_user === userId;
+  const isAdmin = user?.id_role === 1;
 
-  const goToUserLibrary = (id) => {
-    navigate(`/library/${id}`);
-  };
+  const goToUserLibrary = (id) => navigate(`/library/${id}`);
 
   const [libraryName, setLibraryName] = useState("");
   const [books, setBooks] = useState([]);
@@ -27,7 +26,6 @@ export function useLibrary(routeUserId) {
   const [userResults, setUserResults] = useState([]);
   const [loadingUserSearch, setLoadingUserSearch] = useState(false);
 
-  // Estados de error separados
   const [errorBooks, setErrorBooks] = useState("");
   const [errorUserSearch, setErrorUserSearch] = useState("");
 
@@ -69,11 +67,7 @@ export function useLibrary(routeUserId) {
       const res = await axios.get(
         `${API_BASE}/library-name?id_user=${idToFetch}`
       );
-      if (res.data?.library_name) {
-        setLibraryName(res.data.library_name);
-      } else {
-        setLibraryName(es.library.unknownLibrary);
-      }
+      setLibraryName(res.data?.library_name || es.library.unknownLibrary);
     } catch {
       setErrorBooks(es.library.errorWhileFetchingLibraryName);
       setLibraryName(es.library.unknownLibrary);
@@ -93,8 +87,13 @@ export function useLibrary(routeUserId) {
     setErrorBooks("");
     try {
       const res = await axios.get(`${API_BASE}/books/user/${userId}`);
-      setBooks(res.data);
-      setFilteredBooks(res.data);
+      // Aseguramos que cada book tenga user_id del dueño
+      const booksWithOwner = res.data.map((b) => ({
+        ...b,
+        user_id: b.user_id ?? userId,
+      }));
+      setBooks(booksWithOwner);
+      setFilteredBooks(booksWithOwner);
     } catch {
       setErrorBooks(es.library.errorWhileLoadingBooks);
     } finally {
@@ -105,7 +104,7 @@ export function useLibrary(routeUserId) {
   useEffect(() => {
     if (!userLoading && userId) {
       fetchLibraryName(userId);
-      fetchBooks(userId);
+      fetchBooks();
       setSearch("");
     }
   }, [userId, userLoading]);
@@ -149,10 +148,10 @@ export function useLibrary(routeUserId) {
 
   // Subir libro
   const uploadBook = async (file) => {
-    if (!isOwner) return { error: `${es.library.canNotUploadForeignLibraies}`};
-    if (!file) return { error: `${es.library.fileNotSelected}` };
-    if (!user?.id_user) return { error: `${es.library.notLoggedUser}` };
-    if (!allowedFile(file.name)) return { error: `${es.library.formatNotAllowed}` };
+    if (!isOwner) return { error: es.library.canNotUploadForeignLibraies };
+    if (!file) return { error: es.library.fileNotSelected };
+    if (!user?.id_user) return { error: es.library.notLoggedUser };
+    if (!allowedFile(file.name)) return { error: es.library.formatNotAllowed };
 
     setErrorBooks("");
     const formData = new FormData();
@@ -176,6 +175,7 @@ export function useLibrary(routeUserId) {
         ...uploaded,
         cover: normalizedCover,
         upload_date: new Date(uploaded.uploaded_date).toISOString().split("T")[0],
+        user_id: user.id_user, // dueño del libro
       };
 
       setBooks((prev) => [normalizedBook, ...prev]);
@@ -183,21 +183,21 @@ export function useLibrary(routeUserId) {
 
       return { success: true, book: normalizedBook };
     } catch (err) {
-      const msg = err.response?.data?.error || `${es.library.errorWhileUploadingBook}`;
+      const msg = err.response?.data?.error || es.library.errorWhileUploadingBook;
       setErrorBooks(msg);
       return { error: msg };
     }
   };
 
   // Borrar libro
-  const deleteBook = async (bookId) => {
-    if (!isOwner) return { error: es.library.canNotDeleteBookForeignLibraries };
+  const deleteBook = async (bookId, ownerId) => {
+    if (!isOwner && !isAdmin) return { error: es.library.canNotDeleteBookForeignLibraries };
     if (!user?.id_user) return { error: es.library.notLoggedUser };
 
     setErrorBooks("");
     try {
-      const res = await axios.delete(`${API_BASE}/books/delete/user/${user.id_user}/book/${bookId}`);
-      if (res.status === 200) {
+      const res = await axios.delete(`${API_BASE}/books/delete/user/${ownerId}/book/${bookId}`);
+      if (res.status === 200 || res.data.message === "Libro eliminado correctamente") {
         // Actualizar estados
         setBooks((prev) => prev.filter((b) => b.id_book !== bookId));
         setFilteredBooks((prev) => prev.filter((b) => b.id_book !== bookId));
@@ -234,8 +234,8 @@ export function useLibrary(routeUserId) {
     goToUserLibrary(id);
   };
 
-  const navigateDetailBook = (idBook) =>{
-    navigate(`/book/${idBook}`)
+  const navigateDetailBook = (idBook) => {
+    navigate(`/book/${idBook}`);
   };
 
   return {
@@ -259,9 +259,10 @@ export function useLibrary(routeUserId) {
     deleteBook,
     downloadBook,
     isOwner,
+    isAdmin,
     goBackToLibrary,
     selectLibrary,
-    errorBooks, 
+    errorBooks,
     errorUserSearch,
     navigateDetailBook
   };

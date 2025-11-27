@@ -114,7 +114,8 @@ def get_user_books_controller(user_id):
             "file": f"http://localhost:5000/api/books/file/{libro.file}"
                     if libro.file else None,
             "upload_date": subida.upload_date.isoformat() if subida.upload_date else None,
-            "rating": subida.rating or 0
+            "rating": subida.rating or 0,
+            "user_id": subida.user_id
         })
 
     return jsonify(result)
