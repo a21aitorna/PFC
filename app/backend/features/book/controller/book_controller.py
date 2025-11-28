@@ -1,5 +1,5 @@
 import os
-from flask import request, jsonify, make_response, abort,send_from_directory
+from flask import current_app, request, jsonify, make_response, abort,send_from_directory
 from werkzeug.utils import secure_filename
 from utils.update_book_rating import update_uploaded_book_rating
 from repo.books_repo import (save_book_file, 
@@ -102,16 +102,20 @@ def get_user_books_controller(user_id):
     libros = get_user_books(user_id)
     result = []
 
+    
+    # Obtener URL base del entorno de configuración
+    base_url = current_app.config.get('API_BASE_URL', '')
+    
     for libro, subida  in libros:
         result.append({
             "id_book": libro.id_book,
             "title": libro.title,
             "author": libro.author,
 
-            "cover": f"http://localhost:5000/api/books/cover/{libro.cover}"
+            "cover": f"{base_url}/api/books/cover/{libro.cover}"
                      if libro.cover else None,
 
-            "file": f"http://localhost:5000/api/books/file/{libro.file}"
+            "file": f"{base_url}/api/books/file/{libro.file}"
                     if libro.file else None,
             "upload_date": subida.upload_date.isoformat() if subida.upload_date else None,
             "rating": subida.rating or 0,
@@ -205,13 +209,15 @@ def get_detail_uploaded_book_controller(id_book):
         #Pasar de 10 a 5 para puntuación con estrellas
         rating_by_five = round((uploaded_book.rating or 0) / 2, 1)
         
+        base_url = current_app.config.get('API_BASE_URL', '')
+        
         response = {
             "id_book": book.id_book,
             "title": book.title,
             "author": book.author,
-            "cover": f"http://localhost:5000/api/books/cover/{book.cover}"
+            "cover": f"{base_url}/api/books/cover/{book.cover}"
                      if book.cover else None,
-            "file": f"http://localhost:5000/api/books/file/{book.file}"
+            "file": f"{base_url}/api/books/file/{book.file}"
                     if book.file else None,
             "upload_date": uploaded_book.upload_date.isoformat() if uploaded_book.upload_date else None,
             "rating": rating_by_five

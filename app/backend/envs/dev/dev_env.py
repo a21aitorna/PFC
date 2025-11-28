@@ -5,6 +5,7 @@ load_dotenv()
 
 class DevConfig:
     DEBUG = os.getenv('DEBUG_MODE', 'True') == 'True'
+    API_BASE_URL = os.getenv('API_BASE_URL', 'http://localhost:5000') 
     SQLALCHEMY_TRACK_MODIFICATIONS = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS', 'False') == 'True'
     SQLALCHEMY_DATABASE_URI = (
         f"mysql+pymysql://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}"

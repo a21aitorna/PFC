@@ -5,6 +5,7 @@ load_dotenv()
 
 class PreConfig:
     DEBUG = os.getenv('DEBUG_MODE', 'False') == 'True'
+    API_BASE_URL = os.getenv('API_BASE_URL', 'https://api.your-pre-domain.com')
     SQLALCHEMY_TRACK_MODIFICATIONS = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS', 'False') == 'True'
     SQLALCHEMY_DATABASE_URI = (
         f"mysql+pymysql://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}"
