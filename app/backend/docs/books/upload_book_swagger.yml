@@ -16,7 +16,6 @@ parameters:
     name: user_id
     required: true
     type: integer
-    description: ID of the user uploading the book
 
 responses:
   200:

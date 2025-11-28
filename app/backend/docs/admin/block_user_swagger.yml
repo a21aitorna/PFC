@@ -77,14 +77,3 @@ responses:
 
   500:
     description: Internal server error while blocking user
-    schema:
-      type: object
-      properties:
-        msg:
-          type: string
-        code:
-          type: string
-    examples:
-      application/json:
-        msg: "Internal server error"
-        code: "5000"
