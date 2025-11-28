@@ -133,6 +133,19 @@ def get_book_cover_controller(filename):
 
     return send_from_directory(base_folder, filename)
 
+def get_book_file_controller(filename):
+    """Devuelve un libro desde uploads/books"""
+    filename = secure_filename(filename)
+    
+    base_folder = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'uploads', 'books')
+    file_path = os.path.join(base_folder, filename)
+    
+    if not os.path.exists(file_path):
+        response = make_response(*BOOK_FILE_NOT_FOUND_MSG)
+        abort(response)
+
+    return send_from_directory(base_folder, filename)
+
 def delete_book_controller(user_id, book_id):
     """Eliminar un libro de la librería de un usuario, incluyendo archivos físicos"""
     

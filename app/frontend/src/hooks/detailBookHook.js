@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE } from "../config/api";
 
 export function useBookDetail(id_book) {
-  // Usuario logueado desde localStorage
+  
   const loggedUser = JSON.parse(localStorage.getItem("user")) || null;
-
+  const navigate = useNavigate();
   const [book, setBook] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [reviewText, setReviewText] = useState("");
@@ -81,6 +82,26 @@ export function useBookDetail(id_book) {
     Promise.all([fetchBookDetail(), fetchReviews()]).finally(() => setLoading(false));
   }, [id_book]);
 
+
+  const handleReadBook = () => {
+    if (!book?.file) {
+      console.error("No se ha encontrado el archivo del libro");
+      return;
+    }
+
+    const ext = book.file.split(".").pop().toLowerCase();
+
+    if (ext === "pdf") {
+      window.open(book.file, "_blank");
+    } else if (ext === "epub") {
+      // Redirigir a página de lector EPUB
+      window.open(`/reader/${book.id_book}`, "_blank")
+      navigate(`/reader/${book.id_book}`);
+    } else {
+      console.error("Formato no soportado. Solo PDF y EPUB");
+    }
+  };
+
   return {
     book,
     reviews,
@@ -91,6 +112,7 @@ export function useBookDetail(id_book) {
     addReview,
     deleteReview,
     loading,
-    loggedUser
+    loggedUser,
+    handleReadBook
   };
 }

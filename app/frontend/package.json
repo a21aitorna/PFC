@@ -8,7 +8,8 @@
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
     "react-router-dom": "^6.28.0",
-    "lucide-react": "^0.474.0"
+    "lucide-react": "^0.474.0",
+    "react-reader": "^2.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",

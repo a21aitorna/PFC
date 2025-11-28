@@ -6,6 +6,7 @@ from features.book.controller.book_controller import (
     upload_book_controller,
     get_user_books_controller,
     get_book_cover_controller,
+    get_book_file_controller,
     delete_book_controller,
     download_book_controller,
     get_detail_uploaded_book_controller,
@@ -19,6 +20,7 @@ book_routes = Blueprint('book_routes', __name__, url_prefix="/api/books")
 upload_book_swagger_path = '/app/backend/docs/books/upload_book_swagger.yml'
 get_user_books_swagger_path = '/app/backend/docs/books/get_user_books_swagger.yml'
 get_cover_book_swagger_path = '/app/backend/docs/books/get_cover_book_swagger.yml'
+get_book_file_swagger_path = '/app/backend/docs/books/get_book_file_swagger.yml'
 delete_book_swagger_path = '/app/backend/docs/books/delete_book_swagger.yml'
 download_book_swagger_path = '/app/backend/docs/books/download_book_swagger.yml'
 get_detail_uploaded_book_swagger_path = '/app/backend/docs/books/get_detail_uploaded_book_swagger.yml'
@@ -47,6 +49,13 @@ def get_book_cover_route(filename):
     """Devuelve la portada del libro"""
     safe_name = secure_filename(filename)
     return get_book_cover_controller(safe_name)
+
+@book_routes.get("/file/<filename>")
+@swag_from(get_book_file_swagger_path)
+def get_book_file_route(filename):
+    """Devuelve el archivo del libro"""
+    safe_name = secure_filename(filename)
+    return get_book_file_controller(safe_name)
 
 @book_routes.delete("/delete/user/<int:user_id>/book/<int:book_id>")
 @swag_from(delete_book_swagger_path)

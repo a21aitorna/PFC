@@ -24,6 +24,7 @@ export default function BookDetail() {
     deleteReview,
     loading,
     loggedUser,
+    handleReadBook
   } = useBookDetail(id_book);
 
   const location = useLocation();
@@ -89,7 +90,7 @@ export default function BookDetail() {
 
             <button
               data-testid="readBookButton"
-              onClick={() => {}}
+              onClick={handleReadBook}
               className="mt-4 w-full px-4 py-2 bg-pink-600 text-white font-semibold rounded-lg hover:bg-pink-700 transition duration-150 shadow-md"
             >
               {es.detailLibrary.readBook}
