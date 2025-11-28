@@ -19,11 +19,9 @@ def block_user_controller(id_user):
     """Controlador para bloquear un usuario"""
     user = block_user(id_user)
     
-    #Verificar si existe usuario
     if not user:
         return USER_NOT_FOUND_MSG
-    
-    #Verificar si el id_role es 1 (admin)
+
     if user.id_role == 1:
         return CAN_NOT_BLOCK_AN_ADMIN
     
@@ -44,12 +42,10 @@ def unblock_user_controller(id_user):
 def delete_user_controller(id_user):
     """Controlador para eliminar un usuario"""
     user = delete_user(id_user)
-    
-    #Verificar si existe usuario
+
     if not user:
         return USER_NOT_FOUND_MSG
-    
-    #Verificar si el id_role es 1 (admin)
+
     if user.id_role == 1:
         return CAN_NOT_DELETE_AN_ADMIN
         
