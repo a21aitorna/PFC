@@ -26,7 +26,12 @@ from tasks.automatic_tasks import automatic_unblock_users, automatic_delete_user
 app = Flask(__name__)
 app.config.from_object(config['dev'])
 
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+allowed_origins = [
+    "http://localhost:3000",
+    # "https://misitio.com"
+]
+
+CORS(app, resources={r"/*": {"origins": allowed_origins}}, supports_credentials=True)
 
 init_app(app)
 
