@@ -20,22 +20,18 @@ def register_user():
         'born_date', 'library_name', 'security_question', 'answer'
     ]
     
-    #Validación de campos completos
     if not data.get('repeat_password'):
         return BAD_REQUEST_EMPTY_REGISTER_MSG
     for field in required_fields:
         if not data.get(field):
             return BAD_REQUEST_EMPTY_REGISTER_MSG
         
-    #Validación de contraseñas iguales
     if data['password'] != data['repeat_password']:
         return BAD_REQUEST_PASSWORD_MISMATCH_REGISTER_MSG
     
-    #Validación formato contraseñas
     if not validate_password(data['password']):
         return BAD_REQUEST_INVALID_PASSWORD_REGISTER_MSG
     
-    #Validación fecha y edad
     try:
         birth_date = datetime.strptime(data['born_date'], "%Y-%m-%d").date()
     except ValueError:
@@ -43,15 +39,12 @@ def register_user():
     if not age_validation(birth_date):
         return BAD_REQUEST_UNDERAGE_REGISTER_MSG
     
-    #Validación de nombre de usuario
     if get_user_by_username(data['username']):
         return BAD_REQUEST_USERNAME_ALREADY_EXISTS_REGISTER_MSG
     
-    #Hashear contraseña y respuesta
     hashed_password = generate_password_hash(data['password'])
     hashed_answer = generate_password_hash(data['answer'])
     
-    #Crear instancia de persona
     new_user = Persona(
         id_role = 2,
         name = data['name'],
@@ -76,13 +69,11 @@ def verify_recover_user():
         data = request.get_json()
         username = data.get("username")
         
-        #Validación de campos completos
         if not username:
             return BAD_REQUEST_EMPTY_RECOVER_PASSWORD_MSG
         
         user = get_user_by_username(username)
         
-        #Validación de la existencia del usuario
         if not user:
             return USER_NOT_FOUND_MSG
         
@@ -95,12 +86,12 @@ def get_security_question():
     """Devuelve la pregunta de seguridad del usuario (ya validado)"""
     try:
         username = request.args.get("username")
-        #Valida si se envía nombre de usuario
+
         if not username:
             return BAD_REQUEST_USERNAME_NOT_FOUND_MSG
         
         user = get_user_by_username(username)
-        #Valida si existe el usuario
+
         if not user:
             return USER_NOT_FOUND_MSG
         
@@ -121,33 +112,26 @@ def update_new_password():
         
         fields = [answer, password, repeat_password]
        
-        #Valida si existe el nombre de usuario
         if not username:
             return BAD_REQUEST_USERNAME_NOT_FOUND_MSG
         
-        #Validación de campos completos
         if not all(fields):
            return BAD_REQUEST_EMPTY_RECOVER_PASSWORD_MSG
 
-        #Validar respuesta de seguridad
         hashed_anwer = get_answer_by_username(username)
         if not check_password_hash(hashed_anwer,answer):
             return BAD_REQUEST_ANSWER_MISMATCH_RECOVER_PASSWORD_MSG
        
-        #Validar que las contraseñas sean iguales
         if password != repeat_password:
             return BAD_REQUEST_PASSWORD_MISMATCH_RECOVER_PASSWORD_MSG
     
-        #Validar formato de la contraseña
         if not validate_password(password):
             return BAD_REQUEST_INVALID_PASSWORD_RECOVER_PASSWORD_MSG
         
-        #Validar que la nueva contraseña no sea la misma que la que se tiene
         old_password = get_password_by_username(username)
         if check_password_hash(old_password, password):
             return BAD_REQUEST_SAME_PASSWORD_RECOVER_PASSWORD_MSG
                     
-        #Hashear y actualizar contraseña
         hashed_password = generate_password_hash(password)
         update_user_password(username, hashed_password)
         
@@ -160,12 +144,12 @@ def get_user_library_name_controller():
     """Devuelve el nombre de la librería del usuario"""
     try:
         user_id = request.args.get("id_user")
-        #Valida si existe el nomnbre de usuario
+
         if not user_id:
             return BAD_REQUEST_USER_ID_NOT_FOUND_MSG
         
         user = get_user_by_user_id(user_id)
-        #Valida si existe el usuario
+
         if not user:
             return USER_NOT_FOUND_MSG
         

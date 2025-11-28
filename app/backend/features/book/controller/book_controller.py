@@ -149,16 +149,13 @@ def get_book_file_controller(filename):
 def delete_book_controller(user_id, book_id):
     """Eliminar un libro de la librería de un usuario, incluyendo archivos físicos"""
     
-    # Valida si el usuario existe en la base de datos
     user = get_user_by_user_id(user_id)
     if not user:
         return USER_NOT_FOUND_MSG
     
-    # Valida si el libro existe
     if not book_id:
         return BAD_REQUEST_BOOK_NOT_FOUND_DELETE_MSG
     
-    # Valida si el usuario existe
     if not user_id:
         return BAD_REQUEST_USER_NOT_FOUND_DELETE_MSG
     
@@ -247,7 +244,6 @@ def post_review_book_controller(id_book):
     
     response, status_code = post_review_book(user_id,book_id, review_text, book_rating)
     
-    #Actualizar media
     update_uploaded_book_rating(id_book)
     
     return response, status_code

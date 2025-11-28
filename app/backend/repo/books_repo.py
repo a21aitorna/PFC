@@ -144,7 +144,6 @@ def get_user_books(user_id):
 
 def delete_book(id_user, id_book):
     """Elimina un libro y la relación con el usuario, así como los archivos físicos relacionados a ellos"""
-
     # Obtener reseñas del libro
     reseñas = Reseña.query.filter_by(book_id=id_book).all()
     
