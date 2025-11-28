@@ -1,9 +1,11 @@
+import os
 from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flasgger import Swagger
 
-from envs.dev.dev_env import config
+from envs.dev.dev_env import config as dev_config
+from envs.pre.pre_env import config as pre_config 
 
 from dao.categoria_dao import Categoria
 from dao.libro_categoria_dao import LibroCategoria
@@ -23,13 +25,20 @@ from seed import seed_roles, seed_test_user, seed_admin_user
 from utils.jwt_decorator import register_jwt_callbacks
 from tasks.automatic_tasks import automatic_unblock_users, automatic_delete_users
 
-app = Flask(__name__)
-app.config.from_object(config['dev'])
+env_name = os.environ.get('FLASK_ENV_CONFIG', 'dev') 
 
-allowed_origins = [
-    "http://localhost:3000",
-    # "https://misitio.com"
-]
+config_map = {
+    'dev': dev_config['dev'],
+    'pre': pre_config['pre']
+}
+
+app_config = config_map.get(env_name, config_map['dev']) 
+
+app = Flask(__name__)
+
+app.config.from_object(app_config) 
+
+allowed_origins = app.config.get('ALLOWED_ORIGINS', ["http://localhost:3000"]) 
 
 CORS(app, resources={r"/*": {"origins": allowed_origins}}, supports_credentials=True)
 
@@ -54,4 +63,4 @@ register_admin_routes(app)
 
 @app.route('/')
 def index():
-    return "Comprobación contenedor backend correcto"
+    return f"Comprobación contenedor backend correcto. Entorno: {env_name}"
