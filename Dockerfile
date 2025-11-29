@@ -20,17 +20,6 @@ COPY app/backend/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY app/backend/ ./
 
-ENV FLASK_APP=main
-ENV FLASK_RUN_HOST=0.0.0.0
-ENV FLASK_RUN_PORT=5000
-ENV FLASK_ENV_CONFIG=production
-ENV MYSQL_HOST=localhost
-ENV MYSQL_USER=root
-ENV MYSQL_PASSWORD=root
-ENV DATABASE_NAME=AteneaProject
-ENV JWT_SECRET_KEY=supersecret
-ENV API_BASE_URL=http://localhost:5000/api
-
 # ------------------------
 # FRONTEND
 # ------------------------

@@ -5,7 +5,7 @@ from flask_jwt_extended import JWTManager
 from flasgger import Swagger
 
 from envs.dev.dev_env import config as dev_config
-from envs.pre.pre_env import config as pre_config 
+from envs.pro.pro_env import config as pro_config 
 
 from dao.categoria_dao import Categoria
 from dao.libro_categoria_dao import LibroCategoria
@@ -29,7 +29,7 @@ env_name = os.environ.get('FLASK_ENV_CONFIG', 'dev')
 
 config_map = {
     'dev': dev_config['dev'],
-    'pre': pre_config['pre']
+    'pre': pro_config['pre']
 }
 
 app_config = config_map.get(env_name, config_map['dev']) 
