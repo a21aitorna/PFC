@@ -3,7 +3,7 @@
 # ------------------------
 FROM python:3.11-slim
 
-# Instala Node y utilidades
+# Instala Node, npm y utilidades
 RUN apt-get update && apt-get install -y \
         curl \
         gnupg \
@@ -12,57 +12,45 @@ RUN apt-get update && apt-get install -y \
     && apt-get install -y nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-
 # ------------------------
 # BACKEND
 # ------------------------
-WORKDIR /app
+WORKDIR /app/backend
+COPY app/backend/requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+COPY app/backend/ ./
 
-# Copiar backend
-COPY app/backend/requirements.txt ./backend/requirements.txt
-RUN pip install --no-cache-dir -r backend/requirements.txt
-COPY app/backend ./backend
-
-# Variables internas del backend
 ENV FLASK_APP=main
 ENV FLASK_RUN_HOST=0.0.0.0
-
-# Railway asigna un puerto dinámico: $PORT
-ENV FLASK_RUN_PORT=$PORT
+ENV FLASK_RUN_PORT=5000
+ENV FLASK_ENV_CONFIG=production
+ENV MYSQL_HOST=localhost
+ENV MYSQL_USER=root
+ENV MYSQL_PASSWORD=root
+ENV DATABASE_NAME=AteneaProject
+ENV JWT_SECRET_KEY=supersecret
+ENV API_BASE_URL=http://localhost:5000/api
 
 # ------------------------
-# FRONTEND (React)
+# FRONTEND
 # ------------------------
 WORKDIR /app/frontend
-
-# Copia package.json para cache
+# Copia primero package.json y package-lock.json para cache de npm
 COPY app/frontend/package.json app/frontend/package-lock.json ./
 RUN npm install
 
 # Copia el resto del frontend
-COPY app/frontend ./
-
-# Variable visible por React (IMPORTANTE)
-# Railway la sobrescribirá en producción
-ENV REACT_APP_API_BASE_URL=""
-
-# Compila React
+COPY app/frontend/ ./
 RUN npm run build
-
+RUN npm install -g serve
 
 # ------------------------
-# Copiar build del frontend al backend
+# FINAL
 # ------------------------
 WORKDIR /app
-RUN mkdir -p backend/static
-RUN cp -r frontend/build/* backend/static/
+EXPOSE 5000 3000
 
-
-# ------------------------
-# FINAL: ejecutar SOLO Flask
-# ------------------------
-WORKDIR /app/backend
-
-EXPOSE 5000
-
-CMD ["sh", "-c", "flask run --host=0.0.0.0 --port=$PORT"]
+CMD sh -c "\
+    python -m flask run --host=0.0.0.0 --port=5000 & \
+    serve -s frontend/build -l 3000"
+#
