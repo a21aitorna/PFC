@@ -29,7 +29,7 @@ env_name = os.environ.get('FLASK_ENV_CONFIG', 'dev')
 
 config_map = {
     'dev': dev_config['dev'],
-    'pre': pro_config['pre']
+    'pro': pro_config['pro']
 }
 
 app_config = config_map.get(env_name, config_map['dev']) 
