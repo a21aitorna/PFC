@@ -1,6 +1,3 @@
-# ------------------------
-# Base con Python y Node
-# ------------------------
 FROM python:3.11-slim
 
 # Instala Node y utilidades
@@ -9,17 +6,15 @@ RUN apt-get update && apt-get install -y curl gnupg build-essential && \
     apt-get install -y nodejs && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Carpeta de trabajo raíz
 WORKDIR /app
 
 # ------------------------
 # BACKEND
 # ------------------------
-COPY backend/requirements.txt backend/
+COPY app/backend/requirements.txt backend/
 RUN pip install --no-cache-dir -r backend/requirements.txt
-COPY backend/ backend/
+COPY app/backend/ backend/
 
-# Variables de entorno por defecto (Railway las sobrescribirá)
 ENV FLASK_APP=main
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_RUN_PORT=5000
@@ -34,22 +29,19 @@ ENV API_BASE_URL=http://localhost:5000/api
 # ------------------------
 # FRONTEND
 # ------------------------
-COPY frontend/package*.json frontend/
-WORKDIR /app/frontend
+COPY app/frontend/package*.json frontend/
+WORKDIR /frontend
 RUN npm install
-COPY frontend/ ./
+COPY app/frontend/ ./
 RUN npm run build
 RUN npm install -g serve
 
 # ------------------------
-# Exponer puertos
+# Final
 # ------------------------
 WORKDIR /app
 EXPOSE 5000 3000
 
-# ------------------------
-# Comando final: backend + frontend
-# ------------------------
 CMD sh -c "\
     python -m flask run --host=0.0.0.0 --port=5000 & \
     serve -s frontend/build -l 3000"
