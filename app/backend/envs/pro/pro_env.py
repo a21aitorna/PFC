@@ -33,7 +33,7 @@ class ProConfig:
 
 
 config = {
-    'pre': ProConfig
+    'pro': ProConfig
 }
 
 def get_database_config():
