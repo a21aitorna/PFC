@@ -35,7 +35,7 @@ ENV API_BASE_URL=http://localhost:5000/api
 # FRONTEND
 # ------------------------
 WORKDIR /app/frontend
-# Copia solo package.json y package-lock.json primero para aprovechar cache
+# Copia primero package.json y package-lock.json para cache de npm
 COPY app/frontend/package.json app/frontend/package-lock.json ./
 RUN npm install
 
