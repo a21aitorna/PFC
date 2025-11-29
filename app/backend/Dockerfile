@@ -1,28 +1,24 @@
-# Indico qué lenguaje y versión quiero
 FROM python:3.11-slim
 
-# Establezco la carpeta de trabajo (backend en este caso)
-WORKDIR /app/backend
+WORKDIR /app
 
-# Copio las dependencias
+# Copia y instala dependencias
 COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Instalo el requirements.txt
-RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir -r requirements.txt
-
-
-# Se copia todo el código en el contenedor
+# Copia el código del backend
 COPY . .
 
-# Establezco las variables de entorno
-ENV FLASK_APP=main.py
+# Variables de entorno defaults (pueden sobrescribirse en Railway)
+ENV FLASK_APP=main
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_RUN_PORT=5000
-ENV FLASK_ENV=development
+ENV MYSQL_HOST=db
+ENV MYSQL_USER=root
+ENV MYSQL_PASSWORD=root
+ENV DATABASE_NAME=AteneaProject
 
-# Expongo el puerto para el navegador
 EXPOSE 5000
 
-# Ejecuto la app
+# Comando para iniciar Flask
 CMD ["python", "-m", "flask", "run"]
