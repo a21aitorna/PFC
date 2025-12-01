@@ -27,6 +27,11 @@
 		- [4. Subir libros](#4-subir-libros)
 		- [5. Biblioteca](#5-biblioteca)
 	- [Sistema de detalle del libro](#sistema-de-detalle-del-libro)
+		- [1. Detalle](#1-detalle)
+		- [2. Contador de reseñas](#2-contador-de-reseñas)
+		- [3. Formulario de reseña](#3-formulario-de-reseña)
+		- [4. Visualización de reseñas](#4-visualización-de-reseñas)
+		- [5. Botón de volver a la librería](#5-botón-de-volver-a-la-librería)
 	- [Sistema de admin](#sistema-de-admin)
 - [Alcance](#alcance)
 	- [Funcionalidades implementadas](#funcionalidades-implementadas)
@@ -36,6 +41,7 @@
 	- [Planificación](#planificación)
 	- [Gastos](#gastos)
 	- [Normativa](#normativa)
+	- [Ideas de implementación para el futuro](#ideas-de-implementación-para-el-futuro)
 - [TODO: A partir de este punto eres libre de organizar la documentación como estimes pero debes desarrollar el cuerpo de tu proyecto con apartados y subapartados que completen tu documentación](#todo-a-partir-de-este-punto-eres-libre-de-organizar-la-documentación-como-estimes-pero-debes-desarrollar-el-cuerpo-de-tu-proyecto-con-apartados-y-subapartados-que-completen-tu-documentación)
 - [Conclusiones](#conclusiones)
 - [Referencias, Fuentes consultadas y Recursos externos: Webgrafía](#referencias-fuentes-consultadas-y-recursos-externos-webgrafía)
@@ -248,65 +254,26 @@ Así mismo, cada libro tendrá un icono para descargarlo y otro de borrar, en el
 ![BorradorBiblioteca](img/BorradoresFront/Biblioteca/1.Librería.png)
 
 ### Sistema de detalle del libro
-> Las tengo que redactar bien, sólo tengo un esquema. Así mismo los componentes están sujetos a cambios
+El usuario visualizará el detalle del libro, pudiendo diferenciarse 4 partes:
 
-~~~
-PANTALLA DETALLE LIBRO
-Dos partes: Información y Reseñas
+#### 1. Detalle
+Se visualizará la portada del libro, junto su título, autor y la nota media evaluada por estrellas, con un máximo de 5. Esta nota será calculada a partir de media de las puntuaciones de las reseñas. Así mismo, habrá un botón para poder leer el libro, llevándote a otra página para ello al hacer click.
 
-1º Información del libro
-	* Elementos
-		* Portada del libro (imagen grande)
-		* Título
-		* Autor
-		* Categorías
-		* Puntuación media (1 a 5)
-		* Botón Descargar libro (PDF/EPUB)
-	* Validaciones
-		* El libro debe existir en la base de datos
-	* Respuestas back	
-		* 200 -> Datos del libro devueltos correctamente
-		* 404 -> Libro no encontrado
-		* 500 -> Error del servidor
+#### 2. Contador de reseñas
+Se mostrará una card con el número de reseñas totales para el libro.
 
-2º Reseñas
-	*Elementos
-		* Listado de reseñas
-		* Botón Añadir reseña
-		* Botón Editar / Eliminar reseña (si es tu reseña)
-	* Validaciones
-		* Solo un usuario puede escribir 1 reseña por libro
-		* La reseña tiene un límite de 500 caracteres
-	* Respuestas back	
-		* 201 -> Reseña creada correctamente
-		* 200 -> Reseña editada/eliminada con éxito
-		* 400 -> Datos inválidos o reseña duplicada
-		* 403 -> No autorizado (editar/eliminar reseña ajena)
-		* 404 -> Libro o reseña no encontrada
+#### 3. Formulario de reseña
+Será una card donde podrás poner la puntuación en estrellas y un comentario. Como mínimo, la nota será media estrellas (corresponde a un 1/10) y la máxima de 5 estrellas (10/10).
 
-3. Acciones adicionales en libro de estantería propia
-	*Elementos
-		* Botón Editar libro (inhabilitado, en función del tiempo)
-		* Botón Eliminar libro
-		* Botón Editar / Eliminar reseña (si es tu reseña)
-	* Validaciones
-		* Solo el dueño del libro puede editar o borrar
-	* Respuestas back	
-		* 201 -> 200 -> Libro editado/eliminado correctamente
-		* 400 -> Datos inválidos
-		* 403 -> No autorizado
-		* 404 -> Libro no encontrado
+#### 4. Visualización de reseñas
+Si no hay reseñas se mostrará el mensaje "No hay opiniones todavía. ¡Sé el primero en dejar una reseña!", con el objetivo de animar a la gente que haya leído ese libro a dejar su opinión para otros posibles lectores.
+Si hay reseñas, estas se mostrarán en diferentes cards, teniendo un scroll interno, de manera que se pueda navegar entre ellas, mostrándose primero las más recientes. 
+Se mostrará un botón de "Eliminar reseña" para el propio autor de esta como para el usuario con rol administrador.
 
-4. Acciones adicionales en libro de estantería ajena
-	*Elementos
-		* Botón Añadir a mi biblioteca
-	* Validaciones
-		* No puedes añadir un libro que ya está en tu biblioteca
-	* Respuestas back	
-		* 201 -> Libro añadido a la biblioteca correctamente
-		* 400 -> El libro ya está en tu biblioteca
-		* 403 -> 404 -> Libro no encontrado
-~~~
+#### 5. Botón de volver a la librería
+Es un botón para regresar a la librería en la que se estaba. 
+
+![BorradorDetalleLibro](img/BorradoresFront/Biblioteca/2.DetalleLibro.png)
 
 ### Sistema de admin
 El administrador visualizará en una tabla todos los usuarios y sus bibliotecas que hay en la aplicación, visualizando su estado. Tendrá la opción de bloquear al usuario o eliminarlo, pudiendo rectificar dentro de los 3 o 15 días posteriores a la respectiva acción.
@@ -324,7 +291,7 @@ El administrador, podrá acceder a la biblioteca de cualquier usuario, pudiendo 
 - Búsqueda de otros usuarios y bibliotecas.
 - Filtrado y búsqueda de libros dentro de una biblioteca.
 - Visualización del detalle de un libro.
-- Visualización, creación, edición y eliminación de reseñas.
+- Visualización, creación y eliminación de reseñas.
 - Acciones de administrador (bloqueo y eliminación de usuarios, eliminación de cualquier libro y reseña).
 - Implementación de pruebas automatizadas de frontend con Selenium (Java+Cucumber).
 - Implementación de pruebas automatizada de backend con Newman Postman.
@@ -344,6 +311,7 @@ El administrador, podrá acceder a la biblioteca de cualquier usuario, pudiendo 
 - **Recuperación de la contraseña**: lo adecuado sería que la recuperación de la contraseña fuera a través de un enlace con un correo electrónico. Por falta de tiempo, se lleva de una forma más sencilla, totalmente factible, pero que a nivel profesional, no sería lo más adecuado, tanto por vulnerabilidad como por profesionalidad.
 - **Pruebas de rendimiento**: por posible falta de tiempo, no se abarcarán estas pruebas que servirían para evitar que la aplicación vaya lenta o no funcione ante una alta demanda de usuarios al mismo tiempo, así como serviría para saber qué requisitos son necesarios a la hora de alojarlos en un servidor en caso de que fuera a producción.
 - **Pruebas unitarias**: por falta de tiempo, no se abordarán estas pruebas. Así mismo, estas son hechas más por desarrolladores, y lo que quiero mostrar es más el rol de tester.
+- **Subida de algunos libros epub**: los libros con formato epub son archivos zip, cuyos metadatos se definen en un archivo *content.opf*. En estos, la imagen del libro se guarda de diferentes maneras, por lo que a veces, al intentar subir un libro con este formato falla. Sería necesario hacer una investigación un poco más profunda para saber exactamente cuáles son las rutas más usadas.
 - **Edición de medatos del libro**: esto en función del tiempo, podrá ser incorporado.
 - **Aplicación responsive**: la aplicación sólo se mostrará para web de escritorio  por falta de tiempo.
 
@@ -351,13 +319,26 @@ El administrador, podrá acceder a la biblioteca de cualquier usuario, pudiendo 
 Elaboré un [calendario en Trello](https://trello.com/b/u07xmNm6/mi-tablero-de-trello), definiendo todas lo que hice durante unos rangos basados en las fechas de entregas
 
 ### Gastos
-Al ser una aplicación cuyo fin es que sirva como proyecto final, y no hay previsión de que salga a producción, los gastos son muy bajos. Al contar con ordenador propio, los únicos gastos que se pueden diferenciar son la electricidad y el internet, lo cuál conllevaría un gasto estimado de 150€ en total.
+Se ha hecho un pequeño estudio en referencia a los costes que acarrearía llevar el proyecto a producción. A continuación, se procede a hacer una estimación de estos
+- **Infraestructura**:se necesitarán contratar varios servicios en la nube (servidores, bases de datos,etc). En función del proveedor y la estabilidad que se desee, el coste será de 200 a 600€ anuales.
+- **Dominio y certificados**: se estima unos 15€ anuales, ya que se pueden usar cerficados SSL gratuitos.
+-  **Mantenimiento y supervisión**: para garantizar la calidad del proyecto y conseguir una mayor facilidad para reflejar las incidencias, se usarán sistemas de monitorización como Kibana y Grafana. El coste estimado es de 50 a 200€ anuales
+-  **Costes de desarrollo**: se usarán licencias como Docker Pro, Figma Professional o Postman Professional entre otras. El coste estimado es de 100 a 300€ anuales.
+-  **Costes operativos**: el hecho de tener un ordenador, ya lo abarata. Pero así mismo, se estima que el coste de la electricidad e intenet sea de 150€ mensuales.
+- **Costes de personal**: no habrá, ya que el proyecto se hará de manera individual.
+En resumen, con el objetivo de garantizar calidad más una infraestructura estable, el coste total del proyecto será de 2165 a 2915€ anuales.  
 
 ### Normativa
 Al poder todos los usuarios subir libros, estos tendrán que cumplir con la normativa vigente española de propiedad intelectual. 
 No se permitirá subir ni compartir obras protegidas por derechos de autor sin el permiso del propietario. Si se detecta contenido que incumpla la normativa, será eliminado de la plataforma, tomando las medidad oportunas contra el usuario infractos.
 En cuanto a los datos personales (como nombre, apellidos y fecha de nacimiento), estos se usan únicamente para la gestión del perfil y se tratan de forma segura y confidencial, conforme al RGPD y la Ley de Protección de Datos española. Nunca se compartirá información con terceros y se garantizará la privacidad de sus usuarios.
 
+### Ideas de implementación para el futuro
+- Creación de un nuevo rol llamado Moderador. Estos serán usuarios normales que tendrán una autorización semejante a la del administrador, de manera que haya una mayor supervisión de los usuarios, ya que cumplirían las mismas funciones. En cualquier momento, este poder podría ser revocado por cualquier motivo.
+- Permitir la subida de archivos con otros formatos.
+- Permiti la subidad de cualquier libro con formato epub.
+- Mejorar la lectura de libros epub. Actualmente, sólo se leer, y no guarda el estado. Se seguiría implementando la solución que se ha hecho con ReactReader.
+- Implementación de tests de integración para asegurar la calidad del proyecto.
 
 ## TODO: A partir de este punto eres libre de organizar la documentación como estimes pero debes desarrollar el cuerpo de tu proyecto con apartados y subapartados que completen tu documentación
 
