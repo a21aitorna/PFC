@@ -44,10 +44,8 @@ def auto_unblock_user(user):
             db.session.commit()
     return user        
     
-def delete_user(id_user):
-    """Elimina el usuario"""
-    user = Persona.query.get(id_user)
-    
+def delete_user(user):
+    """Elimina el usuario"""    
     if not user:
         return None
     user.is_erased =  True

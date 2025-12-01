@@ -23,12 +23,11 @@ def block_user_controller(id_user):
     if not user:
         return USER_NOT_FOUND_MSG
 
-    # current_user_id = get_jwt_identity()
     if user.id_role == 1:
-    #and user.id_user == current_user_id:
             return CAN_NOT_BLOCK_AN_ADMIN
     
     block_user(user)
+    
     return jsonify({
         "message": "User blocked for 3 days",
         "block_date": user.block_date
@@ -45,7 +44,7 @@ def unblock_user_controller(id_user):
 
 def delete_user_controller(id_user):
     """Controlador para eliminar un usuario"""
-    user = delete_user(id_user)
+    user = get_user_by_user_id(id_user)
 
     if not user:
         return USER_NOT_FOUND_MSG
@@ -53,6 +52,8 @@ def delete_user_controller(id_user):
     if user.id_role == 1:
         return CAN_NOT_DELETE_AN_ADMIN
         
+    delete_user(user)
+    
     return jsonify({
         "message":"User is going to be deleted in 15 days",
         "delete_date": user.delete_date
