@@ -9,9 +9,8 @@ def get_all_not_admin_users():
     users = Persona.query.join(Rol).filter(Rol.role_name != 'Admin').all()
     return users
 
-def block_user(id_user):
+def block_user(user):
     """Bloquea un usuario"""
-    user = Persona.query.get(id_user)
     
     if not user:
         return None
