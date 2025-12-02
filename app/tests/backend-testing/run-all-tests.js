@@ -4,8 +4,8 @@ const collections = [
     {file: 'collections/API_Login_Tests.json', report: 'reports/login.html'},
     {file: 'collections/API_Register_Tests.json', report: 'reports/register.html'},
     {file: 'collections/API_UpdatePassword_Tests.json', report: 'reports/updatePassword.html'},
-    {file: 'collections/API_AdminTests.json', report: 'reports/adminActions.html'},
-    {file: 'collections/Books.postman_collection.json', report: 'reports/books.html'}
+    {file: 'collections/API_Admin_Tests.json', report: 'reports/adminActions.html'},
+    {file: 'collections/API_Books_Tests.json', report: 'reports/books.html'}
 ];
 //ir añadiendo en el array todas las colecciones
 

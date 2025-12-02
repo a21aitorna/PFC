@@ -19,7 +19,7 @@
 								"exec": [
 									"const fileName=\"Flask Web Development.pdf\"\r",
 									"const FILE = `bookTests/${fileName}`;\r",
-									"const USER_ID = \"1\";\r",
+									"const USER_ID = \"5\";\r",
 									"\r",
 									"pm.request.body = {\r",
 									"    mode: 'formdata',\r",
@@ -85,6 +85,128 @@
 							"path": [
 								"books",
 								"upload"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UsersBook",
+			"item": [
+				{
+					"name": "Success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/books/user/5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"books",
+								"user",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserNotFound",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1004\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1004\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/books/user/5000",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"books",
+								"user",
+								"5000"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DetailBook",
+			"item": [
+				{
+					"name": "Success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/books/detail-book/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"books",
+								"detail-book",
+								"2"
 							]
 						}
 					},
