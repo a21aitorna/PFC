@@ -1,0 +1,1721 @@
+{
+	"info": {
+		"_postman_id": "7cbe708e-393d-4ff8-88e9-d38371425809",
+		"name": "Admin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49839284",
+		"_collection_link": "https://aitornalonso-2090623.postman.co/workspace/Aitor-Novoa-Alonso's-Workspace~e8a4c94e-4ae3-4253-81a3-d8a6da4d89f1/collection/49839284-7cbe708e-393d-4ff8-88e9-d38371425809?action=share&source=collection_link&creator=49839284"
+	},
+	"item": [
+		{
+			"name": "GetNotAdminUsers",
+			"item": [
+				{
+					"name": "Success",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {\r",
+									"    url: pm.environment.get(\"base_url\") + '/login',\r",
+									"    method: 'POST',\r",
+									"    header: { 'Content-Type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            username: 'Admin',\r",
+									"            password: 'Admin123..'\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.log(\"Error en login:\", err);\r",
+									"    } else {\r",
+									"        const jsonResponse = res.json();\r",
+									"        if (jsonResponse.token) {\r",
+									"            pm.environment.set(\"JWT_TOKEN\", jsonResponse.token);\r",
+									"        } else {\r",
+									"            console.log(\"No se recibió token\", jsonResponse);\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/not-admin-users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"not-admin-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1006\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1006\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"JWT_TOKEN\", \"\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/not-admin-users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"not-admin-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forbidden",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {\r",
+									"    url: pm.environment.get(\"base_url\") + '/login',\r",
+									"    method: 'POST',\r",
+									"    header: { 'Content-Type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            username: 'Test-user',\r",
+									"            password: 'TestUser123..'\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.log(\"Error en login:\", err);\r",
+									"    } else {\r",
+									"        const jsonResponse = res.json();\r",
+									"        if (jsonResponse.token) {\r",
+									"            pm.environment.set(\"JWT_TOKEN\", jsonResponse.token);\r",
+									"\r",
+									"            // Hacer la petición principal desde aquí\r",
+									"            const mainRequest = {\r",
+									"                url: pm.environment.get(\"base_url\") + '/admin/not-admin-users',\r",
+									"                method: 'GET',\r",
+									"                header: {\r",
+									"                    'Authorization': 'Bearer ' + jsonResponse.token,\r",
+									"                    'Content-Type': 'application/json'\r",
+									"                }\r",
+									"            };\r",
+									"\r",
+									"            pm.sendRequest(mainRequest, function(err2, res2) {\r",
+									"                console.log(\"Respuesta del endpoint:\", res2.json());\r",
+									"                // Aquí puedes incluso ejecutar tests manualmente\r",
+									"            });\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"No se recibió token\", jsonResponse);\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 403\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1007\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1007\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/not-admin-users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"not-admin-users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BlockUser",
+			"item": [
+				{
+					"name": "SuccessBlock",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// 1️⃣ Login\r",
+									"const loginRequest = {\r",
+									"    url: pm.environment.get(\"base_url\") + '/login',\r",
+									"    method: 'POST',\r",
+									"    header: { 'Content-Type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            username: 'Admin',\r",
+									"            password: 'Admin123..'\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.log(\"Error en login:\", err);\r",
+									"    } else {\r",
+									"        const jsonResponse = res.json();\r",
+									"        if (jsonResponse.token) {\r",
+									"            pm.environment.set(\"JWT_TOKEN\", jsonResponse.token);\r",
+									"            \r",
+									"            const unblockRequest = {\r",
+									"                url: pm.environment.get(\"base_url\") + '/admin/unblock/3',\r",
+									"                method: 'POST',\r",
+									"                header: {\r",
+									"                    'Content-Type': 'application/json',\r",
+									"                    'Authorization': 'Bearer ' + jsonResponse.token\r",
+									"                }\r",
+									"            };\r",
+									"\r",
+									"            pm.sendRequest(unblockRequest);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"No se recibió token\", jsonResponse);\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/block/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"block",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unauthorized",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"JWT_TOKEN\", \"\");"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1006\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1006\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/block/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"block",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ForbiddenNotAdmin",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {\r",
+									"    url: pm.environment.get(\"base_url\") + '/login',\r",
+									"    method: 'POST',\r",
+									"    header: { 'Content-Type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            username: 'Test-user',\r",
+									"            password: 'TestUser123..'\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.log(\"Error en login:\", err);\r",
+									"    } else {\r",
+									"        const jsonResponse = res.json();\r",
+									"        if (jsonResponse.token) {\r",
+									"            pm.environment.set(\"JWT_TOKEN\", jsonResponse.token);\r",
+									"        } else {\r",
+									"            console.log(\"No se recibió token\", jsonResponse);\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1007\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1007\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/block/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"block",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ForbiddenNotAdminBlock",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {\r",
+									"    url: pm.environment.get(\"base_url\") + '/login',\r",
+									"    method: 'POST',\r",
+									"    header: { 'Content-Type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            username: 'Admin',\r",
+									"            password: 'Admin123..'\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.log(\"Error en login:\", err);\r",
+									"    } else {\r",
+									"        const jsonResponse = res.json();\r",
+									"        if (jsonResponse.token) {\r",
+									"            pm.environment.set(\"JWT_TOKEN\", jsonResponse.token);\r",
+									"        } else {\r",
+									"            console.log(\"No se recibió token\", jsonResponse);\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 403\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1011\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1011\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/block/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"block",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserNotFound",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {\r",
+									"    url: pm.environment.get(\"base_url\") + '/login',\r",
+									"    method: 'POST',\r",
+									"    header: { 'Content-Type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            username: 'Admin',\r",
+									"            password: 'Admin123..'\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.log(\"Error en login:\", err);\r",
+									"    } else {\r",
+									"        const jsonResponse = res.json();\r",
+									"        if (jsonResponse.token) {\r",
+									"            pm.environment.set(\"JWT_TOKEN\", jsonResponse.token);\r",
+									"        } else {\r",
+									"            console.log(\"No se recibió token\", jsonResponse);\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1011\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1004\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/block/111111111111111",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"block",
+								"111111111111111"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UnblockUser",
+			"item": [
+				{
+					"name": "UnblockSucces",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {\r",
+									"    url: pm.environment.get(\"base_url\") + '/login',\r",
+									"    method: 'POST',\r",
+									"    header: { 'Content-Type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            username: 'Admin',\r",
+									"            password: 'Admin123..'\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.log(\"Error en login:\", err);\r",
+									"    } else {\r",
+									"        const jsonResponse = res.json();\r",
+									"        if (jsonResponse.token) {\r",
+									"            pm.environment.set(\"JWT_TOKEN\", jsonResponse.token);\r",
+									"            \r",
+									"            const blockRequest = {\r",
+									"                url: pm.environment.get(\"base_url\") + '/admin/block/3',\r",
+									"                method: 'POST',\r",
+									"                header: {\r",
+									"                    'Content-Type': 'application/json',\r",
+									"                    'Authorization': 'Bearer ' + jsonResponse.token\r",
+									"                }\r",
+									"            };\r",
+									"\r",
+									"            pm.sendRequest(blockRequest);\r",
+									"            \r",
+									"        } else {\r",
+									"            console.log(\"No se recibió token\", jsonResponse);\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/unblock/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"unblock",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unauthorized",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"JWT_TOKEN\", \"\");"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1006\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1006\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/block/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"block",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forbidden",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {\r",
+									"    url: pm.environment.get(\"base_url\") + '/login',\r",
+									"    method: 'POST',\r",
+									"    header: { 'Content-Type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            username: 'Test-user',\r",
+									"            password: 'TestUser123..'\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.log(\"Error en login:\", err);\r",
+									"    } else {\r",
+									"        const jsonResponse = res.json();\r",
+									"        if (jsonResponse.token) {\r",
+									"            pm.environment.set(\"JWT_TOKEN\", jsonResponse.token);\r",
+									"\r",
+									"            // Hacer la petición principal desde aquí\r",
+									"            const mainRequest = {\r",
+									"                url: pm.environment.get(\"base_url\") + '/admin/not-admin-users',\r",
+									"                method: 'GET',\r",
+									"                header: {\r",
+									"                    'Authorization': 'Bearer ' + jsonResponse.token,\r",
+									"                    'Content-Type': 'application/json'\r",
+									"                }\r",
+									"            };\r",
+									"\r",
+									"            pm.sendRequest(mainRequest, function(err2, res2) {\r",
+									"                console.log(\"Respuesta del endpoint:\", res2.json());\r",
+									"                // Aquí puedes incluso ejecutar tests manualmente\r",
+									"            });\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"No se recibió token\", jsonResponse);\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 403\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1007\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1007\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/unblock/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"unblock",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserNotFound",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {\r",
+									"    url: pm.environment.get(\"base_url\") + '/login',\r",
+									"    method: 'POST',\r",
+									"    header: { 'Content-Type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            username: 'Admin',\r",
+									"            password: 'Admin123..'\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.log(\"Error en login:\", err);\r",
+									"    } else {\r",
+									"        const jsonResponse = res.json();\r",
+									"        if (jsonResponse.token) {\r",
+									"            pm.environment.set(\"JWT_TOKEN\", jsonResponse.token);\r",
+									"        } else {\r",
+									"            console.log(\"No se recibió token\", jsonResponse);\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1011\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1004\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/unblock/1111111111111",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"unblock",
+								"1111111111111"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DeleteUser",
+			"item": [
+				{
+					"name": "DeleteUser",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// 1️⃣ Login\r",
+									"const loginRequest = {\r",
+									"    url: pm.environment.get(\"base_url\") + '/login',\r",
+									"    method: 'POST',\r",
+									"    header: { 'Content-Type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            username: 'Admin',\r",
+									"            password: 'Admin123..'\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.log(\"Error en login:\", err);\r",
+									"    } else {\r",
+									"        const jsonResponse = res.json();\r",
+									"        if (jsonResponse.token) {\r",
+									"            pm.environment.set(\"JWT_TOKEN\", jsonResponse.token);\r",
+									"            \r",
+									"            const unblockRequest = {\r",
+									"                url: pm.environment.get(\"base_url\") + '/admin/rectidy-delete/4',\r",
+									"                method: 'POST',\r",
+									"                header: {\r",
+									"                    'Content-Type': 'application/json',\r",
+									"                    'Authorization': 'Bearer ' + jsonResponse.token\r",
+									"                }\r",
+									"            };\r",
+									"\r",
+									"            pm.sendRequest(unblockRequest);\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"No se recibió token\", jsonResponse);\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/delete/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"delete",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unauthorized",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"JWT_TOKEN\", \"\");"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1006\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1006\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/delete/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"delete",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ForbiddenNotAdmin",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {\r",
+									"    url: pm.environment.get(\"base_url\") + '/login',\r",
+									"    method: 'POST',\r",
+									"    header: { 'Content-Type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            username: 'Test-user',\r",
+									"            password: 'TestUser123..'\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.log(\"Error en login:\", err);\r",
+									"    } else {\r",
+									"        const jsonResponse = res.json();\r",
+									"        if (jsonResponse.token) {\r",
+									"            pm.environment.set(\"JWT_TOKEN\", jsonResponse.token);\r",
+									"        } else {\r",
+									"            console.log(\"No se recibió token\", jsonResponse);\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1007\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1007\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/delete/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ForbiddenNotAdminDelete",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {\r",
+									"    url: pm.environment.get(\"base_url\") + '/login',\r",
+									"    method: 'POST',\r",
+									"    header: { 'Content-Type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            username: 'Admin',\r",
+									"            password: 'Admin123..'\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.log(\"Error en login:\", err);\r",
+									"    } else {\r",
+									"        const jsonResponse = res.json();\r",
+									"        if (jsonResponse.token) {\r",
+									"            pm.environment.set(\"JWT_TOKEN\", jsonResponse.token);\r",
+									"        } else {\r",
+									"            console.log(\"No se recibió token\", jsonResponse);\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 403\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1012\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1012\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/delete/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"delete",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserNotFound",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {\r",
+									"    url: pm.environment.get(\"base_url\") + '/login',\r",
+									"    method: 'POST',\r",
+									"    header: { 'Content-Type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            username: 'Admin',\r",
+									"            password: 'Admin123..'\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.log(\"Error en login:\", err);\r",
+									"    } else {\r",
+									"        const jsonResponse = res.json();\r",
+									"        if (jsonResponse.token) {\r",
+									"            pm.environment.set(\"JWT_TOKEN\", jsonResponse.token);\r",
+									"        } else {\r",
+									"            console.log(\"No se recibió token\", jsonResponse);\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1011\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1004\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/delete/11111111",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"delete",
+								"11111111"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "RectifyDelete",
+			"item": [
+				{
+					"name": "RectifyDeleteSuccess",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {\r",
+									"    url: pm.environment.get(\"base_url\") + '/login',\r",
+									"    method: 'POST',\r",
+									"    header: { 'Content-Type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            username: 'Admin',\r",
+									"            password: 'Admin123..'\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.log(\"Error en login:\", err);\r",
+									"    } else {\r",
+									"        const jsonResponse = res.json();\r",
+									"        if (jsonResponse.token) {\r",
+									"            pm.environment.set(\"JWT_TOKEN\", jsonResponse.token);\r",
+									"            \r",
+									"            const blockRequest = {\r",
+									"                url: pm.environment.get(\"base_url\") + '/admin/delete/4',\r",
+									"                method: 'POST',\r",
+									"                header: {\r",
+									"                    'Content-Type': 'application/json',\r",
+									"                    'Authorization': 'Bearer ' + jsonResponse.token\r",
+									"                }\r",
+									"            };\r",
+									"\r",
+									"            pm.sendRequest(blockRequest);\r",
+									"            \r",
+									"        } else {\r",
+									"            console.log(\"No se recibió token\", jsonResponse);\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/rectify-delete/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"rectify-delete",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unauthorized",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"JWT_TOKEN\", \"\");"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1006\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1006\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/rectify-delete/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"rectify-delete",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forbidden",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {\r",
+									"    url: pm.environment.get(\"base_url\") + '/login',\r",
+									"    method: 'POST',\r",
+									"    header: { 'Content-Type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            username: 'Test-user',\r",
+									"            password: 'TestUser123..'\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.log(\"Error en login:\", err);\r",
+									"    } else {\r",
+									"        const jsonResponse = res.json();\r",
+									"        if (jsonResponse.token) {\r",
+									"            pm.environment.set(\"JWT_TOKEN\", jsonResponse.token);\r",
+									"\r",
+									"            // Hacer la petición principal desde aquí\r",
+									"            const mainRequest = {\r",
+									"                url: pm.environment.get(\"base_url\") + '/admin/not-admin-users',\r",
+									"                method: 'GET',\r",
+									"                header: {\r",
+									"                    'Authorization': 'Bearer ' + jsonResponse.token,\r",
+									"                    'Content-Type': 'application/json'\r",
+									"                }\r",
+									"            };\r",
+									"\r",
+									"            pm.sendRequest(mainRequest, function(err2, res2) {\r",
+									"                console.log(\"Respuesta del endpoint:\", res2.json());\r",
+									"                // Aquí puedes incluso ejecutar tests manualmente\r",
+									"            });\r",
+									"\r",
+									"        } else {\r",
+									"            console.log(\"No se recibió token\", jsonResponse);\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 403\", function () {\r",
+									"    pm.response.to.have.status(403);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1007\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1007\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/rectify-delete/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"rectify-delete",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserNotFound",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const loginRequest = {\r",
+									"    url: pm.environment.get(\"base_url\") + '/login',\r",
+									"    method: 'POST',\r",
+									"    header: { 'Content-Type': 'application/json' },\r",
+									"    body: {\r",
+									"        mode: 'raw',\r",
+									"        raw: JSON.stringify({\r",
+									"            username: 'Admin',\r",
+									"            password: 'Admin123..'\r",
+									"        })\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.sendRequest(loginRequest, function (err, res) {\r",
+									"    if (err) {\r",
+									"        console.log(\"Error en login:\", err);\r",
+									"    } else {\r",
+									"        const jsonResponse = res.json();\r",
+									"        if (jsonResponse.token) {\r",
+									"            pm.environment.set(\"JWT_TOKEN\", jsonResponse.token);\r",
+									"        } else {\r",
+									"            console.log(\"No se recibió token\", jsonResponse);\r",
+									"        }\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response code is 1011\", function () {\r",
+									"    pm.expect(response.code).to.eql(\"1004\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{JWT_TOKEN}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/rectify-delete/111111111111111",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"rectify-delete",
+								"111111111111111"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
