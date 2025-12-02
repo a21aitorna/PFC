@@ -106,7 +106,7 @@
                         <argument>html:target/cucumber-report.html</argument>
                         <argument>--glue</argument>
                         <argument>steps</argument>
-                        <argument>src/resources/features</argument>
+                        <argument>src/test/resources/features</argument>
                     </arguments>
                 </configuration>
                 <executions>
@@ -122,9 +122,9 @@
                             <arguments>
                                 <argument>--plugin</argument>
                                 <argument>pretty</argument>
-                                <argument>--glue</argument>
+                                <argument>--glue</argument>git 
                                 <argument>steps</argument>
-                                <argument>src/resources/features</argument>
+                                <argument>src/test/resources/features</argument>
                             </arguments>
                         </configuration>
                     </execution>
