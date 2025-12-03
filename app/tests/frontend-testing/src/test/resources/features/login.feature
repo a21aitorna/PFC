@@ -48,3 +48,7 @@ Feature: Login
     And writes its '<password>'
     When the user click on visualize password button
     Then the password is displayed as text
+
+    Examples:
+      | inputUsername            | username  | inputPassword            | password      |
+      | @PROPERTY_USERNAME_LOGIN | Test-User | @PROPERTY_PASSWORD_LOGIN | TestUser123.. |
