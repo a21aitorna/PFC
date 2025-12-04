@@ -12,7 +12,7 @@ public class DriverHooks {
     public static WebDriver driver;
 
     /**
-     * Inicializar driver
+     * Inicializar driver antes de cada escenario
      */
     @Before
     public void setup(){
@@ -21,15 +21,19 @@ public class DriverHooks {
     }
 
     /**
-     * Se ejecuta después de cada escenario. Cierra navegador y en caso de fallo hace captura y la adjunta al informe
-     * @param scenario que se ejecuta
+     * Ejecutado después de cada escenario. Toma captura si falla y cierra driver
      */
     @After
     public void tearDown(Scenario scenario) {
-        if(scenario.isFailed()) {
+        if (driver != null && scenario.isFailed()) {
             byte[] screenshot = ScreenshotUtil.takeScreenshot(driver, scenario.getName().replaceAll(" ", "_"));
-            scenario.attach(screenshot, "image/png", scenario.getName().replaceAll(" ", "_"));
+            if (screenshot.length > 0) {
+                scenario.attach(screenshot, "image/png", scenario.getName().replaceAll(" ", "_"));
+            } else {
+                System.out.println("No se pudo tomar captura para el escenario: " + scenario.getName());
+            }
         }
+
         DriverManager.quitDriver();
     }
 }

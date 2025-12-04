@@ -9,14 +9,14 @@ import utils.Config.KeysReader;
 
 public class ExampleSteps {
 
-    WebDriver driver = DriverHooks.driver;
+ //   WebDriver driver = DriverHooks.driver;
 
-    @Given("el usuario abre Google en el navegador")
-    public void openGoogle() {
-        System.out.println(KeysReader.get("SALUDO"));
-        driver.get("cs");
-        Assertions.assertEquals("da","as", "abc");
-    }
+  //  @Given("el usuario abre Google en el navegador")
+   // public void openGoogle() {
+  //      System.out.println(KeysReader.get("SALUDO"));
+    //    driver.get("cs");
+ //       Assertions.assertEquals("da","as", "abc");
+  //  }
 
 
 }

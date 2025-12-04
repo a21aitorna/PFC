@@ -49,11 +49,11 @@ public class Commons {
 
     /**
      * Se lee el object del xpathObject
-     * @param xpathObject que se desea
+     * @param pathObject que se desea
      * @return el valor del object
      */
-    public String getObjectProperty(String xpathObject){
-        return ObjectsReader.get(xpathObject);
+    public String getObjectProperty(String pathObject){
+        return ObjectsReader.get(pathObject);
     }
 
     /**
@@ -85,7 +85,7 @@ public class Commons {
      * @param xpath del elementp
      * @return elemento web
      */
-    public WebElement getByXpath(String xpath) {
+    public WebElement getByPath(String xpath) {
         return  driver.findElement(By.xpath(xpath));
     }
 
@@ -159,6 +159,15 @@ public class Commons {
     public void waitElementVisible(String object) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(DEFAULT_TIMEOUT));
         wait.until(ExpectedConditions.visibilityOfElementLocated(getBy(object)));
+    }
+
+    /**
+     * Esperar a que se visualice un elemento
+     * @param element que se quiere ver
+     */
+    public void waitElementVisible(WebElement element) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(DEFAULT_TIMEOUT));
+         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
     /**

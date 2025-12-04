@@ -1,23 +1,24 @@
+@loginFeature
 Feature: Login
 
   @pruebaLogin
   Scenario Outline: Login in the page
     Given the user writes in <inputUsername> its '<username>'
     And the user writes in <inputPassword> its '<password>'
-    When the user clicks on login button
+    When the user clicks on <login> button
     Then the user is redirected to its library
 
     Examples:
-      | inputUsername                       | username  | inputPassword                       | password      |
-      | @PROPERTY_USERNAME_DATATESTID_LOGIN | Test-User | @PROPERTY_PASSWORD_DATATESTID_LOGIN | TestUser123.. |
+      | inputUsername            | username  | inputPassword            | password      | login                           |
+      | @PROPERTY_USERNAME_LOGIN | Test-User | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON |
 
   Scenario Outline: Try to log without writing and get message error
     Given the user clicks on login button
     Then it is displayed the error <error>
 
     Examples:
-      | error                             |
-      | Todos los campos son obligatorios |
+      | error             |
+      | EMPTY_LOGIN_ERROR |
 
   Scenario Outline: Try to log only writing the username and get error
     Given the user writes in <inputUsername> its '<username>'
@@ -25,8 +26,8 @@ Feature: Login
     Then it is displayed the error <error>
 
     Examples:
-      | error                              |
-      | El campo contraseña es obligatorio |
+      | error                      |
+      | PASSWORD_EMPTY_FIELD_LOGIN |
 
   Scenario Outline: Try to log only writing the password and get error
     Given the user writes in <inputPassword> its '<password>'
@@ -34,8 +35,8 @@ Feature: Login
     Then it is displayed the error <error>
 
     Examples:
-      | error                           |
-      | El campo usuario es obligatorio |
+      | error                      |
+      | USERNAME_EMPTY_FIELD_LOGIN |
 
   Scenario Outline: Verify password is not displayed
     Given the user writes in <inputPassword> its '<password>'

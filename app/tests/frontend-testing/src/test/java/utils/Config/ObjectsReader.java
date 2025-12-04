@@ -9,22 +9,22 @@ public class ObjectsReader {
 
     static {
         try (InputStream input = ObjectsReader.class.getClassLoader()
-                .getResourceAsStream("data/objects/xPathObjects.properties")) {
+                .getResourceAsStream("data/objects/pathObjects.properties")) {
 
             if (input == null) {
-                throw new RuntimeException("No se encontró xPathObjects.properties");
+                throw new RuntimeException("No se encontró pathObjects.properties");
             }
             props.load(input);
 
         } catch (Exception e) {
-            throw new RuntimeException("Error cargando xPathObjects.properties", e);
+            throw new RuntimeException("Error cargando pathObjects.properties", e);
         }
     }
 
     public static String get(String key) {
         String value = props.getProperty(key);
         if (value == null) {
-            throw new RuntimeException("No existe el objeto/XPath para: " + key);
+            throw new RuntimeException("No existe el objeto/path para: " + key);
         }
         return value.trim();
     }
