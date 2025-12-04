@@ -15,8 +15,9 @@ public class LoginPage extends AbstractPage{
      */
     public String getLibraryName(){
         String libraryNameString = commons.getObjectProperty("@PROPERTY_USER_LIBRARY_NAME");
+        commons.waitElementVisible("@PROPERTY_USER_LIBRARY_NAME");
+        commons.wait(1);
         WebElement libraryName = commons.getByDataTestId(libraryNameString);
-        commons.waitElementVisible(libraryName);
         return commons.getText(libraryName);
     }
 

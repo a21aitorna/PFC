@@ -8,6 +8,8 @@ import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebDriver;
 import pages.LoginPage;
+import utils.Commons;
+
 
 public class LoginSteps {
     WebDriver driver = DriverHooks.driver;
@@ -27,7 +29,7 @@ public class LoginSteps {
     @Then("the user is redirected to its library")
     public void theUserIsRedirectedToItsLibrary() {
         String actualLibraryName = loginPage.getLibraryName();
-        String expectedLibraryName = "Test Librarys";
+        String expectedLibraryName = "Test Library";
         Assertions.assertEquals(expectedLibraryName, actualLibraryName, "El usuario no ha accedido a su biblio"+
                 "teca. El nombre esperado es " + expectedLibraryName + ", sin embargo es " + actualLibraryName);
     }

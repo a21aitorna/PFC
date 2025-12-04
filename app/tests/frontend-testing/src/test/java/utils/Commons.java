@@ -28,15 +28,19 @@ public class Commons {
      * @return objeto By
      */
     private By getBy(String objectReference) {
-        if(objectReference.matches("^[(|.]?[(]?/(/)?.*$")){
-            return By.xpath(objectReference);
-        }
         String objectProperty = getObjectProperty(objectReference);
-        if(objectProperty.matches("^[(|.]?[(]?/(/)?.*$")){
-            return By.xpath(objectReference);
+        // XPath
+        if(objectProperty.matches("^[(|.]?[(]?/(/)?.*$")) {
+            return By.xpath(objectProperty);
         }
-        return By.id(objectProperty);
+        // id
+        if(objectProperty.startsWith("id=")) {
+            return By.id(objectProperty.substring("id=".length()));
+        }
+        // Por defecto, data-testid
+        return By.cssSelector("[data-testid='" + objectProperty + "']");
     }
+
 
     /**
      * Se lee la key del keyProperties
@@ -195,5 +199,17 @@ public class Commons {
     public void waitElementPresent(String object) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(DEFAULT_TIMEOUT));
         wait.until(ExpectedConditions.presenceOfElementLocated(getBy(object)));
+    }
+
+    /**
+     * Esperar unos
+     * @param timeInSeconds que quieres
+     */
+    public void wait(int timeInSeconds) {
+        try {
+            Thread.sleep(timeInSeconds * 1000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
