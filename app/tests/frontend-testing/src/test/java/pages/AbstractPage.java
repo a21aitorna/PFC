@@ -19,18 +19,20 @@ public abstract class AbstractPage {
      * Hace click en un elemento web
      * @param object data-testid del objeto
      */
-    public void clickOn(String object){
+    public void clickOnButton(String object){
         String dataTestId = commons.getObjectProperty(object);
         WebElement element = commons.getByDataTestId(dataTestId);
         commons.click(element);
-    }//guarfar elemento en varibale de sesion
+    }
 
     /**
      *  Escribe un texto en el campo
      * @param text que se escribirá
      */
-    public void writeInInput(String text){//recuperar elemento de la variable de sesion
-        commons.inputText();
+    public void writeInInput(String object, String text){
+        String dataTestId = commons.getObjectProperty(object);
+        WebElement element = commons.getByDataTestId(dataTestId);
+        commons.inputText(element, text);
     }
 
     /**

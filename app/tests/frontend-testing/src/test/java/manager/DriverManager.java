@@ -6,6 +6,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import utils.SlowWebDriver;
 
 public class DriverManager {
 
@@ -40,6 +41,7 @@ public class DriverManager {
                     throw new RuntimeException("Navegador no soportado: "+ browser);
             }
             driver.manage().window().maximize();
+            driver = SlowWebDriver.slow(driver, 600);
         }
         return  driver;
     }

@@ -2,18 +2,16 @@ Feature: Login
 
   @pruebaLogin
   Scenario Outline: Login in the page
-    Given the user clicks in the <inputUsername> field
-    And writes its '<username>'
-    And the user clicks in the <inputPassword> field
-    And writes its '<password>'
+    Given the user writes in <inputUsername> its '<username>'
+    And the user writes in <inputPassword> its '<password>'
     When the user clicks on login button
     Then the user is redirected to its library
 
     Examples:
-      | inputUsername            | username  | inputPassword            | password      |
-      | @PROPERTY_USERNAME_LOGIN | Test-User | @PROPERTY_PASSWORD_LOGIN | TestUser123.. |
+      | inputUsername                       | username  | inputPassword                       | password      |
+      | @PROPERTY_USERNAME_DATATESTID_LOGIN | Test-User | @PROPERTY_PASSWORD_DATATESTID_LOGIN | TestUser123.. |
 
-  Scenario Outline: Try to log without writing and get message errpr
+  Scenario Outline: Try to log without writing and get message error
     Given the user clicks on login button
     Then it is displayed the error <error>
 
@@ -22,8 +20,7 @@ Feature: Login
       | Todos los campos son obligatorios |
 
   Scenario Outline: Try to log only writing the username and get error
-    Given Given the user clicks in the <inputUsername> field
-    And writes its '<username>'
+    Given the user writes in <inputUsername> its '<username>'
     When the user clicks on login button
     Then it is displayed the error <error>
 
@@ -32,14 +29,21 @@ Feature: Login
       | El campo contraseña es obligatorio |
 
   Scenario Outline: Try to log only writing the password and get error
-    Given Given the user clicks in the <inputUsername> field
-    And writes its '<username>'
+    Given the user writes in <inputPassword> its '<password>'
     When the user clicks on login button
     Then it is displayed the error <error>
 
     Examples:
       | error                           |
       | El campo usuario es obligatorio |
+
+  Scenario Outline: Verify password is not displayed
+    Given the user writes in <inputPassword> its '<password>'
+    Then the password is not displayed
+
+    Examples:
+      | inputPassword                      | password      |
+      | PROPERTY_PASSWORD_DATATESTID_LOGIN | TestUser123.. |
 
   Scenario Outline: Click on visualize password button to see the password
     Given the user clicks in the <inputUsername> field
