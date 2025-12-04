@@ -33,5 +33,12 @@ public class LoginSteps {
         Assertions.assertEquals(expectedLibraryName, actualLibraryName, "El usuario no ha accedido a su biblio"+
                 "teca. El nombre esperado es " + expectedLibraryName + ", sin embargo es " + actualLibraryName);
     }
+
+    @Then("it is displayed the error {}")
+    public void displayed(String messageError) {
+        String actualError = loginPage.getErrorMessage();
+        Assertions.assertEquals(messageError, actualError, "El error esperado es "+messageError+", sin embargo es " +actualError);
+    }
+
 }
 

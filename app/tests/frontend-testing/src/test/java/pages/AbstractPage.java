@@ -37,12 +37,11 @@ public abstract class AbstractPage {
 
     /**
      * Devuelve el mensaje de error que se muesta
-     * @param object del elemento
      * @return el text de error
      */
-    protected String getErrorMessage(String object){
-        String dataTestId = commons.getObjectProperty(object);
-        commons.waitElementVisible(dataTestId);
+    public String getErrorMessage(){
+        commons.waitElementVisible("@ERROR_MESSAGE_DISPLAY");
+        String dataTestId = commons.getObjectProperty("@ERROR_MESSAGE_DISPLAY");
         WebElement messageError = commons.getByDataTestId(dataTestId);
         return  messageError.getText();
     }

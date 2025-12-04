@@ -205,9 +205,9 @@ public class Commons {
      * Esperar unos
      * @param timeInSeconds que quieres
      */
-    public void wait(int timeInSeconds) {
+    public void wait(float timeInSeconds) {
         try {
-            Thread.sleep(timeInSeconds * 1000L);
+            Thread.sleep((long) (timeInSeconds * 1000L));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
