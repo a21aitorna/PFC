@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "Success",
+			"name": "SuccessAdmin",
 			"event": [
 				{
 					"listen": "test",
@@ -30,6 +30,17 @@
 						"packages": {},
 						"requests": {}
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
 				}
 			],
 			"request": {
@@ -43,7 +54,73 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"username\": \"user123\",\r\n  \"password\": \"Abc123..\"\r\n}",
+					"raw": "{\r\n  \"username\": \"Admin\",\r\n  \"password\": \"Admin123..\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SuccessUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has token\", function () {\r",
+							"    let jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.token).to.not.be.null;\r",
+							"    pm.environment.set(\"authToken\", jsonData.token)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"Test-user\",\r\n  \"password\": \"TestUser123..\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -232,6 +309,17 @@
 						"packages": {},
 						"requests": {}
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
 				}
 			],
 			"request": {
@@ -245,7 +333,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"user123\",\r\n    \"password\": \"WrongPassword1!\"\r\n}"
+					"raw": "{\r\n    \"username\": \"Test-user\",\r\n    \"password\": \"WrongPassword1!\"\r\n}"
 				},
 				"url": {
 					"raw": "{{base_url}}/login",

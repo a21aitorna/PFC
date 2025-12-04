@@ -9,7 +9,7 @@ const collections = [
 ];
 //ir añadiendo en el array todas las colecciones
 
-const environment = 'environments/local.env.json';
+const environment = 'environments/pre.env.json';
 
 (async () => {
   for (const c of collections) {
