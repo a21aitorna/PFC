@@ -40,5 +40,21 @@ public class LoginSteps {
         Assertions.assertEquals(messageError, actualError, "El error esperado es "+messageError+", sin embargo es " +actualError);
     }
 
+    @Then("the password is not displayed")
+    public void thePasswordIsNotDisplayed() {
+        String value = "password";
+        Assertions.assertTrue(loginPage.veryInputPasswordType(value), "El type no es el esperado");
+    }
+
+    @When("the user click on {} button")
+    public void theUserClickOnButton(String property) {
+        loginPage.clickOnButton(property);
+    }
+
+    @Then("the password is displayed as text")
+    public void thePasswordIsDisplayedAsText() {
+        String value="text";
+        Assertions.assertTrue(loginPage.veryInputPasswordType(value));
+    }
 }
 

@@ -21,6 +21,12 @@ public class LoginPage extends AbstractPage{
         return commons.getText(libraryName);
     }
 
+    public boolean veryInputPasswordType(String attributeValue){
+        String passwordInputProperty = commons.getObjectProperty("@PROPERTY_PASSWORD_LOGIN");
+        WebElement inputPassword = commons.getByDataTestId(passwordInputProperty);
+        String typeValue = inputPassword.getAttribute("type");
+        return  typeValue.equals(attributeValue);
+    }
 
 
 }

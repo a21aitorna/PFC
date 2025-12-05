@@ -38,7 +38,7 @@ Feature: Login
     Then it is displayed the error <error>
 
     Examples:
-      | inputPassword            | password   | login                           | error                      |
+      | inputPassword            | password   | login                           | error                           |
       | @PROPERTY_PASSWORD_LOGIN | Abcd123... | @PROPERTY_LOGIN_REGISTER_BUTTON | El campo usuario es obligatorio |
 
   @verifyPasswordNotDisplayed
@@ -47,8 +47,8 @@ Feature: Login
     Then the password is not displayed
 
     Examples:
-      | inputPassword                      | password      |
-      | PROPERTY_PASSWORD_DATATESTID_LOGIN | TestUser123.. |
+      | inputPassword            | password      |
+      | @PROPERTY_PASSWORD_LOGIN | TestUser123.. |
 
   @verifyPasswordIsDisplayed
   Scenario Outline: Click on visualize password button to see the password
@@ -58,5 +58,5 @@ Feature: Login
     Then the password is displayed as text
 
     Examples:
-      | inputUsername            | username  | inputPassword            | password      | visualizePassword           |
-      | @PROPERTY_USERNAME_LOGIN | Test-User | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | PROPERTY_VISUALIZE_PASSWORD |
+      | inputUsername            | username  | inputPassword            | password      | visualizePassword            |
+      | @PROPERTY_USERNAME_LOGIN | Test-User | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_VISUALIZE_PASSWORD |
