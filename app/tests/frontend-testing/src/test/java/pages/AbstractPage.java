@@ -20,6 +20,7 @@ public abstract class AbstractPage {
      * @param object data-testid del objeto
      */
     public void clickOnButton(String object){
+        commons.waitElementVisible(object);
         String dataTestId = commons.getObjectProperty(object);
         WebElement element = commons.getByDataTestId(dataTestId);
         commons.click(element);
@@ -30,6 +31,7 @@ public abstract class AbstractPage {
      * @param text que se escribirá
      */
     public void writeInInput(String object, String text){
+        commons.waitElementVisible(object);
         String dataTestId = commons.getObjectProperty(object);
         WebElement element = commons.getByDataTestId(dataTestId);
         commons.inputText(element, text);

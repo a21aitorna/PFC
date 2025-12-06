@@ -17,6 +17,9 @@ public class LoginSteps {
 
     @Given("the user writes in {} its {string}")
     public void writeInputField(String property, String text) {
+        if(text.equals("SeleniumUser")){
+            text += System.currentTimeMillis();
+        }
         loginPage.writeInInput(property, text);
     }
 
@@ -56,5 +59,6 @@ public class LoginSteps {
         String value="text";
         Assertions.assertTrue(loginPage.veryInputPasswordType(value));
     }
+
 }
 

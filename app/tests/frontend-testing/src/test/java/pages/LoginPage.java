@@ -21,6 +21,11 @@ public class LoginPage extends AbstractPage{
         return commons.getText(libraryName);
     }
 
+    /**
+     * Verifica si el valor del atributo coincide con el que se le pasa
+     * @param attributeValue el valor del atributo
+     * @return true si son iguales, sino false
+     */
     public boolean veryInputPasswordType(String attributeValue){
         String passwordInputProperty = commons.getObjectProperty("@PROPERTY_PASSWORD_LOGIN");
         WebElement inputPassword = commons.getByDataTestId(passwordInputProperty);
