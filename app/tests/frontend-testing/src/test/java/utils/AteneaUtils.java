@@ -2,6 +2,8 @@ package utils;
 
 public class AteneaUtils {
 
+    private String recoverPassword;
+
     /**
      * Instancia
      */

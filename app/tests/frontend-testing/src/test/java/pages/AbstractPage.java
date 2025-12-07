@@ -19,7 +19,7 @@ public abstract class AbstractPage {
      * Hace click en un elemento web
      * @param object data-testid del objeto
      */
-    public void clickOnButton(String object){
+    public void clickOnElement(String object){
         commons.waitElementVisible(object);
         String dataTestId = commons.getObjectProperty(object);
         WebElement element = commons.getByDataTestId(dataTestId);

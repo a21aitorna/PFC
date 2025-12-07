@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.Config.KeysReader;
 import utils.Config.ObjectsReader;
 
+import java.lang.reflect.Field;
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.List;
 
@@ -210,6 +212,72 @@ public class Commons {
             Thread.sleep((long) (timeInSeconds * 1000L));
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Genera una contraseña random
+     * @return contraseña
+     */
+    public String generatePassword(){
+        String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lower = "abcdefghijklmnopqrstuvwxyz";
+        String numbers = "0123456789";
+        String symbols = "!@#$%^&*()-_=+[]{}<>?";
+        String allChars = upper + lower + numbers + symbols;
+
+        SecureRandom random = new SecureRandom();
+        StringBuilder password = new StringBuilder();
+
+        password.append(upper.charAt(random.nextInt(upper.length())));
+        password.append(lower.charAt(random.nextInt(lower.length())));
+        password.append(numbers.charAt(random.nextInt(numbers.length())));
+        password.append(symbols.charAt(random.nextInt(symbols.length())));
+
+        int length = 8;
+        for (int i = password.length(); i < length; i++) {
+            password.append(allChars.charAt(random.nextInt(allChars.length())));
+        }
+
+        char[] chars = password.toString().toCharArray();
+        for (int i = chars.length - 1; i > 0; i--) {
+            int j = random.nextInt(i + 1);
+            char temp = chars[i];
+            chars[i] = chars[j];
+            chars[j] = temp;
+        }
+
+        return new String(chars);
+    }
+
+    /**
+     * Modifica una variable de sesión
+     * 
+     * @param value el valor nuevo de la variable
+     */
+    public void setSessionVariable(String nameVariable, String value) {
+        try {
+            AteneaUtils utils = AteneaUtils.getInstance();
+            Field field = AteneaUtils.class.getDeclaredField(nameVariable);
+            field.setAccessible(true);
+            field.set(utils, value);
+        } catch (Exception e) {
+            throw new RuntimeException("No existe la variable: " + nameVariable, e);
+        }
+    }
+
+    /**
+     * Recupera el valor de una variable de sesión
+     * @param nameVariable el nombre de la variable cuyo valor se quiere recuperar
+     */
+    public String getSessionVariable(String nameVariable) {
+        try {
+            AteneaUtils utils = AteneaUtils.getInstance();
+            Field field = AteneaUtils.class.getDeclaredField(nameVariable);
+            field.setAccessible(true);
+            return (String) field.get(utils);
+        } catch (Exception e) {
+            throw new RuntimeException("No existe la variable: " + nameVariable, e);
         }
     }
 }
