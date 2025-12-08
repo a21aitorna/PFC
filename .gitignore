@@ -40,8 +40,7 @@ coverage
 # Visual Code
 .vscode/**
 
-# Excluímos cualquier fichero .pdf (este repo no es lugar para ellos)
-*.pdf
+# Excluímos cualquier fichero .pdf (este repo no es lugar para ellos)->Tengo que sacarlo de aquí
 
 # Quiero meter explícitamente en el repo este fichero:
 !.vscode/extensions.json
