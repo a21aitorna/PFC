@@ -7,7 +7,7 @@ Feature: Login
     And the user writes in <inputPassword> its '<password>'
     And the user clicks on <login> button
     When the user is redirected to its library
-    And the user click on <uploadBook> button
+    And the user clicks on <uploadBook> button
     And the user selects a <book>
     Then a new book is uploaded
 
@@ -21,7 +21,7 @@ Feature: Login
     And the user writes in <inputPassword> its '<password>'
     And the user clicks on <login> button
     When the user is redirected to its library
-    And the user click on <uploadBook> button
+    And the user clicks on <uploadBook> button
     And the user selects a <book>
     Then a new book is uploaded
 
@@ -35,7 +35,7 @@ Feature: Login
     And the user writes in <inputPassword> its '<password>'
     And the user clicks on <login> button
     When the user is redirected to its library
-    Then the user click on <downloadButton> button
+    Then the user clicks on <downloadButton> button
     Examples:
       | inputUsername            | username  | inputPassword            | password      | login                           | downloadButton          |
       | @PROPERTY_USERNAME_LOGIN | Test-User | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @PROPERTY_DOWNLOAD_BOOK |
@@ -46,7 +46,7 @@ Feature: Login
     And the user writes in <inputPassword> its '<password>'
     And the user clicks on <login> button
     When the user is redirected to its library
-    Then the user click on <deleteButton> button
+    Then the user clicks on <deleteButton> button
     And the user confirms to delete the book
     Examples:
       | inputUsername            | username  | inputPassword            | password      | login                           | deleteButton          |
@@ -58,7 +58,7 @@ Feature: Login
     And the user writes in <inputPassword> its '<password>'
     And the user clicks on <login> button
     When the user is redirected to its library
-    Then the user click on <deleteButton> button
+    Then the user clicks on <deleteButton> button
     And the user denies to delete the book
     Examples:
       | inputUsername            | username  | inputPassword            | password      | login                           | deleteButton          |
@@ -110,8 +110,8 @@ Feature: Login
     And the user clicks on <login> button
     And the user is redirected to its library
     When the user writes in <inputSearchBook> its '<bookSearchByAuthor>'
-    Then all books with '<Author>' are displayed
+    Then all books with '<author>' are displayed
 
     Examples:
-      | inputUsername            | username  | inputPassword            | password      | login                           | inputSearchBook        | bookSearchByAuthor | Author                          |
+      | inputUsername            | username  | inputPassword            | password      | login                           | inputSearchBook        | bookSearchByAuthor | author                          |
       | @PROPERTY_USERNAME_LOGIN | Test-User | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @PROPERTY_SEARCH_BOOKS | ier                | @PROPERTY_SEARCHED_BOOKS_AUTHOR |

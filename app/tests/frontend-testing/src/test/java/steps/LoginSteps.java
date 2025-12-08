@@ -36,11 +36,6 @@ public class LoginSteps {
         Assertions.assertTrue(loginPage.veryInputPasswordType(value), "El type no es el esperado");
     }
 
-    @When("the user click on {} button")
-    public void theUserClickOnButton(String property) {
-        loginPage.clickOnElement(property);
-    }
-
     @Then("the password is displayed as text")
     public void thePasswordIsDisplayedAsText() {
         String value="text";
