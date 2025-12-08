@@ -59,6 +59,7 @@ export default function BookDetail() {
 
       <div className="w-full max-w-6xl mx-auto px-4 mt-20 relative">
         <button
+          data-testid="returnLibrary"
           onClick={handleGoBack}
           className="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 transition relative z-10"
         >

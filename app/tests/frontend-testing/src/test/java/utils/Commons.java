@@ -1,6 +1,7 @@
 package  utils;
 
 import manager.DriverManager;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -278,6 +279,24 @@ public class Commons {
             return (String) field.get(utils);
         } catch (Exception e) {
             throw new RuntimeException("No existe la variable: " + nameVariable, e);
+        }
+    }
+
+    /**
+     * Gestiona alertas
+     * @param accept (true aceptar, false denegar)
+     */
+    public void handleAlert(boolean accept){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(DEFAULT_TIMEOUT));
+        wait.until(ExpectedConditions.alertIsPresent());
+
+        Alert alert = driver.switchTo().alert();
+
+        if(accept){
+            alert.accept();
+        }
+        else {
+            alert.dismiss();
         }
     }
 }

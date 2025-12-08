@@ -23,7 +23,7 @@ public class RegisterSteps {
     public void theUserIsRedirectedToLoginScreen() {
         String expectedText = registerPage.getExpectedLoginScreen();
         String actualText = registerPage.getLoginNameScreen();
-        Assertions.assertEquals(expectedText, actualText, "El usuario no está en la páginad de resgistro. El nombre esperado es " +
+        Assertions.assertEquals(expectedText, actualText, "El usuario no está en la página de login. El nombre esperado es " +
                 expectedText+", sin embargo el nombre actual es "+actualText);
     }
 }

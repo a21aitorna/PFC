@@ -16,31 +16,6 @@ public class LoginSteps {
     LoginPage loginPage = new LoginPage(driver);
     Commons commons = new Commons();
 
-    @Given("the user writes in {} its {string}")
-    public void writeInputField(String property, String text) {
-        if(text.equals("SeleniumUser")){
-            text += System.currentTimeMillis();
-        }
-
-        if(property.equals("@PROPERTY_PASSWORD_RECOVER") && text.isEmpty()){
-            String password = commons.generatePassword();
-            commons.setSessionVariable("recoverPassword", password);
-            text=password;
-        }
-
-        if(property.equals("@PROPERTY_VERYFY_PASSWORD_RECOVER") && text.isEmpty()){
-            text = commons.getSessionVariable("recoverPassword");
-        }
-
-        loginPage.writeInInput(property, text);
-    }
-
-    @When("the user clicks on {} button")
-    public void clickOnButtonStep(String property) {
-        loginPage.clickOnElement(property);
-
-    }
-
     @Then("the user is redirected to its library")
     public void theUserIsRedirectedToItsLibrary() {
         String actualLibraryName = loginPage.getLibraryName();

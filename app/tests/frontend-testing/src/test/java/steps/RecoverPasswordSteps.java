@@ -31,5 +31,5 @@ public class RecoverPasswordSteps {
         Assertions.assertEquals(expectedRecoverName, actualRecoverName, "El nombre esperado es "+expectedRecoverName
                 +", sin embargo el actual es "+actualRecoverName);
 
-    }    
+    }
 }

@@ -99,7 +99,7 @@ Feature: Get new password
 
     Examples:
       | recoverPassword            | inputUsernameRecoverPassword        | usernameRecover | continue                  | inputAnswerRecoverPassword | answerRecover    | inputPasswordRecoverPassword | passwordRecover | inputVerifyPasswordRecoverPassword | verifyPasswordRecover | updatePassword            | error                       |
-      | @PROPERTY_RECOVER_PASSWORD | @PROPERTY_USERNAME_RECOVER_PASSWORD | Test-User       | @PROPERTY_CONTINUE_BUTTON | @PROPERTY_ANSWER_QUESTION  | Incorrect answer | @PROPERTY_PASSWORD_RECOVER   | Abc123..        | @PROPERTY_VERYFY_PASSWORD_RECOVER  | Abc123..              | @PROPERTY_UPDATE_PASSWORD | La respuesta no es correcta |
+      | @PROPERTY_RECOVER_PASSWORD | @PROPERTY_USERNAME_RECOVER_PASSWORD | Test-User       | @PROPERTY_CONTINUE_BUTTON | @PROPERTY_ANSWER_QUESTION  | Incorrect answer | @PROPERTY_PASSWORD_RECOVER   | Abc123..        | @PROPERTY_VERIFY_PASSWORD_RECOVER  | Abc123..              | @PROPERTY_UPDATE_PASSWORD | La respuesta no es correcta |
 
   @differentPasswordRecover
   Scenario Outline: The user writes two different passwords and an error message is displayed
@@ -116,7 +116,7 @@ Feature: Get new password
 
     Examples:
       | recoverPassword            | inputUsernameRecoverPassword        | usernameRecover | continue                  | inputAnswerRecoverPassword | answerRecover | inputPasswordRecoverPassword | passwordRecover | inputVerifyPasswordRecoverPassword | verifyPasswordRecover | updatePassword            | error                        |
-      | @PROPERTY_RECOVER_PASSWORD | @PROPERTY_USERNAME_RECOVER_PASSWORD | Test-User       | @PROPERTY_CONTINUE_BUTTON | @PROPERTY_ANSWER_QUESTION  | test_answer   | @PROPERTY_PASSWORD_RECOVER   | Abc123.         | @PROPERTY_VERYFY_PASSWORD_RECOVER  | Abc123..              | @PROPERTY_UPDATE_PASSWORD | Las contraseñas no coinciden |
+      | @PROPERTY_RECOVER_PASSWORD | @PROPERTY_USERNAME_RECOVER_PASSWORD | Test-User       | @PROPERTY_CONTINUE_BUTTON | @PROPERTY_ANSWER_QUESTION  | test_answer   | @PROPERTY_PASSWORD_RECOVER   | Abc123.         | @PROPERTY_VERIFY_PASSWORD_RECOVER  | Abc123..              | @PROPERTY_UPDATE_PASSWORD | Las contraseñas no coinciden |
 
   @wrongFormatPasswordRecover
   Scenario Outline: The user writes passwords wih wrong and an error message is displayed
@@ -133,7 +133,7 @@ Feature: Get new password
 
     Examples:
       | recoverPassword            | inputUsernameRecoverPassword        | usernameRecover | continue                  | inputAnswerRecoverPassword | answerRecover | inputPasswordRecoverPassword | passwordRecover | inputVerifyPasswordRecoverPassword | verifyPasswordRecover | updatePassword            | error                                                                                             |
-      | @PROPERTY_RECOVER_PASSWORD | @PROPERTY_USERNAME_RECOVER_PASSWORD | Test-User       | @PROPERTY_CONTINUE_BUTTON | @PROPERTY_ANSWER_QUESTION  | test_answer   | @PROPERTY_PASSWORD_RECOVER   | InvalidPassword | @PROPERTY_VERYFY_PASSWORD_RECOVER  | InvalidPassword       | @PROPERTY_UPDATE_PASSWORD | La contraseña es inválida. Mínimo, debe tener 8 caracteres, una mayúscula, un número y un símbolo |
+      | @PROPERTY_RECOVER_PASSWORD | @PROPERTY_USERNAME_RECOVER_PASSWORD | Test-User       | @PROPERTY_CONTINUE_BUTTON | @PROPERTY_ANSWER_QUESTION  | test_answer   | @PROPERTY_PASSWORD_RECOVER   | InvalidPassword | @PROPERTY_VERIFY_PASSWORD_RECOVER  | InvalidPassword       | @PROPERTY_UPDATE_PASSWORD | La contraseña es inválida. Mínimo, debe tener 8 caracteres, una mayúscula, un número y un símbolo |
 
   Scenario Outline: The user writes passwords wih wrong and an error message is displayed
     Given the user clicks on <recoverPassword> link
@@ -150,7 +150,7 @@ Feature: Get new password
     @passwordInUse
     Examples:
       | recoverPassword            | inputUsernameRecoverPassword        | usernameRecover | continue                  | inputAnswerRecoverPassword | answerRecover | inputPasswordRecoverPassword | passwordRecover | inputVerifyPasswordRecoverPassword | verifyPasswordRecover | updatePassword            | error                                    |
-      | @PROPERTY_RECOVER_PASSWORD | @PROPERTY_USERNAME_RECOVER_PASSWORD | Test-User       | @PROPERTY_CONTINUE_BUTTON | @PROPERTY_ANSWER_QUESTION  | test_answer   | @PROPERTY_PASSWORD_RECOVER   | TestUser123..   | @PROPERTY_VERYFY_PASSWORD_RECOVER  | TestUser123..         | @PROPERTY_UPDATE_PASSWORD | La nueva contraseña ya está siendo usada |
+      | @PROPERTY_RECOVER_PASSWORD | @PROPERTY_USERNAME_RECOVER_PASSWORD | Test-User       | @PROPERTY_CONTINUE_BUTTON | @PROPERTY_ANSWER_QUESTION  | test_answer   | @PROPERTY_PASSWORD_RECOVER   | TestUser123..   | @PROPERTY_VERIFY_PASSWORD_RECOVER  | TestUser123..         | @PROPERTY_UPDATE_PASSWORD | La nueva contraseña ya está siendo usada |
 
   @updatePasswordSuccess
   Scenario Outline: The user writes data an password is updadted
@@ -165,4 +165,4 @@ Feature: Get new password
 
     Examples:
       | recoverPassword            | inputUsernameRecoverPassword        | usernameRecover | continue                  | inputAnswerRecoverPassword | answerRecover  | inputPasswordRecoverPassword | passwordRecover | inputVerifyPasswordRecoverPassword | verifyPasswordRecover | updatePassword            | success                           |
-      | @PROPERTY_RECOVER_PASSWORD | @PROPERTY_USERNAME_RECOVER_PASSWORD | ModifyPassword  | @PROPERTY_CONTINUE_BUTTON | @PROPERTY_ANSWER_QUESTION  | ModifyPassword | @PROPERTY_PASSWORD_RECOVER   |                 | @PROPERTY_VERYFY_PASSWORD_RECOVER  |                       | @PROPERTY_UPDATE_PASSWORD | Contraseña restablecida con éxito |
+      | @PROPERTY_RECOVER_PASSWORD | @PROPERTY_USERNAME_RECOVER_PASSWORD | ModifyPassword  | @PROPERTY_CONTINUE_BUTTON | @PROPERTY_ANSWER_QUESTION  | ModifyPassword | @PROPERTY_PASSWORD_RECOVER   |                 | @PROPERTY_VERIFY_PASSWORD_RECOVER  |                       | @PROPERTY_UPDATE_PASSWORD | Contraseña restablecida con éxito |

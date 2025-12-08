@@ -4,3 +4,4 @@ instance/
 .env
 *.sqlite3
 *.png
+*.epub
