@@ -50,4 +50,14 @@ public class BookDetailSteps {
         Map<String, String> properties = dataTable.asMap(String.class, String.class);
         Assertions.assertTrue(bookDetailPage.areElementsDisplayed(properties), "No se muestra la review recién creada");
     }
+
+    @Then("the {} is displayed for the user")
+    public void theIsDisplayedForTheUser(String property) {
+        Assertions.assertTrue(bookDetailPage.verifyOnlyUserCanDeleteReview(property), "El usuario creador de la review no tiene el botón de eliminar");
+    }
+
+    @Then("the {} is not displayed for the user")
+    public void theIsNotDisplayedForTheUser(String property) {
+        Assertions.assertFalse(bookDetailPage.verifyOnlyUserCanDeleteReview(property), "El usuario logeado no creador de la review tiene el botón de eliminar");
+    }
 }

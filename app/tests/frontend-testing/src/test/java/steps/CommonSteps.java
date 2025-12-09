@@ -19,6 +19,10 @@ public class CommonSteps {
             text += System.currentTimeMillis();
         }
 
+        if(property.equals("@PROPERTY_USERNAME_LOGIN")){
+            commons.setSessionVariable("usernameUser", text);
+        }
+
         if(property.equals("@PROPERTY_PASSWORD_RECOVER") && text.isEmpty()){
             String password = commons.generatePassword();
             commons.setSessionVariable("recoverPassword", password);

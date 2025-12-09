@@ -71,4 +71,35 @@ public class BookDetailPage extends AbstractPage {
         return true;
     }
 
+    /**
+     * Coge las reviews con el botón de eliminar con la propieda
+     * @param property que se pasa
+     * @return la lista
+     */
+    public List<WebElement> deleteReviewsElements(String property){
+        String propertyValue = commons.getObjectProperty(property);
+        return commons.getAllByXpath(propertyValue);
+    }
+
+    /**
+     * Verifica que el usuario logeado coincide con el nombre de usuario de la lista
+     * @param property que se pasa
+     * @return true si coincide, sino false
+     */
+    public boolean verifyOnlyUserCanDeleteReview(String property){
+        boolean reviewUserIsUsername=false;
+        String username = commons.getSessionVariable("usernameUser").toLowerCase();
+        List<WebElement> deleteReviews = deleteReviewsElements(property);
+        for(WebElement deleteReviewOption: deleteReviews){
+            String valueProperty = commons.getObjectProperty("@PROPERTY_USER_LOGGED_CREATED_REVIEW");
+            WebElement usernameCreator = deleteReviewOption.findElement(By.xpath(valueProperty));
+            String reviewUser = commons.getText(usernameCreator).toLowerCase();
+
+            if(reviewUser.equals(username)){
+                reviewUserIsUsername = true;
+            }
+        }
+        return reviewUserIsUsername;
+    }
+
 }
