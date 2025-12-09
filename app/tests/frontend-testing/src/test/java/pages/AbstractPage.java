@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import utils.Commons;
 
+import java.util.List;
+
 public abstract class AbstractPage {
 
     protected WebDriver driver;
@@ -16,13 +18,24 @@ public abstract class AbstractPage {
     }
 
     /**
-     * Hace click en un elemento web
+     * Hace click en un elemento web por data-testid
      * @param object data-testid del objeto
      */
     public void clickOnElement(String object){
         commons.waitElementVisible(object);
         String dataTestId = commons.getObjectProperty(object);
         WebElement element = commons.getByDataTestId(dataTestId);
+        commons.click(element);
+    }
+
+    /**
+     * Hace click en un elmento web por xpath
+     * @param object xpath del objeto
+     */
+    public void clickOnElementXpath(String object){
+        commons.waitElementVisible(object);
+        String xpath = commons.getObjectProperty(object);
+        WebElement element = commons.getByPath(xpath);
         commons.click(element);
     }
 
@@ -60,5 +73,25 @@ public abstract class AbstractPage {
         return  messageError.getText();
     }
 
+    /**
+     * Devuelve el mensaje
+     * @param path el path del mensaje
+     * @return el texto del mensaje
+     */
+    public String getMessage(String path){
+        commons.waitElementVisible(path);
+        String dataTestId = commons.getObjectProperty(path);
+        WebElement message = commons.getByDataTestId(dataTestId);
+        return message.getText();
+    }
+
+    /**
+     * Comprobar si existe el elemento
+     * @return true false si existe, sino true
+     */
+    public boolean isElement(String property){
+        List<WebElement> elements = commons.findElements(property);
+        return !elements.isEmpty();
+    }
 
 }

@@ -90,6 +90,20 @@ Feature: Login
       | inputUsername            | username  | inputPassword            | password      | login                           | inputSearchLibrary            | librarySearchByUsername | optionSelected             | librarySearched |
       | @PROPERTY_USERNAME_LOGIN | Test-User | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @PROPERTY_SEARCH_USER_LIBRARY | Search                  | @PROPERTY_SELECTED_LIBRARY | LibrarySearch   |
 
+  @deleteButtonNotDisplayed
+  Scenario Outline: Searches for a library and their books do not have delete button
+    Given the user writes in <inputUsername> its '<username>'
+    And the user writes in <inputPassword> its '<password>'
+    And the user clicks on <login> button
+    And the user is redirected to its library
+    When the user writes in <inputSearchLibrary> its '<librarySearchByUsername>'
+    And the user selects the option '<optionSelected>'
+    And the user is redirected to searched library with name '<librarySearched>'
+    Then there is no <deleteButton> displayed in any book
+    Examples:
+      | inputUsername            | username  | inputPassword            | password      | login                           | inputSearchLibrary            | librarySearchByUsername | optionSelected             | librarySearched | deleteButton          |
+      | @PROPERTY_USERNAME_LOGIN | Test-User | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @PROPERTY_SEARCH_USER_LIBRARY | Search                  | @PROPERTY_SELECTED_LIBRARY | LibrarySearch   | @PROPERTY_DELETE_BOOK |
+
   @searchBooksByTitle
   Scenario Outline: Searches for a book in the library by the title
     Given the user writes in <inputUsername> its '<username>'
@@ -115,3 +129,16 @@ Feature: Login
     Examples:
       | inputUsername            | username  | inputPassword            | password      | login                           | inputSearchBook        | bookSearchByAuthor | author                          |
       | @PROPERTY_USERNAME_LOGIN | Test-User | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @PROPERTY_SEARCH_BOOKS | ier                | @PROPERTY_SEARCHED_BOOKS_AUTHOR |
+
+  @searchNoBooks
+  Scenario Outline: Searches for a book but there are no results
+    Given the user writes in <inputUsername> its '<username>'
+    And the user writes in <inputPassword> its '<password>'
+    And the user clicks on <login> button
+    And the user is redirected to its library
+    When the user writes in <inputSearchBook> its '<bookSearch>'
+    Then no books search by <author> or <title> are displayed
+
+    Examples:
+      | inputUsername            | username  | inputPassword            | password      | login                           | inputSearchBook        | bookSearch | author                          | title                            |
+      | @PROPERTY_USERNAME_LOGIN | Test-User | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @PROPERTY_SEARCH_BOOKS | unknown    | @PROPERTY_SEARCH_NO_BOOKS_TITLE | @PROPERTY_SEARCH_NO_BOOKS_AUTHOR |

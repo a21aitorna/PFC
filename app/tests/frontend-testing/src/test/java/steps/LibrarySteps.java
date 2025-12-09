@@ -51,9 +51,14 @@ public class LibrarySteps {
         Assertions.assertTrue(libraryPage.verifyBookField(path), "No coincide la búsqueda de libros");
     }
 
-    @Then("no books with {string} or {string} are displayed")
-    public void noBooksWithAreDisplayed(String pathAuthor, String pathTitle) {
-        Assertions.assertFalse(libraryPage.verifyBookField(pathAuthor), "Se visualizan libros por autor");
-        Assertions.assertFalse(libraryPage.verifyBookField(pathTitle), "Se visualizan libros por título");
+    @Then("there is no {} displayed in any book")
+    public void thereIsNoDeleteButtonDisplayedInAnyBook(String property) {
+        Assertions.assertFalse(libraryPage.isElement(property), "Se muestra el botón de eliminar en los libros de la biblioteca de otro usuario");
+    }
+
+    @Then("no books search by {} or {} are displayed")
+    public void noBooksSearchByOrAreDisplayed(String propertyAuthor, String propertyTitle) {
+        Assertions.assertFalse(libraryPage.isElement(propertyAuthor), "Se muestran libros por autor");
+        Assertions.assertFalse(libraryPage.isElement(propertyTitle), "Se muestran libros por título");
     }
 }

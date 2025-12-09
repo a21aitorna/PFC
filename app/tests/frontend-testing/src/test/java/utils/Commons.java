@@ -88,6 +88,15 @@ public class Commons {
     }
 
     /**
+     * Encontrar elemento
+     * @param objectReference seleccionado
+     * @return elemento web a buscar
+     */
+    public List<WebElement> findElements(String objectReference) {
+        return  driver.findElements(getBy(objectReference));
+    }
+
+    /**
      * Recuperar el elemento por xpath
      * @param xpath del elementp
      * @return elemento web

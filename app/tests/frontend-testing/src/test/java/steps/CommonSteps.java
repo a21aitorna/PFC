@@ -1,6 +1,7 @@
 package steps;
 
 import hooks.DriverHooks;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
@@ -39,5 +40,4 @@ public class CommonSteps {
         loginPage.clickOnElement(property);
 
     }
-
 }
