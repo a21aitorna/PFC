@@ -1,2 +1,4 @@
-# API_BASE_URL= el endpoint de la api según el entorno
+# API_BASE_URL= el endpoint de la api según el entorno (en este caso es 
+# API_BASE_URL=http://localhost:5000/api
+# )
 # Generar otro .env con la configuración necesaria para otro entorno

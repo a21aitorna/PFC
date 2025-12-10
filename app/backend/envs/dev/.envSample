@@ -5,4 +5,12 @@
 # DATABASE_NAME = Nombre base de datos
 # SQLALCHEMY_TRACK_MODIFICATIONS = False
 # JWT_SECRET_KEY = clave JWT para firmar y verificar tokens jwt..
+#######################################SÓLO PARA LOCAL################################
+# DEBUG_MODE = True
+# MYSQL_HOST = db
+# MYSQL_USER = root
+# MYSQL_PASSWORD = root
+# DATABASE_NAME = AteneaProject
+# SQLALCHEMY_TRACK_MODIFICATIONS = False
+# JWT_SECRET_KEY = 70OFK8HIvosMIIJqLupyzyVK9CX57wWbdgL2DyKOREsTdaBgpqpWmpi77HywGJ7lDy8s6mH5Cd7V8I5qYw6zoKSZ8xKhPpPwYOtcaFLTXC6FQJ1Xzf5zgL4JKkjji0VJwmmDBMvzBC1HKrTC6SAYLpoaK4xTjcZgDjTKvpgxRVR4Ba2uhEkVtlVoR8DcHE3VSWbq4RKhxQWRcF1k83kSLm02ZsS1qwgRGzaCPARC2Fatw5KKkb1ILGZraLqECOuE29zBAf3gAwpluP
 #Crear un .env y replicar configuración
