@@ -55,59 +55,79 @@ Esta se caracteriza por haber sido diseñada y construida mediante el principio 
 - Persistencia: gestión de datos mediante MySQL y SQLAlchemy.
 - Testing: empleo BDD (Cucumber) y Selenium en Java para pruebas automáticas hacia el front y Newman hacia el back.
 
-Todo esto, viene dockerizado, de manera que sea más sencillo si despligue, mantenimiento y escalabilidad. A mayores, se ha habilitado un entorno de Integración Continua y Entrega Continua (CI/CD) basado en Github Actions de manera que se ejecuten las pruebas automáticas cada x tiempo, garantizando la calidad y estabilidad de la aplicación.
+Todo esto, viene dockerizado, de manera que sea más sencillo su despligue, mantenimiento y escalabilidad.
+
+Actualmente, la aplicación se encuentra desplegada, pudiendo acceder mediante esta [URL](https://pfcfront-production-a352.up.railway.app/login). Así mismo, accediendo [aquí](https://pfcback-production.up.railway.app/apidocs/). 
+Para garantizar el correcto funcinamiento de esta, se ha establecido un pipeline de GithubActions, el cual se ejecuta una vez al día a las 6:00. Esto genera unos informes que hay que revisar diariamente, que se pueden observar [aquí](https://a21aitorna.github.io/PFC_TESTS/). 
 
 ### Frontend
-Se ha optado por el uso de React, una biblioteca de JavaScript (aunque se puede considerar como framework) muy usada en la actualidad para el desarrollo front. Entre alguna de las características de esta elección está la existencia de un ecosistema que permite integrarse de manera sencilla con el back y con el testing, además de su fácil integración con Docker.
+Se ha optado por el uso de React, una biblioteca de JavaScript (aunque se puede considerar como framework) muy usada en la actualidad para el desarrollo front. Entre alguna de las características de esta elección está la existencia de un ecosistema que permite integrarse de manera sencilla con el back y con el testing, además de su fácil integración con Docker. Otra clave decisiva, fue la fácil creación de componentes, los cuales serán usado a la hora de la construcción de las páginas, pudiendo hacer cambios menos invasivos y no usando tanto código.
+A la hora de estilos, se ha optado por tailwind.css, un framework CSS que se caracteriza por permitir una mayor personalización gracias a sus denominadas Utility Classes, clases específicas paqra cada cosa.
 Este componente tendrá esta estructura. 
 ~~~
-frontend/
-├── public/
-│   └── index.html
-├── src/
-│   ├── assets/          # Imágenes, fuentes, íconos, etc.
-│   ├── components/      # Componentes reutilizables (Button, Navbar, etc.)
-│   ├── pages/           # Páginas o vistas principales (Home, Login, etc.)
-│   ├── hooks/           # Custom hooks (useAuth, useFetch, etc.)
-│   ├── context/         # Contextos de React (AuthContext, ThemeContext)
-│   ├── services/        # Llamadas a APIs o lógica de negocio
-│   ├── styles/          # Estilos globales o archivos CSS
-│   ├── utils/           # Funciones auxiliares
-│   ├── App.js           # Componente raíz
-│   └── index.js         # Punto de entrada
-├── .env                 
+
+frontend
+├── envs
+├── node_modules
+├── public
+|	└── index.html
+├── src
+│   ├── assets				# Carpeta que tendrá las correspondiente para imágenes, traducciones, fuentes...
+│   │   ├── fontStyle		# Carpeta con las fuentes externas que se han añadido
+│   │   ├── i18n			# Carpeta que contiene las traducciones
+│   │   └── images
+│   ├── components			# Carpeta donde se encuentran los componentes reutilizables (Backgroun, Card...)
+│   ├── config				# Carpeta de configuración (se establece cuál URL se usa exactamente del back)
+│   ├── context				# Carpeta de contextos de React (en este caso sólo userProvider)
+│   ├── hooks				# Carpeta donde creo los custom hoooks para cada page (es prácticamente la lógica)
+│   ├── pages				# Carpeta donde almaceno las vistas principales
+│   ├── styles				# Carpeta donde está el archivo global de CSS
+│   │   └── global.css
+│   ├── App.js				# Componente raíz
+│   └── index.js	
 ├── .gitignore
 ├── Dockerfile
 ├── package-lock.json
-└── package.json
+├── package.json			# Dependencias necesarias
+├── postcss.config.js
+└── tailwind.config.js
 ~~~
 Esta será accesible desde http://localhost:3000
 
 ### Backend
 Se ha decidido usar Python con el framework Flask, debido a su ligereza y flexibilidad, a parte de que está ya habilitado para proyectos más pequeños.
-Además se empleará API REST, la cual será documentada mediante Swagger.
+Además se empleará API REST, la cual será documentada mediante Swagger (en local se podrá acceder a través de http://localhost:5000/apidocs/).
 Este componente tendrá esta arquitectura:
 ~~~
-backend/
-    ├── dao/                  # Modelos de base de datos con SQLAlchemy 
-    ├── dao_schema/           # Schemas de Marshmallow 
-    ├── docs/                 # Documentación de la API 
-    ├── exceptions/           # Excepciones personalizadas 
-    ├── features/             # Lógica específica de cada módulo o funcionalidad
-    │   ├── nombre_feature/  
-    │   └── controller/       
-    ├── static/               # imágenes, CSS..
-    ├── utils/                # Funciones auxiliares o helpers reutilizables
-    ├── validations/          # Validaciones
-    ├── .gitignore            
-    ├── Dockerfile            
-    ├── main.py               # Punto de entrada de la aplicación Flask
-    └── requirements.txt      # Dependencias de Python necesarias 
+backend-project
+├── dao						# Modelos de base de datos con SQLAlchemy 
+├── database				# Configuración e inicialización de la base de datos
+├── docs					# Carpeta con la documentación en swagger con formato .yml para cada endpoint
+├── envs
+├── exceptions				# Carpeta donde configuro respuestas http, con mensajes y códigos personalizados para mayor facilidad y entendimiento.
+│   ├── __init__.py
+│   └── http_status.py
+├── features				# Lógica específica de cada módulo o funcionalidad
+|	└── nombre_feature  		# Nombre de la feature
+|     	├── controller  			# Aquí se define la lógica y se hacen llamadas a funciones de repo
+|		└── route					# Aquí se crean las rutas y de qué tipo son, a la vez que se enlaza con el documento swagger
+├── repo					# Aquí se crean mediante SQLAlchemy, consultas.
+├── tasks					# Carpeta donde establezco una series de funciones las cuales se ejecutan automáticamente cada vez que se despliega el back.
+├── uploads					# Carpeta donde se almacenan los libros (portadas y archivos)
+├── utils					# Funciones que se usan a lo largo del proyecto
+├── validations				# Funciones que sirven para validar ciertos casos
+├── .gitignore
+├── Dockerfile
+├── main.py					# Punto de entrada
+├── requirements.txt		# Dependencias de python necesarias
+├── seed.py					# Funciones que se ejutan cada vez que se inicia el servicio de back (están relacionadas con creación de elementos para la base de datos)
+└── seed_testing.py			# Lo mismo que la anterior, pero para elementos que se usan a la hora del testing.
 ~~~
+Esta será accesible desde http://localhost:5000
 
 ### Persistencia de datos
 Se usa MySQL, conectado a Flask mediante SQLAlchemy (Object-Relational Mapping u ORM) y PyMySQL como driver.
-A contonuación se mostrará el Modelo Entidad Relación (MER) creado para ello.
+A continuación se mostrará el Modelo Entidad Relación (MER) creado para ello.
 ![Diagrama Entidad-Relación](./img/MER.png)
 
 ### Testing
