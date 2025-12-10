@@ -10,49 +10,62 @@ Contará con un administrador, el cual a través de un panel, podrá gestionar u
 El sistema está desarrollado en un entorno full-stack: cuenta con autenticación segura, un entorno completamente dockerizado y una integración continua (CI/CD) que garantiza el correcto funcionamiento de todas sus partes mediante pruebas automáticas.
 
 ## Instalación / Puesta en marcha
-El proyecto está preparado para ser ejecutado mediante Docker, de manera que se inicien todos los servicios (backend, frontend y base de datos) a través de un sólo comando. A mayores, con la integración continua, se podrán ver los reportes de los tests automáticos, pero a efectos de demo, estos se podrán lanzar manualmente con comandos.
+El proyecto está preparado para ser ejecutado mediante Docker, de manera que se inicien todos los servicios (backend, frontend y base de datos) a través de un sólo comando. A mayores, con la integración continua, se podrán ver los reportes de los tests automáticos, pero a efectos de demo, el backend se puede lanzar mediante un comando. Para los tests de frontend, lo mejor es usar el IDE de IntelliJ.
+ - 
 
-1. **Clonar el repositorio:**
+1. **Configurar los archivos .env**
+    ~~~
+    - Backend -> crear archivo .env semejante al -envSample en app\backend\envs\dev.
+    - Frontend -> crear archivo .env semjante al -envSample en app\frontend\envs\dev. Se tiene que añadir la dirección del back junto /api.
+    ~~~
+2. **Clonar el repositorio:**
     ~~~
     git clone https://github.com/a21aitorna/FCT.git
     cd app
     ~~~
-2. **Construir e iniciar los contenedores::**
+3. **Construir e iniciar los contenedores:**
     ~~~
-    docker-compose up --build
+    docker-compose up --build (se recomienda si se usa VSCode utilizar el plugin)
     ~~~
-3. **Una vez iniciado, acceder a:**
+4. **Una vez iniciado, acceder a:**
     ~~~
     - Frontend: http://localhost:3000
     - Backend (API/Swagger): http://localhost:5000
     ~~~
-4. **Comandos tests**
+5. **Comandos tests (para frontend leer esta [documentación](app/tests/frontend-testing/READ.md))**
     ~~~
-    cd app/tests
-    > Los tengo que retocar aún
+    - Backend testing
+        - cd app/tests/backend-testing
+        - node run-all-tests.js
+    - Frontend Testing
+        - Se especifica en la documentaciópn propia de la carpeta
     ~~~
+    
 ## Uso
 
-> *TODO*: Es este apartado describe brevemente cómo se usará este software. Plantea un uso básico (como un *quickstart*) Si tiene una interfaz de terminal, puedes describir aquí su sintaxis. Si tiene una interfaz gráfica de usuario, describe aquí **sólo el uso** (a modo de sumario) **de los aspectos más relevantes de su funcionamiento** (máxima brevedad, como si fuese un anuncio reclamo o comercial).
-> Podrías incluso hacer una pequeña demo en *gif* o un pantallazo de la misma muy descriptivo. Recueda que esto es un reclamo para que la prueben o lean tu documentación más extensa.
+Este software consiste en una librería. En ella, el usuario tras logearse (si no existe el usuario o la contraseña es incorrecta, este llevará al formulario de registro), accederá a una biblioteca. 
+En ella podrá añadir libros, y visualizar su portada, título, autor, puntuación y fecha de subida. También tendrá la opción de descargarlos a su dispositivo físico como borrarlos. Así mismo, el usuario podrá visualizar otras bibliotecas de otros usuarios, mirando los libros que tienen así como también descargad
 
 ## Sobre el autor
 
-> *TODO*: Realiza una breve descripción de quien eres (perfil profesional), tus puntos fuertes, o tecnologías que más dominas... y porqué te has decantado por este proyecto. **No más de 200 palabras**. Indica la forma fiable de contactar contigo en el presente y en el futuro.
+Soy Aitor, QA con experiencia en testing manual y en la automatización de pruebas utilizando Selenium y Cucumber, asegurando siempre la calidad del producto entregado. Actualmente estoy ampliando mis conocimientos en automatización estudiando por mi cuenta Cypress y Playwright, dos frameworks muy utilizados en la industria.
+También me interesa profundizar en otros ámbitos del testing, como las pruebas automatizadas de backend, las pruebas de rendimiento y la creación de pipelines de CI/CD orientados al testing mediante herramientas como Jenkins y GitHub Actions.
+Si deseas ponerte en contacto conmigo, puedes escribirme a aitornalonso@gmail.com; responderé lo antes posible.
+¡Un saludo!
 
 ## Licencia
 
-> *TODO*: Brevísimamente. Indica qué licencia usarás y crea un link a ella. Hay miles de ejemplos en Github.
-> *TODO*: Es requisito INDISPENSABLE el licenciar explícitamente el proyecto software. Se recomienda licenciar con *MIT License* (como viene en la plantilla) o *GNU Free Documentation License Version 1.3*. Presencia de un fichero `LICENSE` en la raiz del repo, con tu fichero de licencia. Recuerda que si empleas una licencia de software libre estás autorizando la derivación de tu obra bajo la misma licencia que elijas, pudiendo dar continuidad, p. e. otro alumno, para continuar tu proyecto en otro curso.
-> Si tu proyecto tiene además otro tipo contenido documental, recomendamos los términos de *GNU Free Documentation License Version 1.3*, crea igualmente el fichero `LICENSE`. Será especialmente valorado en este caso, la claridad de la especificación para que el proyecto pueda ser ejecutado partiendo de lo proyectado.
-> Ten en cuenta que estás cediendo el uso de este software y sus subproductos generados a la comunidad.
+Este proyecto está bajo una **licencia propietaria de solo lectura**.  
+Se permite **clonar, descargar y ejecutar** el proyecto localmente con fines de aprendizaje o prueba.  
+Queda **prohibido modificar, redistribuir, usar con fines comerciales o crear obras derivadas** sin autorización expresa y por escrito del autor.  
+
+Consulta los términos completos en [`LICENSE`](./LICENSE).
 
 ## Documentación
 
-> *TODO*: Emplaza a quien se haya interesado en tu proyecto a leer una guía o documentación extendida del mismo. Haz un link a ella en este punto.
-
-Este proyecto dispone de [una documentación más extensa](doc/doc.md) del proyecto que recomiendo revisar.
+Este proyecto dispone de [una documentación más extensa](doc/doc.md) del proyecto, la cual recomiendo revisar para tener más detalle de esta.
 
 ## Guía de contribución
 
-> *TODO*: Tratándose de un proyecto de software libre, es muy importante que expongas cómo se puede contribuir con tu proyecto. Algunos ejemplos de esto son realizar nuevas funcionalidades, corrección y/u optimización del código, realización de tests automatizados, nuevas interfaces de integración, desarrollo de plugins, etc. etc. Sé lo más conciso que puedas.
+Salvo autorización expresa del autor, este proyecto no tendrá modificaciones por parte de terceros.
+
