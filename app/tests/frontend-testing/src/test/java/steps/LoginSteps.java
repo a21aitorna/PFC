@@ -14,11 +14,10 @@ import utils.Commons;
 public class LoginSteps {
     WebDriver driver = DriverHooks.driver;
     LoginPage loginPage = new LoginPage(driver);
-    Commons commons = new Commons();
 
     @Then("the user is redirected to its library")
     public void theUserIsRedirectedToItsLibrary() {
-        String actualLibraryName = loginPage.getLibraryName();
+        String actualLibraryName = loginPage.getLibraryName("@PROPERTY_USER_LIBRARY_NAME");
         String expectedLibraryName = "Test Library";
         Assertions.assertEquals(expectedLibraryName, actualLibraryName, "El usuario no ha accedido a su biblio"+
                 "teca. El nombre esperado es " + expectedLibraryName + ", sin embargo es " + actualLibraryName);

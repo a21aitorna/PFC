@@ -4,7 +4,6 @@ import hooks.DriverHooks;
 import io.cucumber.java.en.Then;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebDriver;
-import pages.LoginPage;
 import pages.RegisterPage;
 
 public class RegisterSteps {

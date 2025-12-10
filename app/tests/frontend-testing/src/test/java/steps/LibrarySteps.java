@@ -41,7 +41,7 @@ public class LibrarySteps {
 
     @Then("the user is redirected to searched library with name {string}")
     public void theUserIsRedirectedToSearchedLibraryWithName(String libraryName) {
-        String actualLibraryName = libraryPage.getLibraryName();
+        String actualLibraryName = libraryPage.getLibraryName("@PROPERTY_USER_LIBRARY_NAME");
         Assertions.assertEquals(libraryName, actualLibraryName, "El usuario no ha accedido a su biblio"+
                 "teca. El nombre esperado es " + libraryName + ", sin embargo es " + actualLibraryName);
     }

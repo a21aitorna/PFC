@@ -135,6 +135,7 @@ Feature: Get new password
       | recoverPassword            | inputUsernameRecoverPassword        | usernameRecover | continue                  | inputAnswerRecoverPassword | answerRecover | inputPasswordRecoverPassword | passwordRecover | inputVerifyPasswordRecoverPassword | verifyPasswordRecover | updatePassword            | error                                                                                             |
       | @PROPERTY_RECOVER_PASSWORD | @PROPERTY_USERNAME_RECOVER_PASSWORD | Test-User       | @PROPERTY_CONTINUE_BUTTON | @PROPERTY_ANSWER_QUESTION  | test_answer   | @PROPERTY_PASSWORD_RECOVER   | InvalidPassword | @PROPERTY_VERIFY_PASSWORD_RECOVER  | InvalidPassword       | @PROPERTY_UPDATE_PASSWORD | La contraseña es inválida. Mínimo, debe tener 8 caracteres, una mayúscula, un número y un símbolo |
 
+  @passwordInUse
   Scenario Outline: The user writes passwords wih wrong and an error message is displayed
     Given the user clicks on <recoverPassword> link
     And the user is redirected to recovery password first page
@@ -147,7 +148,6 @@ Feature: Get new password
     And the user clicks on <updatePassword> button
     Then it is displayed the error <error>
 
-    @passwordInUse
     Examples:
       | recoverPassword            | inputUsernameRecoverPassword        | usernameRecover | continue                  | inputAnswerRecoverPassword | answerRecover | inputPasswordRecoverPassword | passwordRecover | inputVerifyPasswordRecoverPassword | verifyPasswordRecover | updatePassword            | error                                    |
       | @PROPERTY_RECOVER_PASSWORD | @PROPERTY_USERNAME_RECOVER_PASSWORD | Test-User       | @PROPERTY_CONTINUE_BUTTON | @PROPERTY_ANSWER_QUESTION  | test_answer   | @PROPERTY_PASSWORD_RECOVER   | TestUser123..   | @PROPERTY_VERIFY_PASSWORD_RECOVER  | TestUser123..         | @PROPERTY_UPDATE_PASSWORD | La nueva contraseña ya está siendo usada |
@@ -164,5 +164,5 @@ Feature: Get new password
     Then the user is redirected to login screen
 
     Examples:
-      | recoverPassword            | inputUsernameRecoverPassword        | usernameRecover | continue                  | inputAnswerRecoverPassword | answerRecover  | inputPasswordRecoverPassword | passwordRecover | inputVerifyPasswordRecoverPassword | verifyPasswordRecover | updatePassword            | success                           |
-      | @PROPERTY_RECOVER_PASSWORD | @PROPERTY_USERNAME_RECOVER_PASSWORD | ModifyPassword  | @PROPERTY_CONTINUE_BUTTON | @PROPERTY_ANSWER_QUESTION  | ModifyPassword | @PROPERTY_PASSWORD_RECOVER   |                 | @PROPERTY_VERIFY_PASSWORD_RECOVER  |                       | @PROPERTY_UPDATE_PASSWORD | Contraseña restablecida con éxito |
+      | recoverPassword            | inputUsernameRecoverPassword        | usernameRecover | continue                  | inputAnswerRecoverPassword | answerRecover  | inputPasswordRecoverPassword | passwordRecover | inputVerifyPasswordRecoverPassword | verifyPasswordRecover | updatePassword            |
+      | @PROPERTY_RECOVER_PASSWORD | @PROPERTY_USERNAME_RECOVER_PASSWORD | ModifyPassword  | @PROPERTY_CONTINUE_BUTTON | @PROPERTY_ANSWER_QUESTION  | ModifyPassword | @PROPERTY_PASSWORD_RECOVER   |                 | @PROPERTY_VERIFY_PASSWORD_RECOVER  |                       | @PROPERTY_UPDATE_PASSWORD |

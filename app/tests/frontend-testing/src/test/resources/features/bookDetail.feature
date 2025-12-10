@@ -15,8 +15,8 @@ Feature: Detail book
 
 
     Examples:
-      | inputUsername            | username | inputPassword            | password      | login                           | bookClick      |
-      | @PROPERTY_USERNAME_LOGIN | TestUser | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @BOOK_SELECTED |
+      | inputUsername            | username | inputPassword            | password      | login                           | bookClick     |
+      | @PROPERTY_USERNAME_LOGIN | TestUser | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @PROPERTY_BOOK_SELECTED |
 
   @noReviews
   Scenario Outline: Click on a book with no reviews
@@ -33,7 +33,7 @@ Feature: Detail book
 
     Examples:
       | inputUsername            | username | inputPassword            | password      | login                           | bookClick                 | message                          | messageNoReviews                                              |
-      | @PROPERTY_USERNAME_LOGIN | TestUser | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @BOOK_SELECTED_NO_REVIEWS | @PROPERTY_BOOK_DETAIL_NO_REVIEWS | No hay opiniones todavía. ¡Sé el primero en dejar una reseña! |
+      | @PROPERTY_USERNAME_LOGIN | TestUser | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @PROPERTY_BOOK_SELECTED_NO_REVIEWS | @PROPERTY_BOOK_DETAIL_NO_REVIEWS | No hay opiniones todavía. ¡Sé el primero en dejar una reseña! |
 
   @countNumberReviews
   Scenario Outline: Count how many reviews has the book
@@ -49,8 +49,8 @@ Feature: Detail book
     Then it is displayed this book has <numberReviews> reviews.
 
     Examples:
-      | inputUsername            | username | inputPassword            | password      | login                           | bookClick                     | numberReviews |
-      | @PROPERTY_USERNAME_LOGIN | TestUser | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @BOOK_SELECTED_NUMBER_REVIEWS | 4             |
+      | inputUsername            | username | inputPassword            | password      | login                           | bookClick                    | numberReviews |
+      | @PROPERTY_USERNAME_LOGIN | TestUser | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @PROPERTY_BOOK_SELECTED_NUMBER_REVIEWS | 4             |
 
   @postReview
   Scenario Outline: Post a review
@@ -72,7 +72,7 @@ Feature: Detail book
 
     Examples:
       | inputUsername            | username | inputPassword            | password      | login                           | bookClick                  | rating               | inputReview            | textReview | postReview                   |
-      | @PROPERTY_USERNAME_LOGIN | TestUser | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @BOOK_SELECTED_POST_REVIEW | @PROPERTY_START_RATE | @PROPERTY_REVIEW_INPUT | Me encanta | @PROPERTY_POST_REVIEW_BUTTON |
+      | @PROPERTY_USERNAME_LOGIN | TestUser | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @PROPERTY_BOOK_SELECTED_POST_REVIEW | @PROPERTY_START_RATE | @PROPERTY_REVIEW_INPUT | Me encanta | @PROPERTY_POST_REVIEW_BUTTON |
 
   @postReviewDifferentUser
   Scenario Outline: Post a review
@@ -95,8 +95,8 @@ Feature: Detail book
       | deleteButton | @PROPERTY_DELETE_BUTTON_USER_FIRST |
 
     Examples:
-      | inputUsername            | username  | inputPassword            | password      | login                           | inputSearchLibrary            | librarySearchByUsername | optionSelected             | bookClick                  | rating               | inputReview            | textReview | postReview                   |
-      | @PROPERTY_USERNAME_LOGIN | Test-User | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @PROPERTY_SEARCH_USER_LIBRARY | TestUser                | @PROPERTY_SELECTED_LIBRARY | @BOOK_SELECTED_POST_REVIEW | @PROPERTY_START_RATE | @PROPERTY_REVIEW_INPUT | Me encanta | @PROPERTY_POST_REVIEW_BUTTON |
+      | inputUsername            | username  | inputPassword            | password      | login                           | inputSearchLibrary            | librarySearchByUsername | optionSelected             | bookClick                 | rating               | inputReview            | textReview | postReview                   |
+      | @PROPERTY_USERNAME_LOGIN | Test-User | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @PROPERTY_SEARCH_USER_LIBRARY | TestUser                | @PROPERTY_SELECTED_LIBRARY | @PROPERTY_BOOK_SELECTED_POST_REVIEW | @PROPERTY_START_RATE | @PROPERTY_REVIEW_INPUT | Me encanta | @PROPERTY_POST_REVIEW_BUTTON |
 
   @readBook
   Scenario Outline: Read a book
@@ -112,8 +112,8 @@ Feature: Detail book
     And the user clicks on <readBook> button
 
     Examples:
-      | inputUsername            | username | inputPassword            | password      | login                           | bookClick                  | readBook            |
-      | @PROPERTY_USERNAME_LOGIN | TestUser | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @BOOK_SELECTED_POST_REVIEW | @PROPERTY_BOOK_READ |
+      | inputUsername            | username | inputPassword            | password      | login                           | bookClick                 | readBook            |
+      | @PROPERTY_USERNAME_LOGIN | TestUser | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @PROPERTY_BOOK_SELECTED_POST_REVIEW | @PROPERTY_BOOK_READ |
 
   @verifyDeleteReviewIsDisplayedForLoggedOwner
   Scenario Outline: Verify delete in review logged user created
@@ -129,8 +129,8 @@ Feature: Detail book
     Then the <deleteReviewButton> is displayed for the user
 
     Examples:
-      | inputUsername            | username | inputPassword            | password      | login                           | bookClick                  | deleteReviewButton            |
-      | @PROPERTY_USERNAME_LOGIN | TestUser | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @BOOK_SELECTED_POST_REVIEW | @PROPERTY_REVIEWS_WITH_DELETE |
+      | inputUsername            | username | inputPassword            | password      | login                           | bookClick                 | deleteReviewButton            |
+      | @PROPERTY_USERNAME_LOGIN | TestUser | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @PROPERTY_BOOK_SELECTED_POST_REVIEW | @PROPERTY_REVIEWS_WITH_DELETE |
 
   @verifyDeleteReviewIsNotDisplayedForNotLoggedOwner
   Scenario Outline: Verify delete is not in review logged user
@@ -149,4 +149,4 @@ Feature: Detail book
 
     Examples:
       | inputUsername            | username  | inputPassword            | password      | login                           | inputSearchLibrary            | librarySearchByUsername | optionSelected             | bookClick                  | deleteReviewButton            |
-      | @PROPERTY_USERNAME_LOGIN | Test-User | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @PROPERTY_SEARCH_USER_LIBRARY | TestUser                | @PROPERTY_SELECTED_LIBRARY | @BOOK_SELECTED_POST_REVIEW | @PROPERTY_REVIEWS_WITH_DELETE |
+      | @PROPERTY_USERNAME_LOGIN | Test-User | @PROPERTY_PASSWORD_LOGIN | TestUser123.. | @PROPERTY_LOGIN_REGISTER_BUTTON | @PROPERTY_SEARCH_USER_LIBRARY | TestUser                | @PROPERTY_SELECTED_LIBRARY | @PROPERTY_BOOK_SELECTED_POST_REVIEW | @PROPERTY_REVIEWS_WITH_DELETE |

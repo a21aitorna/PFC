@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import utils.Commons;
 
 import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractPage {
 
@@ -52,12 +53,12 @@ public abstract class AbstractPage {
 
     /**
      * Devuelve el nombre de la biblioteca del usuario
-     * @return
+     * @return el nombre de la librería
      */
-    public String getLibraryName(){
-        String libraryNameString = commons.getObjectProperty("@PROPERTY_USER_LIBRARY_NAME");
-        commons.waitElementVisible("@PROPERTY_USER_LIBRARY_NAME");
-        commons.wait(0.5F);
+    public String getLibraryName(String property){
+        commons.waitElementVisible(property);
+        String libraryNameString = commons.getObjectProperty(property);
+        commons.wait(1.0F);
         WebElement libraryName = commons.getByDataTestId(libraryNameString);
         return commons.getText(libraryName);
     }
@@ -94,4 +95,33 @@ public abstract class AbstractPage {
         return !elements.isEmpty();
     }
 
+    /**
+     * Conseguir el número total de elementos con esa propiedad
+     * @param property la propiedad
+     * @return el número de elementos
+     */
+    public int getNumberElements(String property){
+        List<WebElement> elements = commons.findElements(property);
+        return  elements.size();
+    }
+    /**
+     * Verifica si todos los elementos del map aparecen
+     * @param properties el map que viene de convertir la datatable en map
+     * @return true si toos los elmentos están, sino false
+     */
+    public boolean areElementsDisplayed(Map<String, String> properties) {
+        for (Map.Entry<String, String> entry : properties.entrySet()) {
+            String key = entry.getKey();
+            String objectProperty = entry.getValue();
+
+            commons.waitElementVisible(objectProperty);
+            String xpath = commons.getObjectProperty(objectProperty);
+            WebElement element = commons.getByPath(xpath);
+
+            if (!element.isDisplayed()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

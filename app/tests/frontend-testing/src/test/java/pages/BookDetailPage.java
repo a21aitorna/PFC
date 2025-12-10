@@ -1,40 +1,16 @@
 package pages;
 
-import io.cucumber.datatable.DataTable;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 public class BookDetailPage extends AbstractPage {
 
     public BookDetailPage(WebDriver driver) {
         super(driver);
-    }
-
-    /**
-     * Verifica si todos los elementos del map aparecen
-     * @param properties el map que viene de convertir la datatable en map
-     * @return true si toos los elmentos están, sino false
-     */
-    public boolean areElementsDisplayed(Map<String, String> properties) {
-        for (Map.Entry<String, String> entry : properties.entrySet()) {
-            String key = entry.getKey();
-            String objectProperty = entry.getValue();
-
-            commons.waitElementVisible(objectProperty);
-            String xpath = commons.getObjectProperty(objectProperty);
-            WebElement element = commons.getByPath(xpath);
-
-            if (!element.isDisplayed()) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
@@ -82,24 +58,32 @@ public class BookDetailPage extends AbstractPage {
     }
 
     /**
-     * Verifica que el usuario logeado coincide con el nombre de usuario de la lista
+     * Verifica que el usuario loegado puede borrar reviews propias y en el caso de admin todas
      * @param property que se pasa
      * @return true si coincide, sino false
      */
     public boolean verifyOnlyUserCanDeleteReview(String property){
-        boolean reviewUserIsUsername=false;
+        boolean reviewUserIsAllowed=false;
         String username = commons.getSessionVariable("usernameUser").toLowerCase();
         List<WebElement> deleteReviews = deleteReviewsElements(property);
         for(WebElement deleteReviewOption: deleteReviews){
-            String valueProperty = commons.getObjectProperty("@PROPERTY_USER_LOGGED_CREATED_REVIEW");
-            WebElement usernameCreator = deleteReviewOption.findElement(By.xpath(valueProperty));
-            String reviewUser = commons.getText(usernameCreator).toLowerCase();
+            if(username.equals("admin")){
+                String valuePropperty = commons.getObjectProperty("@PROPERTY_DELETE_BUTTON");
+                if (deleteReviewOption.findElement(By.xpath(valuePropperty)).isDisplayed()){
+                    reviewUserIsAllowed = true;
+                }
+            }
+            else{
+                String valueProperty = commons.getObjectProperty("@PROPERTY_USER_LOGGED_CREATED_REVIEW");
+                WebElement usernameCreator = deleteReviewOption.findElement(By.xpath(valueProperty));
+                String reviewUser = commons.getText(usernameCreator).toLowerCase();
 
-            if(reviewUser.equals(username)){
-                reviewUserIsUsername = true;
+                if(reviewUser.equals(username)){
+                    reviewUserIsAllowed = true;
+                }
             }
         }
-        return reviewUserIsUsername;
+        return reviewUserIsAllowed;
     }
 
 }
