@@ -1,5 +1,5 @@
 # Proyecto Atenea
-Proyecto Atenea, es un proyecto que realizo como PFC del Grado Superior de Desarrollo de Apliciones Web, en la que se combina tanto un perfil tanto fullstack como QA, cuya idea surgió de mi pasión por la lectura así como a la hora de intentar visibilizar el perfil de tester, un aspecto que no se vio mucho durante el ciclo, y que considero que tiene tanta importancia como el desarrollo propio.
+Proyecto Atenea, es un proyecto que realizo como PFC del Grado Superior de Desarrollo de Apliciones Web, en la que se combina un perfil tanto fullstack como QA, cuya idea surgió de mi pasión por la lectura así como a la hora de intentar visibilizar el perfil de tester, un aspecto que no se vio mucho durante el ciclo, y que considero que tiene tanta importancia como el desarrollo propio.
 
 ## Descripción
 Proyecto Atenea es una aplicación web que permite a cada usuario crear y gestionar su propia biblioteca digital personal.
@@ -43,8 +43,11 @@ El proyecto está preparado para ser ejecutado mediante Docker, de manera que se
     
 ## Uso
 
-Este software consiste en una librería. En ella, el usuario tras logearse (si no existe el usuario o la contraseña es incorrecta, este llevará al formulario de registro), accederá a una biblioteca. 
-En ella podrá añadir libros, y visualizar su portada, título, autor, puntuación y fecha de subida. También tendrá la opción de descargarlos a su dispositivo físico como borrarlos. Así mismo, el usuario podrá visualizar otras bibliotecas de otros usuarios, mirando los libros que tienen así como también descargad
+Este software funciona como una biblioteca digital. Tras iniciar sesión, el usuario accederá a su propia librería; si el nombre de usuario no existe o la contraseña es incorrecta, será redirigido al formulario de registro.
+
+Dentro de su biblioteca, el usuario podrá añadir libros y visualizar su portada, título, autor, puntuación y fecha de subida. También tendrá la opción de descargarlos en su dispositivo físico o eliminarlos. Al hacer clic sobre cualquiera de ellos, podrá acceder a su información detallada, leer el libro, escribir reseñas y eliminarlas siempre que tenga la autorización correspondiente (ser su autor o administrador).
+
+Además, el usuario podrá explorar las bibliotecas de otros usuarios, pudiendo realizar las acciones previamente descritas (excepto la eliminación de libros).
 
 ## Sobre el autor
 
@@ -63,7 +66,7 @@ Consulta los términos completos en [`LICENSE`](./LICENSE).
 
 ## Documentación
 
-Este proyecto dispone de [una documentación más extensa](doc/doc.md) del proyecto, la cual recomiendo revisar para tener más detalle de esta.
+Este proyecto dispone de [una documentación más extensa](doc/doc.md) del proyecto.
 
 ## Guía de contribución
 

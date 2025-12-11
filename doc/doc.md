@@ -33,6 +33,12 @@
 		- [4. Visualización de reseñas](#4-visualización-de-reseñas)
 		- [5. Botón de volver a la librería](#5-botón-de-volver-a-la-librería)
 	- [Sistema de admin](#sistema-de-admin)
+	- [Backend testing](#backend-testing-1)
+		- [1. Login](#1-login)
+		- [2. Registro](#2-registro)
+		- [3. Recuperar contraseña](#3-recuperar-contraseña)
+		- [4. Admin](#4-admin)
+		- [5. Book](#5-book)
 - [Alcance](#alcance)
 	- [Funcionalidades implementadas](#funcionalidades-implementadas)
 	- [Usuarios de la aplicación](#usuarios-de-la-aplicación)
@@ -42,7 +48,10 @@
 	- [Gastos](#gastos)
 	- [Normativa](#normativa)
 	- [Ideas de implementación para el futuro](#ideas-de-implementación-para-el-futuro)
-- [TODO: A partir de este punto eres libre de organizar la documentación como estimes pero debes desarrollar el cuerpo de tu proyecto con apartados y subapartados que completen tu documentación](#todo-a-partir-de-este-punto-eres-libre-de-organizar-la-documentación-como-estimes-pero-debes-desarrollar-el-cuerpo-de-tu-proyecto-con-apartados-y-subapartados-que-completen-tu-documentación)
+- [Despliegues](#despliegues)
+	- [1. Frontend](#1-frontend)
+	- [2. Backend](#2-backend)
+	- [3. Tests](#3-tests)
 - [Conclusiones](#conclusiones)
 - [Referencias, Fuentes consultadas y Recursos externos: Webgrafía](#referencias-fuentes-consultadas-y-recursos-externos-webgrafía)
 
@@ -61,8 +70,8 @@ Actualmente, la aplicación se encuentra desplegada, pudiendo acceder mediante e
 Para garantizar el correcto funcinamiento de esta, se ha establecido un pipeline de GithubActions, el cual se ejecuta una vez al día a las 6:00. Esto genera unos informes que hay que revisar diariamente, que se pueden observar [aquí](https://a21aitorna.github.io/PFC_TESTS/). 
 
 ### Frontend
-Se ha optado por el uso de React, una biblioteca de JavaScript (aunque se puede considerar como framework) muy usada en la actualidad para el desarrollo front. Entre alguna de las características de esta elección está la existencia de un ecosistema que permite integrarse de manera sencilla con el back y con el testing, además de su fácil integración con Docker. Otra clave decisiva, fue la fácil creación de componentes, los cuales serán usado a la hora de la construcción de las páginas, pudiendo hacer cambios menos invasivos y no usando tanto código.
-A la hora de estilos, se ha optado por tailwind.css, un framework CSS que se caracteriza por permitir una mayor personalización gracias a sus denominadas Utility Classes, clases específicas paqra cada cosa.
+Se ha optado por el uso de *React*, una biblioteca de JavaScript (aunque se puede considerar como framework) muy usada en la actualidad para el desarrollo front. Entre alguna de las características de esta elección está la existencia de un ecosistema que permite integrarse de manera sencilla con el back y con el testing, además de su fácil integración con Docker. Otra clave decisiva, fue la fácil creación de componentes, los cuales serán usado a la hora de la construcción de las páginas, pudiendo hacer cambios menos invasivos y no usando tanto código.
+En cuanto a los estilos, se ha optado por Tailwind CSS, un framework que destaca por su alto nivel de personalización gracias a sus denominadas *utility classes*, es decir, clases específicas y reutilizables que permiten diseñar interfaces de forma rápida y flexible.
 Este componente tendrá esta estructura. 
 ~~~
 
@@ -95,7 +104,7 @@ frontend
 Esta será accesible desde http://localhost:3000
 
 ### Backend
-Se ha decidido usar Python con el framework Flask, debido a su ligereza y flexibilidad, a parte de que está ya habilitado para proyectos más pequeños.
+Se ha decidido usar Python con el framework *Flask*, debido a su ligereza y flexibilidad, a parte de que está ya habilitado para proyectos más pequeños.
 Además se empleará API REST, la cual será documentada mediante Swagger (en local se podrá acceder a través de http://localhost:5000/apidocs/).
 Este componente tendrá esta arquitectura:
 ~~~
@@ -126,38 +135,54 @@ backend-project
 Esta será accesible desde http://localhost:5000
 
 ### Persistencia de datos
-Se usa MySQL, conectado a Flask mediante SQLAlchemy (Object-Relational Mapping u ORM) y PyMySQL como driver.
-A continuación se mostrará el Modelo Entidad Relación (MER) creado para ello.
+Se usa MySQL, conectado a Flask mediante SQLAlchemy (*Object-Relational Mapping* u *ORM*) y *PyMySQL* como driver.
+A continuación se mostrará el Modelo Entidad Relación (*MER*) creado para ello.
 ![Diagrama Entidad-Relación](./img/MER.png)
 
 ### Testing
-Se diferencian dos partes
+Se diferencian dos partes. Es
 #### Frontend Testing
-Se centra en la validación del comportamiento y la interacción de la interfaz visual.
-Se usan Selenium Java(framework de automatización basada en WebDriver)y Cucumber (se posibilita el uso del denominado Behavior Driven Development, BDD, que permite describir escenarios de prueba mediante un lenguaje natural).
-Tendrá la siguiente estructura, empleando el modelo de Page Object Model (POM).
+El frontend testing se centra en validar el comportamiento y la interacción de la interfaz visual.  
+En este proyecto se utiliza Selenium con Java, un framework de automatización basado en WebDriver, junto con Cucumber, que permite aplicar la metodología *Behavior Driven Development* (BDD) y describir los escenarios de prueba mediante un lenguaje natural. Todo ello se gestiona a través de Maven, que facilita la administración de dependencias y 
+Las pruebas siguen una estructura basada en el *Page Object Model* (POM), lo que facilita la mantenibilidad y la organización del código.
+Este componente, tendrá esta estructura:
 ~~~
-frontend-testing/
-├── src/
-│   ├── java/                     
-│   │   ├── page/                 # Representan páginas o componentes del frontend
-│   │   └── steps/                # Definición de pasos usados en los escenarios de prueba
-│   └── resources/                
-│       ├── data/                 # Datos que se necesitan (xpath, expresiones regulares...)
-│       └── features/             # Archivos .feature escritos en Gherkin (escenarios de prueba para Cucumber)
-├── target/                       # Carpeta generada automáticamente por Maven con los resultados de compilación y reportes de pruebas
-├── .gitignore                    
-└── pom.xml                       # Archivo de configuración de Maven (dependencias, plugins, configuración del proyecto)
+frontend-testing
+├── bookSamples									# Carpeta donde están los libros destinados a pruebas
+├── src																		
+│   └── test									
+│       ├── java
+│       │   ├── hooks							# Clases para inicializar y finalizar escenarios
+│       │   ├── manager							# Configuración del drive manager
+│       │   ├── pages							# Representa las acciones a realizar
+│       │   ├── runner							# Ejecución de tests
+│       │   ├── steps							# Definiciones de los pasos de Cucumber
+│       │   └── utils							# Utilidades comunes
+│       │       ├── AteneaUtils.java				# Instancia de la clase del proyecto
+│       │       └── Commons.java					# Contiene funcionalidades que se usarán en todo el proyecto para mayor limpieza
+│       └── resources		
+│           ├── data
+│           │   ├── keys
+│           │   │   └── keysES.properties		# Properties con claves en español
+│           │   └── objects
+│           │       └── pathObjects.properties	# Paths y objects de la interfaz
+│           └── features						# Archivos .feature (escenarios en Gherkin)
+├── .gitignore
+└── pom.xml										# Configuración de Maven
 ~~~
 #### Backend Testing
-Tiene como propósito validar el correcto funcionamiento de la API REST desarrollada en Flask, asegurando que todas las operaciones CRUD, autenticación, manejo de errores y respuestas JSON se comporten de manera consistente. Se empleará Newman (Postman CLI), permiiendo la ejecución automática de las colecciones de endpoints definidas en Postman, validando códigos de estado, estructuras de respuesta y tiempos de ejecución.
-Tendrá la siguiente estructura
+Tiene como propósito validar el correcto funcionamiento de la API REST desarrollada con Flask, garantizando que todas las operaciones CRUD, los mecanismos de autenticación, el manejo de errores y las respuestas en formato JSON se ejecuten de manera consistente y conforme a lo esperado.
+Para ello se utilizará Newman (la CLI de Postman), que permitirá la ejecución automatizada de las colecciones de endpoints definidas en Postman. Con esta herramienta se validarán los códigos de estado HTTP, la estructura de las respuestas y los tiempos de ejecución, asegurando así la calidad y fiabilidad de la API.
+La solución contará con la siguiente estructura:
 ~~~
-backend-testing/
-├── collections/                  # Carpeta con las colecciones de pruebas de API 
-├── environments/                 # Configuraciones de entorno para las pruebas (URLs, tokens, variables)
-├── package-lock.json             # Archivo generado automáticamente por npm
-└── package.json                  # Archivo de configuración del proyecto Node.js (dependencias, scripts de test, metadata)
+backend-testing
+├── bookTests									# Carpeta con los libros para pruebas
+├── collections									# Carpeta con las colecciones de pruebas de API 
+├── environments								# Configuraciones de entorno para las pruebas (URLs, tokens, variables...)
+├── .gitignore
+├── package-lock.json							# Archivo generado automáticamente por npm
+├── package.json								# Archivo de configuración del proyecto Node.js 
+└── run-all-tests.js							# Script para lanzar los tests de back
 ~~~
 
 ## Estado de arte o análisis del contexto
@@ -179,32 +204,32 @@ backend-testing/
 
 ## Propósito
 
-Este proyecto consiste en una librería virtual. En ella cada usuario, tendrá una biblioteca propia donde podrán subir sulibros en formato PDF y EPUB, así como acceder a las biliotecas de otros usuarios y realizar acciones como escribir reseñas sobre ellos, añadirlos a su propia biblioteca o descargarlos.
+Este proyecto consiste en una librería virtual. En ella cada usuario, tendrá una biblioteca propia donde podrán subir libros en formato PDF y EPUB, así como acceder a las biliotecas de otros usuarios y realizar acciones como escribir reseñas sobre ellos, añadirlos a su propia biblioteca o descargarlos.
 
 El sistema contará con un administrador, que tendrá el control total. Este podrá eliminar reseñas o libros, así como bloquear o dar de baja usuarios, especialmente en casos de incumplimiento de normas (por ejemplo, lenguaje ofensivo en reseñas o subida de libros sujetos a copyright).
 
-Así mismo, una parte esencial de este proyecto es el después de crear una funcionalidad: ¿esta está funcionando bien? ¿Cumple todos los requisitos? ¿Cómo se que a posteriori no se va a romper? La respuesta a ello es el testing. Para ello, haré tests automáticos,tanto a nivel frontend como backend, junto un flujo de integración y despliegue continui (CI/CD). De este modo, cada actualización del repositorio se validará automáticamente, asegurando que las funcionalidades existentes no se rompan y su estabilidad.
+Así mismo, una parte esencial de este proyecto es el después de crear una funcionalidad: ¿esta está funcionando bien? ¿Cumple todos los requisitos? ¿Cómo se que a posteriori no se va a romper? La respuesta a ello es el testing. Para ello, haré tests automáticos,tanto a nivel frontend como backend, junto un flujo de integración y despliegue continuo (CI/CD), siempre apuntando contra un entorno previo. De este modo, cada actualización del repositorio se validará automáticamente, asegurando que las funcionalidades existentes no se rompan y su estabilidad.
 
 ## Objetivos
 
 ### Objetivos principales
-- [ ] Creación de Diagrama Entidad Relación de la base de datos.
-- [ ] Definición de todas las funcionalidades del proyecto.
-- [ ] Construcción de los contenedores docker para Backend, Frontend, Base de datos y Testing.
-- [ ] Construcción del sistema de integración CI/CD.
-- [ ] Configuración del docker-compose para la aplicación entera.
-- [ ] Implementación del sistema de login (Backend).
-- [ ] Implementación del sistema de login (Frontend).
-- [ ] Implementación de tests para el sistema de login.
-- [ ] Implementación del sistema de biblioteca (Backend)
-- [ ] Implementación del sistema de biblioteca (Frontend)
-- [ ] Implementación de tests para el sistema de biblioteca.
-- [ ] Implementación del sistema de detalle de un libro (Backend)
-- [ ] Implementación del sistema de detalle de un libro (Frontend)
-- [ ] Implementación del sistema de detalle de un libro (Backend)
-- [ ] Implementación de test para el sistema de detalle de un libro
-- [ ] Levantar la aplicación desarrollada sin errores.
-- [ ] Generación de informe de pruebas correctas y falladas.
+- [x] Crear Diagrama Entidad Relación de la base de datos.
+- [x] Definit todas las funcionalidades del proyecto.
+- [x] Construir de los contenedores docker para Backend, Frontend y Base de datos.
+- [x] Construir el sistema de integración CI/CD.
+- [x] Configurar el docker-compose para la aplicación entera.
+- [x] Implementar el sistema de login (Backend).
+- [x] Implementar el sistema de login (Frontend).
+- [x] Implementar tests para el sistema de login.
+- [x] Implementar el sistema de biblioteca (Backend).
+- [x] Implementar el sistema de biblioteca (Frontend).
+- [x] Implementar tests para el sistema de biblioteca.
+- [x] Implementar el sistema de detalle de un libro (Backend).
+- [x] Implementar el sistema de detalle de un libro (Frontend).
+- [x] Implementar tests para el sistema de detalle de un libro.
+- [x] Levantar la aplicación desarrollada sin errores.
+- [x] Generar informe de pruebas correctas y falladas.
+- [x] Generar pipeline para ejecución de pruebas automáticas periódicas.
 
 ### Sistema de Login
 Se podrán diferencias tres elementos esenciales:
@@ -260,7 +285,7 @@ El usuario introducirá el nombre de otro usuario o el nombre de otra librería,
 El usuario podrá buscar libros tanto por su título como su autor.
 
 #### 3. Ordenar libros
-Se podrán ordenar libros por su fecha de publicación o su puntuación.(pendiente de desarrollar aún)
+Se podrán ordenar libros por su fecha de publicación o su puntuación.
 
 #### 4. Subir libros
 El usuario podrá subir libros que tengan formato PDP o epub, los cuales se guardarán en el sistema, apuntando en la base de datos a su nombre, y en el código el lugar donde se guardan los archivos físicos.
@@ -299,6 +324,41 @@ El administrador visualizará en una tabla todos los usuarios y sus bibliotecas 
 El administrador, podrá acceder a la biblioteca de cualquier usuario, pudiendo eliminar libros, así como si entra en el detalle de estos, puede eliminar reseñas.
 
 ![BorradorPanelAdmin](img/BorradoresFront/PanelAdmin/1.%20PanelAdmin.png)
+
+### Backend testing
+Se han desarrollado mediante Postman una serie de colecciones con el objetivo de garantizar el correcto funcionamiento de los endpoints desarrollados. Estos, luego se han exportado a una carpeta llamada collections en formato JSON, de manera que en el script de run-all-tests.js, se van incluyendo en un array los nombres de esos, y junto la configuración del entorno, permite su ejecución. Como resultado, se genera un informe con formato HTML de cada una, pudiendo observar los posibles fallos.  
+En concreto se han creado 5 colecciones :
+
+#### 1. Login
+Contiene tests relacionados con el login:
+- Login como usuario normal y administrador.
+- Verificación de todos los posibles errores que pueden suceder en este endpoint.
+
+#### 2. Registro
+Incluye tests relacionados con el registro de usuarios:
+- Registro de un nuevo usuario
+- Verificación de todos los posibles errores que pueden suceder en este endpoint.
+
+#### 3. Recuperar contraseña
+Incluye tests relacionados con el proceso de recuperación de la contraseña y los posibles errores para cada endpoint:
+- Verificar nombre
+- Recuperar pregunta de seguridad
+- Actualizar contraseña
+
+#### 4. Admin
+Incluye todas las funcionalidades que puede realizar el administrador así como los posibles errores que pueden suceder para cada endpoint.
+- Conseguir todos los usuarios que no son admin
+- Bloquear usuario
+- Desbloquear usuario
+- Borrar usuario
+- Rectificar borrado de usuario
+
+#### 5. Book
+Contiene algunas de las funcionalidades relacionadas con los libros, así como posibles errores en cada endpoint.
+- Subir libro
+- Conseguir los libros del usuario
+- Conseguir el detalle del libro
+
 ## Alcance
 
 ### Funcionalidades implementadas
@@ -330,9 +390,8 @@ El administrador, podrá acceder a la biblioteca de cualquier usuario, pudiendo 
 - **Recuperación de la contraseña**: lo adecuado sería que la recuperación de la contraseña fuera a través de un enlace con un correo electrónico. Por falta de tiempo, se lleva de una forma más sencilla, totalmente factible, pero que a nivel profesional, no sería lo más adecuado, tanto por vulnerabilidad como por profesionalidad.
 - **Pruebas de rendimiento**: por posible falta de tiempo, no se abarcarán estas pruebas que servirían para evitar que la aplicación vaya lenta o no funcione ante una alta demanda de usuarios al mismo tiempo, así como serviría para saber qué requisitos son necesarios a la hora de alojarlos en un servidor en caso de que fuera a producción.
 - **Pruebas unitarias**: por falta de tiempo, no se abordarán estas pruebas. Así mismo, estas son hechas más por desarrolladores, y lo que quiero mostrar es más el rol de tester.
-- **Subida de algunos libros epub**: los libros con formato epub son archivos zip, cuyos metadatos se definen en un archivo *content.opf*. En estos, la imagen del libro se guarda de diferentes maneras, por lo que a veces, al intentar subir un libro con este formato falla. Sería necesario hacer una investigación un poco más profunda para saber exactamente cuáles son las rutas más usadas.
 - **Edición de medatos del libro**: esto en función del tiempo, podrá ser incorporado.
-- **Aplicación responsive**: la aplicación sólo se mostrará para web de escritorio  por falta de tiempo.
+- **Aplicación responsive**: la aplicación sólo se mostrará para web de escritorio por falta de tiempo (mediante el uso de Tailwind, se ha conseguido que sea bastante responsive, pero hay elementos que en función del dispositivo no se visualizan tal como se desea).
 
 ### Planificación
 Elaboré un [calendario en Trello](https://trello.com/b/u07xmNm6/mi-tablero-de-trello), definiendo todas lo que hice durante unos rangos basados en las fechas de entregas
@@ -341,10 +400,10 @@ Elaboré un [calendario en Trello](https://trello.com/b/u07xmNm6/mi-tablero-de-t
 Se ha hecho un pequeño estudio en referencia a los costes que acarrearía llevar el proyecto a producción. A continuación, se procede a hacer una estimación de estos
 - **Infraestructura**:se necesitarán contratar varios servicios en la nube (servidores, bases de datos,etc). En función del proveedor y la estabilidad que se desee, el coste será de 200 a 600€ anuales.
 - **Dominio y certificados**: se estima unos 15€ anuales, ya que se pueden usar cerficados SSL gratuitos.
--  **Mantenimiento y supervisión**: para garantizar la calidad del proyecto y conseguir una mayor facilidad para reflejar las incidencias, se usarán sistemas de monitorización como Kibana y Grafana. El coste estimado es de 50 a 200€ anuales
--  **Costes de desarrollo**: se usarán licencias como Docker Pro, Figma Professional o Postman Professional entre otras. El coste estimado es de 100 a 300€ anuales.
--  **Costes operativos**: el hecho de tener un ordenador, ya lo abarata. Pero así mismo, se estima que el coste de la electricidad e intenet sea de 150€ mensuales.
-- **Costes de personal**: no habrá, ya que el proyecto se hará de manera individual.
+- **Mantenimiento y supervisión**: para garantizar la calidad del proyecto y conseguir una mayor facilidad para reflejar las incidencias, se usarán sistemas de monitorización como Kibana y Grafana. El coste estimado es de 50 a 200€ anuales
+- **Costes de desarrollo**: se usarán licencias como Docker Pro, Figma Professional o Postman Professional entre otras. El coste estimado es de 100 a 300€ anuales.
+- **Costes operativos**: el hecho de tener un ordenador, ya lo abarata. Pero así mismo, se estima que el coste de la electricidad e intenet sea de 150€ mensuales.
+- **Costes de personal**: no habrá, ya que el proyecto se hará de manera individual. Como mucho, se implementará un sistema de donaciones de manera que se puedan sufragar los gastos sin obtener beneficio ninguno. Todas las persona que participasen en la página (como posibles moderadores en un futuro), no recibirían ninguna retribución económica.
 En resumen, con el objetivo de garantizar calidad más una infraestructura estable, el coste total del proyecto será de 2165 a 2915€ anuales.  
 
 ### Normativa
@@ -355,14 +414,35 @@ En cuanto a los datos personales (como nombre, apellidos y fecha de nacimiento),
 ### Ideas de implementación para el futuro
 - Creación de un nuevo rol llamado Moderador. Estos serán usuarios normales que tendrán una autorización semejante a la del administrador, de manera que haya una mayor supervisión de los usuarios, ya que cumplirían las mismas funciones. En cualquier momento, este poder podría ser revocado por cualquier motivo.
 - Permitir la subida de archivos con otros formatos.
-- Permiti la subidad de cualquier libro con formato epub.
-- Mejorar la lectura de libros epub. Actualmente, sólo se leer, y no guarda el estado. Se seguiría implementando la solución que se ha hecho con ReactReader.
-- Implementación de tests de integración para asegurar la calidad del proyecto.
+- Mejorar la lectura de libros epub. Actualmente, sólo se lee, y no se guarda el estado. Se seguiría implementando la solución que se ha hecho con ReactReader.
+- Implementación de tests unitarios para asegurar la calidad del proyecto.
+- Conexión a un servicio remoto de manera que al subir un libro, el archivo y la portada se guarden ahí y no en la carpeta uploads. Cada vez que se realiza un despliegue del servicio de back en producción, se reinicia, de manera que todo el contenido previo de la carpeta uploads desaparece.
+- Mejorar los tiempos de respuesta una vez desplegado.
+- Cambiar los endpoints. Actualmente, la mayoría de los endpoints usan la clave principal de la tabla correspondiente, siendo un id númerico autoincremental. Gracias a los tests, se ha detectado que no se puede garantizar la estaticidad de estos; es por ello que en vez de id, se pueden usar campos relacionados a nombres.
 
-## TODO: A partir de este punto eres libre de organizar la documentación como estimes pero debes desarrollar el cuerpo de tu proyecto con apartados y subapartados que completen tu documentación
 
-> Hemos elaborado un [checklist](checklist.md) de puntos necesarios para tu PFC, para que revises estas recomendaciones/especificaciones.
-> Apóyate en tu tutor/a si tienes duda de cómo organizar tu proyecto y estos apartados/subapartado. Cada proyecto y su contexto determinará la mejor forma de estructurarlo. Piensa bien cómo lo vas a hacer.
+## Despliegues
+Se ha decidido usar [RailwayApp](https://railway.com/) para realizar el despliegue de la aplicación. Esta plataforma permite deplegar servicios desde repositorios en GitHub, y ofrece y ofrece una integración con servicios de diferentes bases de datos propios sencilla.
+Dado que mi proyecto consta de tres servicios independientes (frontend, backend y tests), creé tres repositorios.
+Así mismo, se definieron dos entornos de despliegue:
+* Preproducción (Pre): apunta a la rama pre de cada repositorio. En este entorno, se valida el código antes de pasarlo a producción y se ejecutan todos los tests automatizados.
+* Producción (Pro): apunta a la rama pro o main de cada repositorio. Sólo se despliega una vez validado en preproducción.
+Cabe indicar que el repositorio de tests sólo cuenta con una rama, ya que tiene como objetivo validar el resto de servicios.
+
+Durante el proceso de despliegue, se han hecho unos cambios en el código para garantizar la compatibilidad con Railway y la ejecución de los tests automatizados.
+
+### 1. [Frontend](https://github.com/a21aitorna/PFC_FRONT)
+* No se usa un .env
+* Las posibles URLs del back de ambos entornos, se encuentra hardcodeadas. Al saber cuáles vamos a usar fijo, es una buena solución.
+
+### 2. [Backend](https://github.com/a21aitorna/PFC_BACK)
+* Se ha crado un archivo dentro de la carpeta envs llamado pro. En este se encuentra pro_env, que contiene nuevas configuraciones para adaptarlo a las variables de la base de datos proporcionada por Railway.
+* Las variables de entorno se configuran en el propio servicio creado por railway.
+* En el controller *book_controller* se crea una variable *BASE_URL* que coge una URL correspondiente a la del back según el entorno para la obtención de portadas y libros.
+
+### 3. [Tests](https://github.com/a21aitorna/PFC_TESTS)
+* Se ha modificado el runner de frontend test para que se puedan ejecutar todas las features con el comando *mvn test*.
+* Se ha creado el [main.yml](https://github.com/a21aitorna/PFC_TESTS/blob/main/.github/workflows/main.yml), que sirve para ejecutar los tests mediante GithubActions, tanto de forma manual como periódicamente, así como genera los [informes](https://a21aitorna.github.io/PFC_TESTS/)
 
 ## Conclusiones
 
