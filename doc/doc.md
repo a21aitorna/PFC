@@ -149,7 +149,7 @@ A continuación se mostrará el Modelo Entidad Relación (*MER*) creado para ell
 ![Diagrama Entidad-Relación](./img/MER.png)
 
 ### Testing
-Se diferencian dos partes. Es
+Se diferencian dos partes.
 #### Frontend Testing
 El frontend testing se centra en validar el comportamiento y la interacción de la interfaz visual.  
 En este proyecto se utiliza Selenium con Java, un framework de automatización basado en WebDriver, junto con Cucumber, que permite aplicar la metodología *Behavior Driven Development* (BDD) y describir los escenarios de prueba mediante un lenguaje natural. Todo ello se gestiona a través de Maven, que facilita la administración de dependencias y 
