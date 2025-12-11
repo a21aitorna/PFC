@@ -14,6 +14,7 @@
 - [Propósito](#propósito)
 - [Objetivos](#objetivos)
 	- [Objetivos principales](#objetivos-principales)
+	- [Diseño de la aplicación](#diseño-de-la-aplicación)
 	- [Sistema de Login](#sistema-de-login)
 		- [1.Login](#1login)
 		- [2.Registro](#2registro)
@@ -39,6 +40,13 @@
 		- [3. Recuperar contraseña](#3-recuperar-contraseña)
 		- [4. Admin](#4-admin)
 		- [5. Book](#5-book)
+	- [Frontend testing](#frontend-testing-1)
+		- [1. Login](#1-login-1)
+		- [2. Registro](#2-registro-1)
+		- [3. Recuperar contraseña](#3-recuperar-contraseña-1)
+		- [4. Librería](#4-librería)
+		- [5. Detalle del libro](#5-detalle-del-libro)
+		- [6. Admin](#6-admin)
 - [Alcance](#alcance)
 	- [Funcionalidades implementadas](#funcionalidades-implementadas)
 	- [Usuarios de la aplicación](#usuarios-de-la-aplicación)
@@ -214,7 +222,8 @@ Así mismo, una parte esencial de este proyecto es el después de crear una func
 
 ### Objetivos principales
 - [x] Crear Diagrama Entidad Relación de la base de datos.
-- [x] Definit todas las funcionalidades del proyecto.
+- [x] Definir todas las funcionalidades del proyecto.
+- [x] Diseñar la aplicación.
 - [x] Construir de los contenedores docker para Backend, Frontend y Base de datos.
 - [x] Construir el sistema de integración CI/CD.
 - [x] Configurar el docker-compose para la aplicación entera.
@@ -230,6 +239,9 @@ Así mismo, una parte esencial de este proyecto es el después de crear una func
 - [x] Levantar la aplicación desarrollada sin errores.
 - [x] Generar informe de pruebas correctas y falladas.
 - [x] Generar pipeline para ejecución de pruebas automáticas periódicas.
+
+### Diseño de la aplicación
+Mediante el uso de Figma, se ha empleado la IA que trae incorporada para realizar borradores del diseño de la aplicación, al cual se puede acceder por [aquí](https://nougat-reduce-63675564.figma.site/). Estos, se realizaron mediante prompts después de tener claro las funcionalidades y estructura que quería en mi proyecto. De esta manera, se mejoraron las ideas que yo tenía, dano lugar a un diseño claro y amigable para todo el mundo.
 
 ### Sistema de Login
 Se podrán diferencias tres elementos esenciales:
@@ -359,6 +371,42 @@ Contiene algunas de las funcionalidades relacionadas con los libros, así como p
 - Conseguir los libros del usuario
 - Conseguir el detalle del libro
 
+### Frontend testing
+Se han desarrollado 6 features en función de las páginas y funcionalidades de la aplicación. Cada feature incluye pruebas que verifican el comportamineto esperado así como la gestión de errores y casos límite. En cada feature se puede encontrar una descripción de cada escenario probado y los correspondiente pasos, de manera que se puede resumir de la siguiente manera:
+
+#### 1. Login
+- Login del usuario
+- Manejo de errores
+- Verificación que la contraseña no se muestra y viceversa
+  
+#### 2. Registro
+- Registro del usuario
+- Manejo de errores
+
+#### 3. Recuperar contraseña
+- Cambio de contraseña exitoso
+- Manejo de errores
+- Volver a páginas previas
+  
+#### 4. Librería
+- Subir libros en diferentes formatos
+- Descargar libros
+- Borrar libros
+- Buscar bibliotecas
+- Verificar que se visualizan elementos en función del usuario
+
+#### 5. Detalle del libro
+- Verificar que se mira la información del libro
+- Verificar reseñas
+- Verificar que se visualizan elementos en función del usuario
+  
+#### 6. Admin
+- Acceder al panel de admin
+- Realizar acciones destinadas sólo a administradores
+- Navegar a las bibliotecas de usuarios
+- Acceder al detalle del libro
+- Visualización de todos los elementos
+
 ## Alcance
 
 ### Funcionalidades implementadas
@@ -374,7 +422,7 @@ Contiene algunas de las funcionalidades relacionadas con los libros, así como p
 - Acciones de administrador (bloqueo y eliminación de usuarios, eliminación de cualquier libro y reseña).
 - Implementación de pruebas automatizadas de frontend con Selenium (Java+Cucumber).
 - Implementación de pruebas automatizada de backend con Newman Postman.
-- Integración con Github Actions (Jenkinks si no se permite subir a Github el proyecto).
+- Integración con Github Actions.
 - Dockerización de toda la aplicación y despliegue a través de un docker-compose.
 
 ### Usuarios de la aplicación
@@ -392,6 +440,7 @@ Contiene algunas de las funcionalidades relacionadas con los libros, así como p
 - **Pruebas unitarias**: por falta de tiempo, no se abordarán estas pruebas. Así mismo, estas son hechas más por desarrolladores, y lo que quiero mostrar es más el rol de tester.
 - **Edición de medatos del libro**: esto en función del tiempo, podrá ser incorporado.
 - **Aplicación responsive**: la aplicación sólo se mostrará para web de escritorio por falta de tiempo (mediante el uso de Tailwind, se ha conseguido que sea bastante responsive, pero hay elementos que en función del dispositivo no se visualizan tal como se desea).
+- **Cron para las tasks**: actualmente hay unas tasks que se ejecutan cada vez que se despliega el back. Esto hace que al no ser que haya un despliegue, no se ejecuten. Es necesario para ello un cron, por falta de tiempo no se incorpora.
 
 ### Planificación
 Elaboré un [calendario en Trello](https://trello.com/b/u07xmNm6/mi-tablero-de-trello), definiendo todas lo que hice durante unos rangos basados en las fechas de entregas
@@ -403,13 +452,25 @@ Se ha hecho un pequeño estudio en referencia a los costes que acarrearía lleva
 - **Mantenimiento y supervisión**: para garantizar la calidad del proyecto y conseguir una mayor facilidad para reflejar las incidencias, se usarán sistemas de monitorización como Kibana y Grafana. El coste estimado es de 50 a 200€ anuales
 - **Costes de desarrollo**: se usarán licencias como Docker Pro, Figma Professional o Postman Professional entre otras. El coste estimado es de 100 a 300€ anuales.
 - **Costes operativos**: el hecho de tener un ordenador, ya lo abarata. Pero así mismo, se estima que el coste de la electricidad e intenet sea de 150€ mensuales.
-- **Costes de personal**: no habrá, ya que el proyecto se hará de manera individual. Como mucho, se implementará un sistema de donaciones de manera que se puedan sufragar los gastos sin obtener beneficio ninguno. Todas las persona que participasen en la página (como posibles moderadores en un futuro), no recibirían ninguna retribución económica.
-En resumen, con el objetivo de garantizar calidad más una infraestructura estable, el coste total del proyecto será de 2165 a 2915€ anuales.  
+- **Costes de personal**: debido a la simplicidad de la aplicación, el equipo necesario es mínimo. Bastaría con un desarrollador full-stack y un QA. El salario rondaría sobre los 2000€ brutos mensuales.
+En resumen, con el objetivo de garantizar calidad más una infraestructura estable, el coste total del proyecto será de 50165 a 50915€ anuales.  
 
 ### Normativa
+**Aviso Legal**
+La aplicación es propiedad de Aitor Novoa Alonso.
+Contacto: aitornalonso@gmail.com
+La aplicación permite gestionar y compartir libros de forma legal y segura.
+**Privacidad**
+Se recogen nombres, apellidos y fechas de nacimiento para gestionar el perfil de usuario. Estos datos se tratan de forma segura y confidencial, conforme a GDPR y LOPDPGDD. Nunca se comparten con terceros sin la autorización pertinente.
+El usuario puede acceder, rectificar o borrar sus datos escribiendo a aitornalonso@gmail.com
+**Cookies**
+Usamos cookies para mejorar la experiencia de usuario y el funcionamiento de la aplicación.
+Puedes aceptar, rechazar o gestionar las cookies a través de la configuración de tu navegador o desde el panel de gestión de cookies de la app.
+**Propiedad Intelectual**
 Al poder todos los usuarios subir libros, estos tendrán que cumplir con la normativa vigente española de propiedad intelectual. 
-No se permitirá subir ni compartir obras protegidas por derechos de autor sin el permiso del propietario. Si se detecta contenido que incumpla la normativa, será eliminado de la plataforma, tomando las medidad oportunas contra el usuario infractos.
-En cuanto a los datos personales (como nombre, apellidos y fecha de nacimiento), estos se usan únicamente para la gestión del perfil y se tratan de forma segura y confidencial, conforme al RGPD y la Ley de Protección de Datos española. Nunca se compartirá información con terceros y se garantizará la privacidad de sus usuarios.
+No se permitirá subir ni compartir obras protegidas por derechos de autor sin el permiso del propietario. 
+Si se detecta contenido que incumpla la normativa, será eliminado de la plataforma, tomando las medidad oportunas contra el usuario infractos.
+
 
 ### Ideas de implementación para el futuro
 - Creación de un nuevo rol llamado Moderador. Estos serán usuarios normales que tendrán una autorización semejante a la del administrador, de manera que haya una mayor supervisión de los usuarios, ya que cumplirían las mismas funciones. En cualquier momento, este poder podría ser revocado por cualquier motivo.
@@ -445,10 +506,18 @@ Durante el proceso de despliegue, se han hecho unos cambios en el código para g
 * Se ha creado el [main.yml](https://github.com/a21aitorna/PFC_TESTS/blob/main/.github/workflows/main.yml), que sirve para ejecutar los tests mediante GithubActions, tanto de forma manual como periódicamente, así como genera los [informes](https://a21aitorna.github.io/PFC_TESTS/)
 
 ## Conclusiones
-
-> Deja esta apartado para el final. Realiza un resumen de todo lo que ha supuesto la realización de tu proyecto. Debe ser una redacción breve. Un resumen de los hitos conseguidos más importantes y de lo aprendido durante el proceso.
-> Puede ser un buen punto de partida para organizar tu presentación y ajustarla al tiempo que tienes.
+Este proyecto ha sido un desafío a nivel personal. Llevo trabajando como QA desde hace tiempo, y el propio desarrollo lo tenía bastante oxidado. En un principio, pensaba hacer algo mucho más sencillo, en local realizar algo tan fácil como la poropia gestión de la biblioteca con unas cuantas funcionalidades y con todo mockeado, de manera que no me hubiera enfocado en manejo de libros, así como todas las posibilidades que abarca. He creado un proyecto en el que se usan los tres lenguajes de programación más usados a nivel profesional, así como toco la sintaxis .yml y de Dockerfile (algo que se odia siempre al principio y cuando vas cogiendo el truco, vas mirando lo realmente útil que es).
+El desarrollo de backend, me ha redescubierto el motivo por el cual me gustaba tanto en el momento que hice las prácticas. Esta estrucutura de carpetas, nació de un miniproyecto que se hizo allí, la cual, he ido mejorando y añadiendo nuevas situaciones. Creo que el punto más complicado fue la propia funcionalidad de extraer datos de los libros con formato epub. Estuve peleando con esto durante bastantes días, hasta que di con la solución, la cual era muy volátil, sólo se subían bien libros cuya portada manipulaba con un editor de metadatos. Esto era debido por el elemento cover de la tabla *books* de mi base de datos, que se intentaba subir vacía debido a que no encontraba imagen, dando error como campo obligatorio que es. No fue hasta más tarde, revisando el XML que proporciona el propio libro, que hay un campo que indica que imagen se usa como cover; esto me llevó a una solución de manera que cualquier documento con dicho formato, independientemente de su origen, se puede añadir.
+El desarrollo del frontend, ha sido lo más difícil a nivel personal. La maquetación no es mi punto más fuerte, por lo que ha sido un constante desafío día a día; la parte de la lógica así como indicar que elementos quería fue mucho más sencillo. Ayudándome con los diseños que me fue dando el figma sobre el cuál basé la imagen de la aplicación, y a base de prueba y error junto la documentación de tailwind, di conseguido tener un diseño sencillo pero útil, con el cual me siento orgulloso. Esto me llevará seguramente a toquetear nuevos miniproyectos con diferentes frameworks como Vue o Angular, de manera que también al ser QA, me facilite a la hora de comprensión del código y ayudar a desarrolladores con ideas.
+Finalmente, lo que más disfruté, la parte de testing. Los tests de backend, nunca los había hecho, así que fue una nueva experiencia de la cual aprendí bastante de las propias colecciones (sólo las he usado a nivel de Postman y hacer llamadas simples); esto me ha llevado a ver fucniones que no conocía de la propia herramienta de Postman, las cuales podré emplear a partir de ahora tanto a nivel personal como profesional. Respecto el test de frontend, ha sido mi parte favorita; montar un proyecto desde 0, configurar todo, el uso de funciones comunes... me ha llevado a conocer más en pronfundidad Selenium, el de dónde sale tal cosa, cómo se inicializa el driver... He creado una estructura la cual, con unas mejoras, se acerca bastante a la empleada en el mundo laboral. Y otro punto clave del que aprendí, es la pipeline de CI/CD, siempre la uso pero nunca la creé yo desde el principio; esto me llevará a intentarlo con algo más difícil, con Jenkins. 
+Así mismo, algo que quiero destacar de este proyecto es el rol de QA. Espero que sirva para mostrar y enseñar algo sobre este mundo, ya que aunque se nos den las bases para ello, no se mencionan apenas en ningún momento, y no es prácticamente hasta que llegas a una empresa que lo descubres. Al final, somos el último "bache" para que se saque algo adelante, pero somos necesarios a la hora de conseguir esa calidad esperada así como la satisfacción del usuario. 
+En resumen, este proyecto no va a quedar así. Me ha entusiasmado a continuar, y así lo haré. Hay una serie de mejoras así como nuevas funcionalidades, previamente mencionadas, las cuales creo que me llevarán a nuevos desafíos y a seguir descubriendo más cosas, porque de eso se trata al final, esto es continuo aprendizaje, y no tiene un fin.
 
 ## Referencias, Fuentes consultadas y Recursos externos: Webgrafía
-
-> *TODO*: Enlaces externos y descipciones de estos enlaces que creas conveniente indicar aquí. Generalmente ya van a estar integrados con tu documentación, pero si requieres realizar un listado de ellos, este es el lugar.
+- [Documentación react en español](https://es.react.dev/)
+- [Documentación ofical de react](https://create-react-app.dev/docs/getting-started/)
+- [Documentación de SQL Alchemy en Flask](https://flask.palletsprojects.com/en/stable/patterns/sqlalchemy/)
+- [Cómo extraer datos de un PDF con python](https://www.freecodecamp.org/espanol/news/como-extraer-datos-de-archivos-en-pdf/)
+- [Script para extraer metadadatos de imágenes con python](https://github.com/tg12/script-toolbox/blob/main/exif_df.py)
+- [Proyecto de Github para extraer metadatos de epub](https://github.com/paulocheque/epub-meta)
+- [Documentación react router](https://www.npmjs.com/package/react-reader)
