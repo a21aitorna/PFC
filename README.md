@@ -38,7 +38,7 @@ El proyecto está preparado para ser ejecutado mediante Docker, de manera que se
         - cd app/tests/backend-testing
         - node run-all-tests.js
     - Frontend Testing
-        - Se especifica en la documentaciópn propia de la carpeta
+        - Se especifica en la documentación propia de la carpeta
     ~~~
     
 ## Uso
