@@ -74,8 +74,9 @@ Esta se caracteriza por haber sido diseñada y construida mediante el principio 
 
 Todo esto, viene dockerizado, de manera que sea más sencillo su despligue, mantenimiento y escalabilidad.
 
-Actualmente, la aplicación se encuentra desplegada, pudiendo acceder mediante esta [URL](https://pfcfront-production-a352.up.railway.app/login). Así mismo, accediendo [aquí](https://pfcback-production.up.railway.app/apidocs/). 
-Para garantizar el correcto funcinamiento de esta, se ha establecido un pipeline de GithubActions, el cual se ejecuta una vez al día a las 6:00. Esto genera unos informes que hay que revisar diariamente, que se pueden observar [aquí](https://a21aitorna.github.io/PFC_TESTS/). 
+Actualmente, la aplicación se encuentra desplegada, pudiendo acceder mediante esta [URL](https://pfcfront-production-a352.up.railway.app/login). Así mismo, accediendo [aquí](https://pfcback-production.up.railway.app/apidocs/), se observa la documentación swagger de los endpoints disponibles en la aplicación.
+
+Para garantizar el correcto funcionamiento de esta, se ha establecido un pipeline de GithubActions, el cual se ejecuta una vez al día a las 5:30 (hora española). Esto genera unos informes que hay que revisar diariamente, que se pueden observar [aquí](https://a21aitorna.github.io/PFC_TESTS/). 
 
 ### Frontend
 Se ha optado por el uso de *React*, una biblioteca de JavaScript (aunque se puede considerar como framework) muy usada en la actualidad para el desarrollo front. Entre alguna de las características de esta elección está la existencia de un ecosistema que permite integrarse de manera sencilla con el back y con el testing, además de su fácil integración con Docker. Otra clave decisiva, fue la fácil creación de componentes, los cuales serán usado a la hora de la construcción de las páginas, pudiendo hacer cambios menos invasivos y no usando tanto código.
