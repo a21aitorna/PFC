@@ -11,7 +11,7 @@ El sistema está desarrollado en un entorno full-stack: cuenta con autenticació
 
 ## Instalación / Puesta en marcha
 El proyecto está preparado para ser ejecutado mediante Docker, de manera que se inicien todos los servicios (backend, frontend y base de datos) a través de un sólo comando. A mayores, con la integración continua, se podrán ver los reportes de los tests automáticos, pero a efectos de demo, el backend se puede lanzar mediante un comando. Para los tests de frontend, lo mejor es usar el IDE de IntelliJ.
- - 
+De todas formas, la aplicación se encuntrad desplegada, pudiendo acceder desde [aquí](https://pfcfront-production-a352.up.railway.app/login). 
 
 1. **Configurar los archivos .env**
     ~~~
