@@ -444,7 +444,8 @@ Se han desarrollado 6 features en función de las páginas y funcionalidades de 
 - **Cron para las tasks**: actualmente hay unas tasks que se ejecutan cada vez que se despliega el back. Esto hace que al no ser que haya un despliegue, no se ejecuten. Es necesario para ello un cron, por falta de tiempo no se incorpora.
 
 ### Planificación
-Elaboré un [calendario en Trello](https://trello.com/b/u07xmNm6/mi-tablero-de-trello), definiendo todas lo que hice durante unos rangos basados en las fechas de entregas
+Elaboré un [calendario en Trello](https://trello.com/b/u07xmNm6/mi-tablero-de-trello), definiendo todas lo que hice durante unos rangos basados en las fechas de entregas, correspondiendo las 3 últimas entregas con cada prototipo creado.
+![CalendarioTrello](./img/trello.png)
 
 ### Gastos
 Se ha hecho un pequeño estudio en referencia a los costes que acarrearía llevar el proyecto a producción. A continuación, se procede a hacer una estimación de estos
