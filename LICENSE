@@ -11,3 +11,59 @@ Prohibited:
 - Creating derivative works, including translations, adaptations, or modifications, without explicit written permission from the author.
 
 Any other use requires explicit authorization from the author.
+
+-------------------------------------------------------------------------------
+Third Party Licenses
+-------------------------------------------------------------------------------
+The following third-party libraries are used in this project. Their licenses
+are included here for reference. All rights remain with the respective authors.
+
+1. axios
+   - License: MIT
+   - Repository: https://github.com/axios/axios
+   - npm: https://www.npmjs.com/package/axios
+
+2. react
+   - License: MIT
+   - Repository: https://github.com/facebook/react
+   - npm: https://www.npmjs.com/package/react
+
+3. react-dom
+   - License: MIT
+   - Repository: https://github.com/facebook/react
+   - npm: https://www.npmjs.com/package/react-dom
+
+4. react-scripts
+   - License: MIT
+   - Repository: https://github.com/facebook/create-react-app
+   - npm: https://www.npmjs.com/package/react-scripts
+
+5. react-router-dom
+   - License: MIT
+   - Repository: https://github.com/remix-run/react-router
+   - npm: https://www.npmjs.com/package/react-router-dom
+
+6. lucide-react
+   - License: ISC
+   - Repository: https://github.com/lucide-icons/lucide
+   - npm: https://www.npmjs.com/package/lucide-react
+
+7. react-reader
+   - License: ISC
+   - Repository: https://github.com/gerhardsletten/react-reader
+   - npm: https://www.npmjs.com/package/react-reader
+
+8. autoprefixer
+   - License: MIT
+   - Repository: https://github.com/postcss/autoprefixer
+   - npm: https://www.npmjs.com/package/autoprefixer
+
+9. postcss
+   - License: MIT
+   - Repository: https://github.com/postcss/postcss
+   - npm: https://www.npmjs.com/package/postcss
+
+10. tailwindcss
+    - License: MIT
+    - Repository: https://github.com/tailwindlabs/tailwindcss
+    - npm: https://www.npmjs.com/package/tailwindcss
