@@ -56,6 +56,10 @@
 	- [Gastos](#gastos)
 	- [Normativa](#normativa)
 	- [Ideas de implementación para el futuro](#ideas-de-implementación-para-el-futuro)
+- [Git](#git)
+	- [Subir repo](#subir-repo)
+	- [Crear ramas](#crear-ramas)
+	- [Borrar ramas](#borrar-ramas)
 - [Despliegues](#despliegues)
 	- [1. Frontend](#1-frontend)
 	- [2. Backend](#2-backend)
@@ -492,6 +496,25 @@ Si se detecta contenido que incumpla la normativa, será eliminado de la platafo
 - Mejorar los tiempos de respuesta una vez desplegado.
 - Cambiar los endpoints. Actualmente, la mayoría de los endpoints usan la clave principal de la tabla correspondiente, siendo un id númerico autoincremental. Gracias a los tests, se ha detectado que no se puede garantizar la estaticidad de estos; es por ello que en vez de id, se pueden usar campos relacionados a nombres.
 
+## Git
+A la hora de interactuar con los repos, empleé git como control de versiones. Como el proyecto a su vez lo tenía en Github, para no tener que hacer el mismo trabajo dos veces, usé alias, mediante la mezcla de comnandos git y shell.
+### Subir repo
+~~~~
+git config --global alias.pushall '!git push origin $1 && git push github $1'
+git pushall
+~~~~
+### Crear ramas
+~~~~
+git config --global alias.new '!f() { git checkout -b "$1"; }; f'
+git new nombre_rama
+~~~~
+### Borrar ramas
+~~~~
+git config --global alias.delbranch '!f() { git push origin --delete "$1" && git push github --delete "$1"; }; f'
+git delbranch nombre_rama
+~~~~
+- *!*-> indica que va  aser un comando de shell, no de git
+- *$1*-> corresponde al primer argumento del alias.
 
 ## Despliegues
 Se ha decidido usar [RailwayApp](https://railway.com/) para realizar el despliegue de la aplicación. Esta plataforma permite deplegar servicios desde repositorios en GitHub, y ofrece y ofrece una integración con servicios de diferentes bases de datos propios sencilla.
