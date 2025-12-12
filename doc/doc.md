@@ -475,8 +475,11 @@ Nunca se comparten con terceros sin la autorización pertinente.
 El usuario puede acceder, rectificar o borrar sus datos escribiendo a:  
 aitornalonso@gmail.com
 
-**Seguridad de la Información**
-Las contraseñas y respuestas de seguridad de los usuarios se almacenan de forma segura mediante algoritmos de hash, de modo que no puedan ser recuperadas en texto plano. Se aplican medidas de seguridad técnicas y organizativas para proteger los datos de accesos no autorizados, pérdida o divulgación.
+**Seguridad de la Información**  
+Las contraseñas y respuestas de seguridad de los usuarios se almacenan de forma segura 
+mediante algoritmos de hash, de modo que no puedan ser recuperadas en texto plano.
+Se aplican medidas de seguridad técnicas para proteger los datos de accesos no autorizados,
+pérdida o divulgación.  
 
 **Cookies**  
 Usamos cookies para mejorar la experiencia de usuario y el funcionamiento de la aplicación.  
