@@ -22,6 +22,7 @@
   - Cucumber for Java
   - Gherkin
   - Lombok
+  
     ![Plugins](../../../doc/img/IntelliJ/Plugins.png)
 - Reiniciar el IDE.
 
