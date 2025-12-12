@@ -26,6 +26,6 @@
 - Reiniciar el IDE.
 
 ## LANZAR TESTS
-- Lanzar el comando * mvn install -DskipTests* para instalar todo lo del POM.xml
+- Lanzar el comando *mvn install -DskipTests* para instalar todo lo del POM.xml
 - Configurar el runner (hacer click en la opción de play de la parte superior derecha y seleccionar la opción de Cucumber Java) tal como en la imagen
     ![Plugins](../../../doc/img/IntelliJ/Runner.png)

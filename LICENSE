@@ -18,6 +18,7 @@ Third Party Licenses
 The following third-party libraries are used in this project. Their licenses
 are included here for reference. All rights remain with the respective authors.
 
+### JavaScript
 1. axios
    - License: MIT
    - Repository: https://github.com/axios/axios
@@ -67,3 +68,151 @@ are included here for reference. All rights remain with the respective authors.
     - License: MIT
     - Repository: https://github.com/tailwindlabs/tailwindcss
     - npm: https://www.npmjs.com/package/tailwindcss
+
+11. newman-reporter-htmlextra
+    - License: Apache‑2.0
+    - Repository: https://github.com/DannyDainton/newman-reporter-htmlextra
+    - npm: https://www.npmjs.com/package/newman-reporter-htmlextra
+
+### Python
+12. Flask
+    - License: BSD‑3-Clause
+    - PyPI: https://pypi.org/project/Flask/
+    - Repository: https://github.com/pallets/flask
+
+13. Flask-Cors
+    - License: MIT/BSD
+    - PyPI: https://pypi.org/project/Flask-Cors/
+    - Repository: https://github.com/corydolphin/flask-cors
+
+14. Flask-SQLAlchemy
+    - License: MIT/BSD
+    - PyPI: https://pypi.org/project/Flask-SQLAlchemy/
+    - Repository: https://github.com/pallets/flask-sqlalchemy
+
+15. Flask-Migrate
+    - License: MIT
+    - PyPI: https://pypi.org/project/Flask-Migrate/
+    - Repository: https://github.com/miguelgrinberg/Flask-Migrate
+
+16. Flask-RESTful
+    - License: MIT/BSD
+    - PyPI: https://pypi.org/project/Flask-RESTful/
+    - Repository: https://github.com/flask-restful/flask-restful
+
+17. Flask-JWT-Extended
+    - License: MIT
+    - PyPI: https://pypi.org/project/Flask-JWT-Extended/
+    - Repository: https://github.com/vimalloc/flask-jwt-extended
+
+18. Flask-Swagger-UI
+    - License: MIT/BSD
+    - PyPI: https://pypi.org/project/flask-swagger-ui/
+    - Repository: https://github.com/swagger-api/swagger-ui
+
+19. Flask-Marshmallow
+    - License: MIT
+    - PyPI: https://pypi.org/project/flask-marshmallow/
+    - Repository: https://github.com/marshmallow-code/flask-marshmallow
+
+20. bcrypt
+    - License: MIT
+    - PyPI: https://pypi.org/project/bcrypt/
+    - Repository: https://github.com/pyca/bcrypt
+
+21. itsdangerous
+    - License: BSD
+    - PyPI: https://pypi.org/project/itsdangerous/
+    - Repository: https://github.com/pallets/itsdangerous
+
+22. marshmallow
+    - License: MIT
+    - PyPI: https://pypi.org/project/marshmallow/
+    - Repository: https://github.com/marshmallow-code/marshmallow
+
+23. marshmallow-sqlalchemy
+    - License: MIT
+    - PyPI: https://pypi.org/project/marshmallow-sqlalchemy/
+    - Repository: https://github.com/marshmallow-code/marshmallow-sqlalchemy
+
+24. PyMySQL
+    - License: MIT
+    - PyPI: https://pypi.org/project/PyMySQL/
+    - Repository: https://github.com/PyMySQL/PyMySQL
+
+25. cryptography
+    - License: Apache 2.0
+    - PyPI: https://pypi.org/project/cryptography/
+    - Repository: https://github.com/pyca/cryptography
+
+26. python-dotenv
+    - License: BSD
+    - PyPI: https://pypi.org/project/python-dotenv/
+    - Repository: https://github.com/theskumar/python-dotenv
+
+27. requests
+    - License: Apache 2.0
+    - PyPI: https://pypi.org/project/requests/
+    - Repository: https://github.com/psf/requests
+
+28. Flasgger
+    - License: MIT
+    - PyPI: https://pypi.org/project/flasgger/
+    - Repository: https://github.com/rochacbruno/flasgger
+
+29. PyMuPDF
+    - License: GPLv3 / LGPL (verificar versión)
+    - PyPI: https://pypi.org/project/PyMuPDF/
+    - Repository: https://github.com/pymupdf/PyMuPDF
+
+30. EbookLib
+    - License: MIT
+    - PyPI: https://pypi.org/project/EbookLib/
+    - Repository: https://github.com/aerkalov/ebooklib
+
+31. Pillow
+    - License: PIL Software License
+    - PyPI: https://pypi.org/project/Pillow/
+    - Repository: https://github.com/python-pillow/Pillow
+
+### Java
+32. selenium-java
+   - License: Apache License 2.0
+   - Maven Central: https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+   - Repository: https://github.com/SeleniumHQ/selenium/
+
+33. webdrivermanager
+   - License: Apache License 2.0
+   - Maven Central: https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager
+   - Repository: https://github.com/bonigarcia/webdrivermanager
+
+34. cucumber-java
+   - License: MIT License
+   - Maven Central: https://mvnrepository.com/artifact/io.cucumber/cucumber-java
+   - Homepage: https://cucumber.io/
+
+35. cucumber-junit-platform-engine
+   - License: MIT License
+   - Maven Central: https://mvnrepository.com/artifact/io.cucumber/cucumber-junit-platform-engine
+   - Homepage: https://cucumber.io/
+
+36. junit-jupiter-api
+   - License: Eclipse Public License 2.0 (JUnit itself is typically under Eclipse Public License / Apache License 2.0 compatible; see JUnit licensing)  
+   - Maven Central: https://search.maven.org/artifact/org.junit.jupiter/junit-jupiter-api
+   - Homepage: https://junit.org/junit5/
+
+37. junit-jupiter-engine
+   - License: Eclipse Public License 2.0  
+   - Maven Central: https://search.maven.org/artifact/org.junit.jupiter/junit-jupiter-engine
+   - Homepage: https://junit.org/junit5/
+
+38. junit-platform-suite-api
+   - License: Eclipse Public License 2.0  
+   - Maven Central: https://search.maven.org/artifact/org.junit.platform/junit-platform-suite-api
+   - Homepage: https://junit.org/junit5/
+
+39. slf4j-simple
+   - License: MIT License
+   - Homepage / License: https://www.slf4j.org/license.html
+   - Maven Central: https://search.maven.org/artifact/org.slf4j/slf4j-simple
+
