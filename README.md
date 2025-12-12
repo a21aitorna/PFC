@@ -36,6 +36,7 @@ De todas formas, la aplicación se encuntrad desplegada, pudiendo acceder desde 
     ~~~
     - Backend testing
         - cd app/tests/backend-testing
+        - npm install
         - node run-all-tests.js
     - Frontend Testing
         - Se especifica en la documentación propia de la carpeta
