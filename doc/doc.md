@@ -475,6 +475,9 @@ Nunca se comparten con terceros sin la autorización pertinente.
 El usuario puede acceder, rectificar o borrar sus datos escribiendo a:  
 aitornalonso@gmail.com
 
+**Seguridad de la Información**
+Las contraseñas y respuestas de seguridad de los usuarios se almacenan de forma segura mediante algoritmos de hash, de modo que no puedan ser recuperadas en texto plano. Se aplican medidas de seguridad técnicas y organizativas para proteger los datos de accesos no autorizados, pérdida o divulgación.
+
 **Cookies**  
 Usamos cookies para mejorar la experiencia de usuario y el funcionamiento de la aplicación.  
 Puedes aceptar, rechazar o gestionar las cookies a través de la configuración de tu navegador  
@@ -484,8 +487,6 @@ o desde el panel de gestión de cookies de la app.
 Al poder todos los usuarios subir libros, estos tendrán que cumplir con la normativa vigente española de propiedad intelectual.  
 No se permitirá subir ni compartir obras protegidas por derechos de autor sin el permiso del propietario.  
 Si se detecta contenido que incumpla la normativa, será eliminado de la plataforma, tomando las medidas oportunas contra el usuario infractor.
-
-
 
 ### Ideas de implementación para el futuro
 - Creación de un nuevo rol llamado Moderador. Estos serán usuarios normales que tendrán una autorización semejante a la del administrador, de manera que haya una mayor supervisión de los usuarios, ya que cumplirían las mismas funciones. En cualquier momento, este poder podría ser revocado por cualquier motivo.
