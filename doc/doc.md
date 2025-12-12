@@ -458,20 +458,29 @@ Se ha hecho un pequeño estudio en referencia a los costes que acarrearía lleva
 En resumen, con el objetivo de garantizar calidad más una infraestructura estable, el coste total del proyecto será de 50165 a 50915€ anuales.  
 
 ### Normativa
-**Aviso Legal**
-La aplicación es propiedad de Aitor Novoa Alonso.
-Contacto: aitornalonso@gmail.com
+
+**Aviso Legal**  
+La aplicación es propiedad de Aitor Novoa Alonso.  
+Contacto: aitornalonso@gmail.com  
 La aplicación permite gestionar y compartir libros de forma legal y segura.
-**Privacidad**
-Se recogen nombres, apellidos y fechas de nacimiento para gestionar el perfil de usuario. Estos datos se tratan de forma segura y confidencial, conforme a GDPR y LOPDPGDD. Nunca se comparten con terceros sin la autorización pertinente.
-El usuario puede acceder, rectificar o borrar sus datos escribiendo a aitornalonso@gmail.com
-**Cookies**
-Usamos cookies para mejorar la experiencia de usuario y el funcionamiento de la aplicación.
-Puedes aceptar, rechazar o gestionar las cookies a través de la configuración de tu navegador o desde el panel de gestión de cookies de la app.
-**Propiedad Intelectual**
-Al poder todos los usuarios subir libros, estos tendrán que cumplir con la normativa vigente española de propiedad intelectual. 
-No se permitirá subir ni compartir obras protegidas por derechos de autor sin el permiso del propietario. 
-Si se detecta contenido que incumpla la normativa, será eliminado de la plataforma, tomando las medidad oportunas contra el usuario infractos.
+
+**Privacidad**  
+Se recogen nombres, apellidos y fechas de nacimiento para gestionar el perfil de usuario.  
+Estos datos se tratan de forma segura y confidencial, conforme a GDPR y LOPDPGDD.  
+Nunca se comparten con terceros sin la autorización pertinente.  
+El usuario puede acceder, rectificar o borrar sus datos escribiendo a:  
+aitornalonso@gmail.com
+
+**Cookies**  
+Usamos cookies para mejorar la experiencia de usuario y el funcionamiento de la aplicación.  
+Puedes aceptar, rechazar o gestionar las cookies a través de la configuración de tu navegador  
+o desde el panel de gestión de cookies de la app.
+
+**Propiedad Intelectual**  
+Al poder todos los usuarios subir libros, estos tendrán que cumplir con la normativa vigente española de propiedad intelectual.  
+No se permitirá subir ni compartir obras protegidas por derechos de autor sin el permiso del propietario.  
+Si se detecta contenido que incumpla la normativa, será eliminado de la plataforma, tomando las medidas oportunas contra el usuario infractor.
+
 
 
 ### Ideas de implementación para el futuro
@@ -508,12 +517,23 @@ Durante el proceso de despliegue, se han hecho unos cambios en el código para g
 * Se ha creado el [main.yml](https://github.com/a21aitorna/PFC_TESTS/blob/main/.github/workflows/main.yml), que sirve para ejecutar los tests mediante GithubActions, tanto de forma manual como periódicamente, así como genera los [informes](https://a21aitorna.github.io/PFC_TESTS/)
 
 ## Conclusiones
-Este proyecto ha sido un desafío a nivel personal. Llevo trabajando como QA desde hace tiempo, y el propio desarrollo lo tenía bastante oxidado. En un principio, pensaba hacer algo mucho más sencillo, en local realizar algo tan fácil como la poropia gestión de la biblioteca con unas cuantas funcionalidades y con todo mockeado, de manera que no me hubiera enfocado en manejo de libros, así como todas las posibilidades que abarca. He creado un proyecto en el que se usan los tres lenguajes de programación más usados a nivel profesional, así como toco la sintaxis .yml y de Dockerfile (algo que se odia siempre al principio y cuando vas cogiendo el truco, vas mirando lo realmente útil que es).
-El desarrollo de backend, me ha redescubierto el motivo por el cual me gustaba tanto en el momento que hice las prácticas. Esta estrucutura de carpetas, nació de un miniproyecto que se hizo allí, la cual, he ido mejorando y añadiendo nuevas situaciones. Creo que el punto más complicado fue la propia funcionalidad de extraer datos de los libros con formato epub. Estuve peleando con esto durante bastantes días, hasta que di con la solución, la cual era muy volátil, sólo se subían bien libros cuya portada manipulaba con un editor de metadatos. Esto era debido por el elemento cover de la tabla *books* de mi base de datos, que se intentaba subir vacía debido a que no encontraba imagen, dando error como campo obligatorio que es. No fue hasta más tarde, revisando el XML que proporciona el propio libro, que hay un campo que indica que imagen se usa como cover; esto me llevó a una solución de manera que cualquier documento con dicho formato, independientemente de su origen, se puede añadir.
-El desarrollo del frontend, ha sido lo más difícil a nivel personal. La maquetación no es mi punto más fuerte, por lo que ha sido un constante desafío día a día; la parte de la lógica así como indicar que elementos quería fue mucho más sencillo. Ayudándome con los diseños que me fue dando el figma sobre el cuál basé la imagen de la aplicación, y a base de prueba y error junto la documentación de tailwind, di conseguido tener un diseño sencillo pero útil, con el cual me siento orgulloso. Esto me llevará seguramente a toquetear nuevos miniproyectos con diferentes frameworks como Vue o Angular, de manera que también al ser QA, me facilite a la hora de comprensión del código y ayudar a desarrolladores con ideas.
-Finalmente, lo que más disfruté, la parte de testing. Los tests de backend, nunca los había hecho, así que fue una nueva experiencia de la cual aprendí bastante de las propias colecciones (sólo las he usado a nivel de Postman y hacer llamadas simples); esto me ha llevado a ver fucniones que no conocía de la propia herramienta de Postman, las cuales podré emplear a partir de ahora tanto a nivel personal como profesional. Respecto el test de frontend, ha sido mi parte favorita; montar un proyecto desde 0, configurar todo, el uso de funciones comunes... me ha llevado a conocer más en pronfundidad Selenium, el de dónde sale tal cosa, cómo se inicializa el driver... He creado una estructura la cual, con unas mejoras, se acerca bastante a la empleada en el mundo laboral. Y otro punto clave del que aprendí, es la pipeline de CI/CD, siempre la uso pero nunca la creé yo desde el principio; esto me llevará a intentarlo con algo más difícil, con Jenkins. 
-Así mismo, algo que quiero destacar de este proyecto es el rol de QA. Espero que sirva para mostrar y enseñar algo sobre este mundo, ya que aunque se nos den las bases para ello, no se mencionan apenas en ningún momento, y no es prácticamente hasta que llegas a una empresa que lo descubres. Al final, somos el último "bache" para que se saque algo adelante, pero somos necesarios a la hora de conseguir esa calidad esperada así como la satisfacción del usuario. 
-En resumen, este proyecto no va a quedar así. Me ha entusiasmado a continuar, y así lo haré. Hay una serie de mejoras así como nuevas funcionalidades, previamente mencionadas, las cuales creo que me llevarán a nuevos desafíos y a seguir descubriendo más cosas, porque de eso se trata al final, esto es continuo aprendizaje, y no tiene un fin.
+Este proyecto ha sido un desafío a nivel personal. Llevo trabajando como QA desde hace tiempo, y el propio desarrollo lo tenía bastante oxidado.  
+En un principio, pensaba hacer algo mucho más sencillo, en local realizar algo tan fácil como la propia gestión de la biblioteca con unas cuantas funcionalidades y con todo mockeado, de manera que no me hubiera enfocado en manejo de libros, así como todas las posibilidades que abarca.
+
+He creado un proyecto en el que se usan los tres lenguajes de programación más usados a nivel profesional, así como toco la sintaxis .yml y de Dockerfile (algo que se odia siempre al principio y cuando vas cogiendo el truco, vas mirando lo realmente útil que es).
+
+El desarrollo de backend me ha redescubierto el motivo por el cual me gustaba tanto en el momento que hice las prácticas. Esta estructura de carpetas nació de un miniproyecto que se hizo allí, la cual he ido mejorando y añadiendo nuevas situaciones. Creo que el punto más complicado fue la propia funcionalidad de extraer datos de los libros con formato epub. Estuve peleando con esto durante bastantes días, hasta que di con la solución, la cual era muy volátil: solo se subían bien libros cuya portada manipulaba con un editor de metadatos. Esto era debido al elemento *cover* de la tabla *books* de mi base de datos, que se intentaba subir vacío debido a que no encontraba imagen, dando error como campo obligatorio. No fue hasta más tarde, revisando el XML que proporciona el propio libro, que vi que había un campo que indica qué imagen se usa como cover; esto me llevó a una solución de manera que cualquier documento con dicho formato, independientemente de su origen, se puede añadir.
+
+El desarrollo del frontend ha sido lo más difícil a nivel personal. La maquetación no es mi punto más fuerte, por lo que ha sido un constante desafío día a día; la parte de la lógica, así como indicar qué elementos quería, fue mucho más sencillo. Ayudándome con los diseños que me fue dando el Figma sobre el cual basé la imagen de la aplicación, y a base de prueba y error junto a la documentación de Tailwind, conseguí un diseño sencillo pero útil, con el cual me siento orgulloso. Esto me llevará seguramente a toquetear nuevos miniproyectos con diferentes frameworks como Vue o Angular, de manera que también, al ser QA, me facilite la comprensión del código y ayudar a desarrolladores con ideas.
+
+Finalmente, lo que más disfruté: la parte de testing.  
+Los tests de backend nunca los había hecho, así que fue una nueva experiencia de la cual aprendí bastante de las propias colecciones (solo las había usado a nivel de Postman para llamadas simples). Esto me ha llevado a ver funciones que no conocía de Postman, las cuales podré emplear a partir de ahora tanto a nivel personal como profesional.
+Respecto al test de frontend, ha sido mi parte favorita; montar un proyecto desde cero, configurar todo, el uso de funciones comunes... me ha llevado a conocer más en profundidad Selenium, de dónde sale tal cosa, cómo se inicializa el driver… He creado una estructura que, con unas mejoras, se acerca bastante a la empleada en el mundo laboral. Y otro punto clave del que aprendí fue la pipeline de CI/CD: siempre la uso, pero nunca la había creado desde cero; esto me llevará a intentarlo con algo más difícil, como Jenkins.
+
+Así mismo, algo que quiero destacar de este proyecto es el rol de QA. Espero que sirva para mostrar y enseñar algo sobre este mundo, ya que, aunque se nos dan las bases, no se menciona apenas en ningún momento y no es prácticamente hasta que llegas a una empresa que lo descubres. Al final, somos el último “bache” antes de sacar algo adelante, pero somos necesarios para conseguir esa calidad esperada y la satisfacción del usuario.
+
+En resumen, este proyecto no va a quedar así. Me ha entusiasmado a continuar, y así lo haré. Hay una serie de mejoras, así como nuevas funcionalidades previamente mencionadas, que creo que me llevarán a nuevos desafíos y a seguir descubriendo más cosas, porque de eso se trata al final: esto es aprendizaje continuo, y no tiene fin.
+
 
 ## Referencias, Fuentes consultadas y Recursos externos: Webgrafía
 - [Documentación react en español](https://es.react.dev/)
