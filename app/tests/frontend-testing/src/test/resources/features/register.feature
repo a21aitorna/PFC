@@ -1,4 +1,4 @@
-@registerFeature
+@registerFeature @all
 Feature: Register
 
   @registerRedirection

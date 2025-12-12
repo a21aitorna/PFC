@@ -1,4 +1,4 @@
-@libraryFeature
+@libraryFeature @all
 Feature: Login
 
   @successUploadPDFBook

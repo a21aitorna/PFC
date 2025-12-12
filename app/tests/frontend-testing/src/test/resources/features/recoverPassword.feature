@@ -1,4 +1,4 @@
-@recoverPasswordFeature
+@recoverPasswordFeature @all
 Feature: Get new password
 
   @recoverPasswordFirstRedirection

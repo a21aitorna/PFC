@@ -1,4 +1,4 @@
-@adminFeature
+@adminFeature @all
 Feature: Admin
 
   @successLoginAdmin

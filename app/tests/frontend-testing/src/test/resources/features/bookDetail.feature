@@ -1,4 +1,4 @@
-@detailBookFeature
+@detailBookFeature @all
 Feature: Detail book
 
   @detailBook
